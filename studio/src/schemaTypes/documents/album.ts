@@ -73,6 +73,24 @@ export const album = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'size',
+      title: 'Size',
+      type: 'number',
+      validation: (rule) => rule.required().min(6).max(12),
+    }),
+    defineField({
+      name: 'articleNumber',
+      title: 'Article Number',
+      type: 'number',
+      validation: (rule) => rule.required().min(1),
+    }),
+    defineField({
+      name: 'stockQuantity',
+      title: 'Stock Quantity',
+      type: 'number',
+      validation: (rule) => rule.required().min(0),
+    }),
+    defineField({
       name: 'artist',
       title: 'Artist',
       type: 'reference',
