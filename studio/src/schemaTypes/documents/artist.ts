@@ -47,6 +47,13 @@ export const artist = defineType({
       },
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'Country',
+      title: 'Country',
+      type: 'reference',
+      to: [{type: 'country'}],
+      validation: (rule) => rule.required(),
+    }),
   ],
   // List preview configuration. https://www.sanity.io/docs/previews-list-views
   preview: {
@@ -57,7 +64,6 @@ export const artist = defineType({
     prepare(selection) {
       return {
         title: selection.artistName,
-        subtitle: 'Artist',
         media: selection.picture,
       }
     },

@@ -17,7 +17,7 @@ export const album = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      description: 'A slug is required for the post to show up in the preview',
+      description: "A slug is required for the product's detail page",
       options: {
         source: 'title',
         maxLength: 96,
@@ -31,7 +31,13 @@ export const album = defineType({
       type: 'blockContent',
     }),
     defineField({
-      name: 'albumArt',
+      name: 'price',
+      title: 'Price (USD)',
+      type: 'number',
+      validation: (rule) => rule.required().min(1).max(99),
+    }),
+    defineField({
+      name: 'picture',
       title: 'Album Art',
       type: 'image',
       options: {
@@ -64,25 +70,43 @@ export const album = defineType({
       title: 'Release Date',
       type: 'datetime',
       initialValue: () => new Date().toISOString(),
+      validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'Artist',
+      name: 'artist',
       title: 'Artist',
       type: 'reference',
       to: [{type: 'artist'}],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'genres',
+      title: 'Genres',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'genre'}],
+        },
+      ],
+      options: {
+        layout: 'tags',
+      },
+      validation: (rule) => rule.required(),
     }),
   ],
-  // List preview configuration. https://www.sanity.io/docs/previews-list-views
   preview: {
     select: {
       title: 'title',
-      artistName: 'artist.name',
-      media: 'coverImage',
+      artistName: 'artist.artistName',
+      picture: 'picture',
     },
-    prepare({title, media, artistName}) {
-      const subtitles = [artistName && `by ${artistName}`].filter(Boolean)
-
-      return {title, media, subtitle: subtitles.join(' ')}
+    prepare(selection) {
+      return {
+        title: selection.title,
+        subtitle: selection.artistName,
+        media: selection.picture,
+      }
     },
   },
 })
