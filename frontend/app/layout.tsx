@@ -5,8 +5,6 @@ import type {Metadata} from 'next'
 import {Inter} from 'next/font/google'
 import {draftMode} from 'next/headers'
 import {VisualEditing, toPlainText} from 'next-sanity'
-import {Toaster} from 'sonner'
-
 import DraftModeToast from '@/app/components/DraftModeToast'
 import Footer from '@/app/components/Footer'
 import Header from '@/app/components/Header'
@@ -72,6 +70,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
           <Footer />
         </section>
         <SpeedInsights />
+        <DraftModeToast />
       </body>
     </html>
   )
