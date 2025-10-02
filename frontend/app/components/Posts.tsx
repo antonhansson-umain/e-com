@@ -1,13 +1,12 @@
 import Link from 'next/link'
-
 import {sanityFetch} from '@/sanity/lib/live'
 import {morePostsQuery, allPostsQuery} from '@/sanity/lib/queries'
 import {Post as PostType, AllPostsQueryResult} from '@/sanity.types'
 import DateComponent from '@/app/components/Date'
 import OnBoarding from '@/app/components/Onboarding'
-import Avatar from '@/app/components/Avatar'
 import {createDataAttribute} from 'next-sanity'
 
+// card for a single post
 const Post = ({post}: {post: AllPostsQueryResult[number]}) => {
   const {_id, title, slug, excerpt, date, author} = post
 
@@ -32,11 +31,6 @@ const Post = ({post}: {post: AllPostsQueryResult[number]}) => {
         <p className="line-clamp-3 text-sm leading-6 text-gray-600 max-w-[70ch]">{excerpt}</p>
       </div>
       <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
-        {author && author.firstName && author.lastName && (
-          <div className="flex items-center">
-            <Avatar person={author} small={true} />
-          </div>
-        )}
         <time className="text-gray-500 text-xs font-mono" dateTime={date}>
           <DateComponent dateString={date} />
         </time>
@@ -61,7 +55,7 @@ const Posts = ({
       </h2>
     )}
     {subHeading && <p className="mt-2 text-lg leading-8 text-gray-600">{subHeading}</p>}
-    <div className="pt-6 space-y-6">{children}</div>
+    <div className="grid grid-col-1 mt-4 md:grid-cols-3">{children}</div>
   </div>
 )
 
@@ -76,10 +70,10 @@ export const MorePosts = async ({skip, limit}: {skip: string; limit: number}) =>
   }
 
   return (
-    <Posts heading={`Recent Posts (${data?.length})`}>
-      {data?.map((post: any) => (
-        <Post key={post._id} post={post} />
-      ))}
+    <Posts heading={`New in (${data?.length})`}>
+        {data?.map((post: any) => (
+          <Post key={post._id} post={post} />
+        ))}
     </Posts>
   )
 }
@@ -92,10 +86,7 @@ export const AllPosts = async () => {
   }
 
   return (
-    <Posts
-      heading="Recent Posts"
-      subHeading={`${data.length === 1 ? 'This blog post is' : `These ${data.length} blog posts are`} populated from your Sanity Studio.`}
-    >
+    <Posts heading="New in" subHeading="New & coming releases">
       {data.map((post: any) => (
         <Post key={post._id} post={post} />
       ))}
