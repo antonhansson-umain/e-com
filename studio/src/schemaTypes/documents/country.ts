@@ -6,21 +6,37 @@ export const country = defineType({
   title: 'Country',
   icon: EarthGlobeIcon,
   type: 'document',
+  readOnly: true,
   fields: [
     defineField({
-      name: 'countryName',
+      name: 'name',
       title: 'Name',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'flag',
+      title: 'Flag Emoji',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'isoCode',
+      title: 'ISO Code',
+      type: 'string',
+      validation: (rule) => rule.required().min(2).max(2),
+    }),
   ],
   preview: {
     select: {
-      countryName: 'countryName',
+      name: 'name',
+      flag: 'flag',
+      isoCode: 'isoCode',
     },
     prepare(selection) {
       return {
-        title: selection.countryName,
+        title: `${selection.flag} ${selection.name}`,
+        subtitle: selection.isoCode,
       }
     },
   },

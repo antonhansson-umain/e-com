@@ -52,6 +52,13 @@ export default defineConfig({
   projectId,
   dataset,
 
+  document: {
+    newDocumentOptions: (prev, {currentUser}) => {
+      // Remove the "country" type and disable creating new countries
+      return prev.filter((templateItem) => templateItem.templateId !== 'country')
+    },
+  },
+
   plugins: [
     // Presentation tool configuration for Visual Editing
     presentationTool({
