@@ -18,7 +18,6 @@ export const page = defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
-
     defineField({
       name: 'slug',
       title: 'Slug',
@@ -67,7 +66,7 @@ export const page = defineType({
     prepare(selection) {
       return {
         title: selection.name,
-        subtitle: `/${selection.slug.current}`,
+        subtitle: `/${selection?.slug.current ?? ''}`,
       }
     },
   },

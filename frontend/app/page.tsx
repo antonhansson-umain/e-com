@@ -1,39 +1,120 @@
-import {Suspense} from 'react'
-import {AllPosts} from '@/app/components/Posts'
-import {settingsQuery} from '@/sanity/lib/queries'
-import {sanityFetch} from '@/sanity/lib/live'
+// import {Suspense} from 'react'
+// import {AllPosts} from '@/app/components/Posts'
+// import {settingsQuery} from '@/sanity/lib/queries'
+// import {sanityFetch} from '@/sanity/lib/live'
 
-export default async function Page() {
-  const {data: settings} = await sanityFetch({
-    query: settingsQuery,
+// export default async function Page() {
+//   const {data: settings} = await sanityFetch({
+//     query: settingsQuery,
+//   })
+
+//   return (
+//     <>
+//       <div className="relative">
+//         {/* background image */}
+//         <div className="relative bg-[url(/images/tile-1-black.png)] bg-size-[5px]">
+//           <div className="container">
+//             <div className="relative min-h-[40vh] mx-auto max-w-2xl pt-10 xl:pt-20 pb-30 space-y-6 lg:max-w-4xl lg:px-12 flex flex-col items-center justify-center">
+//               <div className="flex flex-col gap-4 items-center">
+//                 <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-black">
+//                   Main header
+//                 </h1>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* recent posts section */}
+//       <div className="border-t border-gray-100 bg-gray-50">
+//         <div className="container">
+//           <aside className="py-12 sm:py-20">
+//             <Suspense>{await AllPosts()}</Suspense>
+//           </aside>
+//         </div>
+//       </div>
+//     </>
+//   )
+// }
+
+import type {Metadata} from 'next'
+import Head from 'next/head'
+
+import PageBuilderPage from '@/app/components/PageBuilder'
+import {sanityFetch} from '@/sanity/lib/live'
+import {getHomePageQuery, pagesSlugs} from '@/sanity/lib/queries'
+import {GetPageQueryResult} from '@/sanity.types'
+import {PageOnboarding} from '@/app/components/Onboarding'
+
+type Props = {
+  params: Promise<{slug: string}>
+}
+
+/**
+ * Generate the static params for the page.
+ * Learn more: https://nextjs.org/docs/app/api-reference/functions/generate-static-params
+ */
+export async function generateStaticParams() {
+  const {data} = await sanityFetch({
+    query: pagesSlugs,
+    // // Use the published perspective in generateStaticParams
+    perspective: 'published',
+    stega: false,
+  })
+  return data
+}
+
+/**
+ * Generate metadata for the page.
+ * Learn more: https://nextjs.org/docs/app/api-reference/functions/generate-metadata#generatemetadata-function
+ */
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params
+  const {data: page} = await sanityFetch({
+    query: getHomePageQuery,
+    params,
+    // Metadata should never contain stega
+    stega: false,
   })
 
-  return (
-    <>
-      <div className="relative">
+  return {
+    title: page?.name,
+    description: page?.heading,
+  } satisfies Metadata
+}
 
-        {/* background image */}
-        <div className="relative bg-[url(/images/tile-1-black.png)] bg-size-[5px]">
-          <div className="container">
-            <div className="relative min-h-[40vh] mx-auto max-w-2xl pt-10 xl:pt-20 pb-30 space-y-6 lg:max-w-4xl lg:px-12 flex flex-col items-center justify-center">
-              <div className="flex flex-col gap-4 items-center">
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-black">Main header
-                </h1>
-              </div>
+export default async function Page(props: Props) {
+  const params = await props.params
+  const [{data: page}] = await Promise.all([sanityFetch({query: getHomePageQuery, params})])
+
+  if (!page?._id) {
+    return (
+      <div className="py-40">
+        <PageOnboarding />
+      </div>
+    )
+  }
+
+  return (
+    <div className="my-12 lg:my-24">
+      <Head>
+        <title>{page.heading}</title>
+      </Head>
+      <div className="">
+        <div className="container">
+          <div className="pb-6 border-b border-gray-100">
+            <div className="max-w-3xl">
+              <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-7xl">
+                {page.heading}
+              </h2>
+              <p className="mt-4 text-base lg:text-lg leading-relaxed text-gray-600 uppercase font-light">
+                {page.subheading}
+              </p>
             </div>
           </div>
         </div>
-
       </div>
-
-      {/* recent posts section */}
-      <div className="border-t border-gray-100 bg-gray-50">
-        <div className="container">
-          <aside className="py-12 sm:py-20">
-            <Suspense>{await AllPosts()}</Suspense>
-          </aside>
-        </div>
-      </div>
-    </>
+      <PageBuilderPage page={page as GetPageQueryResult} />
+    </div>
   )
 }
