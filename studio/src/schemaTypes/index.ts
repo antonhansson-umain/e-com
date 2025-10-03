@@ -1,6 +1,4 @@
-import {person} from './documents/person'
 import {page} from './documents/page'
-import {post} from './documents/post'
 import {album} from './documents/album'
 import {genre} from './documents/genre'
 import {artist} from './documents/artist'
@@ -16,11 +14,8 @@ import {country} from './documents/country'
 export const schemaTypes = [
   // Singletons
   settings,
-  // Demo Documents
+  // Documents
   page,
-  post,
-  person,
-  // Actual Documents
   country,
   genre,
   artist,
