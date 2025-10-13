@@ -84,7 +84,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
       className={` ${GTPressuraTrialMono.className}  ${GTPressuraTrial.className} bg-white text-black`}
     >
       <body>
-        <section className="min-h-screen pt-24">
+        <section className="min-h-screen">
           {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
           <SanityLive onError={handleError} />
           <Header />
