@@ -15,8 +15,8 @@ export default function CartIcon({count = 0, size = 24, className = 'text-black'
       {count > 0 && (
         <span
           className="
-            absolute -top-1 -right-1
-            bg-red-500 text-white text-[0.65rem] leading-none
+            absolute -top-1 -right-0.5
+            bg-red-500 text-white text-[0.7rem] leading-none
             rounded-full px-[0.3rem] py-[0.15rem]
             min-w-[1rem] text-center
           "

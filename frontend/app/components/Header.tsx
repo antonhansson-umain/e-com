@@ -14,17 +14,17 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="fixed z-50 inset-x-0 bg-white/90 flex items-center justify-between p-6 m-8">
+    <header className="fixed z-50 inset-x-0 bg-white flex items-center justify-between p-6 m-8">
       <div className="flex items-center gap-8">
         <nav className="hidden md:block">
           <ul className="flex items-center gap-6 text-xs sm:text-base tracking-tight leading-5">
             <li>
-              <Link href="/products" className="hover:underline">
+              <Link href="/products" className="transition-all duration-200 hover:text-red-300">
                 [ All records ]
               </Link>
             </li>
             <li>
-              <Link href="/products" className="hover:underline">
+              <Link href="/products" className="transition-all duration-200 hover:text-red-300">
                 [ Featured ]
               </Link>
             </li>
@@ -33,7 +33,7 @@ export default function Header() {
 
         <button
           onClick={() => setIsMenuOpen((prev) => !prev)}
-          className="block md:hidden text-black w-[1.5rem] h-[1.5rem]"
+          className="block md:hidden text-black w-[1.5rem] h-[1.5rem] top-[5rem] transition-all duration-200 hover:text-red-300"
           aria-label="Toggle menu"
         >
           {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
@@ -41,7 +41,7 @@ export default function Header() {
       </div>
 
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <Link href="/" className="relative w-[70px] h-[20px] block">
+        <Link href="/" className="relative w-[71px] h-[20px] block">
           <Image
             src="/images/wow_logo.svg"
             alt="WOW records logo"
@@ -51,28 +51,27 @@ export default function Header() {
         </Link>
       </div>
 
-      <div className="flex items-center gap-4">
-
-        <Link href="/products" className="md:hidden hover:underline" aria-label="Cart">
-          <CartIcon className="inline" />
+      <div className="flex items-center gap-4 transition-all duration-200 hover:text-red-300">
+        <Link href="/products" className="md:hidden" aria-label="Cart">
+          <CartIcon className="mx-2 inline" />
         </Link>
 
-        <Link href="/products" className="hidden md:inline-flex hover:underline">
+        <Link href="/products" className="hidden md:inline-flex">
           [ Cart <CartIcon className="mx-2 inline" /> ]
         </Link>
       </div>
 
       {isMenuOpen && (
-        <nav className="absolute top-full left-0 w-full bg-white border-t border-gray-200 md:hidden">
+        <nav className="absolute top-full left-0 w-full bg-white md:hidden top-[1rem]">
           <ul className="flex flex-col items-center py-4 space-y-4 font-mono">
             <li>
-              <Link href="/products">[ All records ]</Link>
+              <Link href="/products" className="transition-all duration-200 hover:text-red-300">[ All records ]</Link>
             </li>
             <li>
-              <Link href="/featured">[ Featured ]</Link>
+              <Link href="/featured" className="transition-all duration-200 hover:text-red-300">[ Featured ]</Link>
             </li>
             <li>
-              <Link href="/cart">[ Cart ]</Link>
+              <Link href="/cart" className="transition-all duration-200 hover:text-red-300">[ Cart ]</Link>
             </li>
           </ul>
         </nav>
