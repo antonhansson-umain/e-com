@@ -64,15 +64,21 @@ export default function Header() {
       {isMenuOpen && (
         <nav className="absolute top-full left-0 w-full bg-white md:hidden top-[1rem]">
           <ul className="flex flex-col items-center py-4 space-y-4 font-mono">
-            <li>
-              <Link href="/products" className="transition-all duration-200 hover:text-red-300">[ All records ]</Link>
-            </li>
-            <li>
-              <Link href="/featured" className="transition-all duration-200 hover:text-red-300">[ Featured ]</Link>
-            </li>
-            <li>
-              <Link href="/cart" className="transition-all duration-200 hover:text-red-300">[ Cart ]</Link>
-            </li>
+            {[
+              {href: '/products', label: '[ All records ]'},
+              {href: '/featured', label: '[ Featured ]'},
+              {href: '/cart', label: '[ Cart ]'},
+            ].map(({href, label}) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="transition-all duration-200 hover:text-red-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
       )}
