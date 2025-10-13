@@ -23,7 +23,7 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
         }),
       S.listItem()
         .title('Home Page')
-        .child(S.document().schemaType('homePage').documentId('homePage'))
+        .child(S.document().schemaType('homePage').documentId('siteHome'))
         .icon(HomeIcon),
       // Settings Singleton in order to view/edit the one particular document for Settings.  Learn more about Singletons: https://www.sanity.io/docs/create-a-link-to-a-single-edit-page-in-your-main-document-type-list
       S.listItem()
