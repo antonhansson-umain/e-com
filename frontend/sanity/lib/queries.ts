@@ -32,7 +32,6 @@ export const getHomePageQuery = defineQuery(`
     _id,
     _type,
     name,
-    slug,
     heading,
     subheading,
     "pageBuilder": pageBuilder[]{
