@@ -1,12 +1,77 @@
+import {TAGLINE} from '@/constants'
+import Link from 'next/link'
+
 export default function Footer() {
+  const columns = [
+    {
+      title: 'Categories',
+      links: [
+        {
+          path: '/shop',
+          label: 'All records',
+        },
+        {
+          path: '/shop/featured',
+          label: 'Featured',
+        },
+      ],
+    },
+    {
+      title: 'Resources',
+      links: [
+        {
+          path: '/orders',
+          label: 'Orders',
+        },
+        {
+          path: '/support',
+          label: 'Support',
+        },
+        {
+          path: '/privacy',
+          label: 'Privacy Policy',
+        },
+      ],
+    },
+    {
+      title: 'Contact',
+      links: [
+        {
+          path: 'mailto:hi@umain-ecom.com',
+          label: 'hi@umain-ecom.com',
+        },
+        {
+          path: 'tel:+46700000000',
+          label: '070-000 00 00',
+        },
+        {
+          path: 'https://maps.app.goo.gl/dEefnU1XW1ETcK6b9',
+          label: 'Grev Turegatan 1, 114 46 Stockholm',
+        },
+      ],
+    },
+  ]
   return (
-    <footer className="bg-gray-100 relative">
-      <div className="container relative">
-        <div className="flex flex-col items-center py-28 lg:flex-row">
-          <h3 className="mb-10 text-center text-4xl font-mono leading-tight tracking-tighter lg:mb-0 lg:w-1/2 lg:pr-4 lg:text-left lg:text-2xl">
-            Footer
-          </h3>
-        </div>
+    <footer className="bg-maroon text-white px-4 sm:px-16 py-8 sm:py-6  grid lg:grid-cols-[2fr_3fr] gap-y-8">
+      <div>
+        <div>WOW</div>
+        <p className="font-mono">{TAGLINE}</p>
+      </div>
+      <div className="grid sm:grid-cols-3 gap-8">
+        {columns.map((column) => (
+          <div key={column.title}>
+            <h3 className="uppercase mb-4">{column.title}</h3>
+            <ul className="space-y-2">
+              {column.links.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.path} className="hover:underline font-mono">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </footer>
   )
