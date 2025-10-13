@@ -1,8 +1,9 @@
 'use client'
 import {useState} from 'react'
-import {Menu, X, ShoppingCart} from 'lucide-react'
+import {Menu, X} from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import CartIcon from './CartIcon'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {sanityFetch} from '@/sanity/lib/live'
 
@@ -51,8 +52,13 @@ export default function Header() {
       </div>
 
       <div className="flex items-center gap-4">
-        <Link href="/products" className="hidden md:block hover:underline">
-          [ Cart <ShoppingCart className="inline" /> ]{/* show text in md, sm icon only */}
+
+        <Link href="/products" className="md:hidden hover:underline" aria-label="Cart">
+          <CartIcon className="inline" />
+        </Link>
+
+        <Link href="/products" className="hidden md:inline-flex hover:underline">
+          [ Cart <CartIcon className="mx-2 inline" /> ]
         </Link>
       </div>
 
