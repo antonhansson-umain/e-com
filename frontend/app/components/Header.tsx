@@ -13,24 +13,44 @@ export default function Header() {
   // })
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
+  const links = [
+    {href: '/products', label: '[ All records ]'},
+    {href: '/featured', label: '[ Featured ]'},
+  ]
+
+  const mobileMenu = isMenuOpen && (
+    <nav className="absolute top-full left-0 w-full bg-white md:hidden top-[1rem]">
+      <ul className="flex flex-col items-center py-4 space-y-4 font-mono">
+        {links.map((link) => (
+          <li key={link.label}>
+            <Link
+              href={link.href}
+              className="transition-all duration-200 hover:text-red-300"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+        <Link href="/cart">[ Cart ]</Link>
+      </ul>
+    </nav>
+  )
+
   return (
     <header className="fixed z-50 inset-x-0 bg-white flex items-center justify-between p-6 m-8">
       <div className="flex items-center gap-8">
         <nav className="hidden md:block">
-          <ul className="flex items-center gap-6 text-xs sm:text-base tracking-tight leading-5">
-            <li>
-              <Link href="/products" className="transition-all duration-200 hover:text-red-300">
-                [ All records ]
-              </Link>
-            </li>
-            <li>
-              <Link href="/products" className="transition-all duration-200 hover:text-red-300">
-                [ Featured ]
-              </Link>
-            </li>
+          <ul className="flex items-center gap-6 text-xs sm:text-base">
+            {links.map((link) => (
+              <li key={link.label}>
+                <Link href={link.href} className="transition-all duration-200 hover:text-red-300">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
-
         <button
           onClick={() => setIsMenuOpen((prev) => !prev)}
           className="block md:hidden text-black w-[1.5rem] h-[1.5rem] top-[5rem] transition-all duration-200 hover:text-red-300"
@@ -39,7 +59,6 @@ export default function Header() {
           {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
         </button>
       </div>
-
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <Link href="/" className="relative w-[71px] h-[20px] block">
           <Image
@@ -50,7 +69,6 @@ export default function Header() {
           />
         </Link>
       </div>
-
       <div className="flex items-center gap-4 transition-all duration-200 hover:text-red-300">
         <Link href="/products" className="md:hidden" aria-label="Cart">
           <CartIcon className="mx-2 inline" />
@@ -60,28 +78,7 @@ export default function Header() {
           [ Cart <CartIcon className="mx-2 inline" /> ]
         </Link>
       </div>
-
-      {isMenuOpen && (
-        <nav className="absolute top-full left-0 w-full bg-white md:hidden top-[1rem]">
-          <ul className="flex flex-col items-center py-4 space-y-4 font-mono">
-            {[
-              {href: '/products', label: '[ All records ]'},
-              {href: '/featured', label: '[ Featured ]'},
-              {href: '/cart', label: '[ Cart ]'},
-            ].map(({href, label}) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className="transition-all duration-200 hover:text-red-300"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
+      {mobileMenu}
     </header>
   )
 }
