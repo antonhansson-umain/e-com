@@ -58,7 +58,7 @@ export default async function Page(props: Props) {
   }
 
   return (
-    <div className="my-12 lg:my-24">
+    <div>
       <Head>
         <title>{homePage.title}</title>
       </Head>
