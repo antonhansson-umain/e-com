@@ -28,8 +28,10 @@
   --color-gray-900: #1b1d27;
   --color-gray-950: #13141b;
 
-  --font-display: 'Inter', 'sans-serif';
-  --font-sans: 'Inter', 'sans-serif';
+  /* --font-display: 'Inter', 'sans-serif'; */
+  /* --font-sans: 'Inter', 'sans-serif'; */
+  --font-mono: 'GT Pressura Mono Trial', monospace;
+  --font-sans: 'GT Pressura Extended Text Trial', serif;
 
   --default-transition-duration: 250ms;
 }

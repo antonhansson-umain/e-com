@@ -1,5 +1,6 @@
 import './globals.css'
 
+import localFont from 'next/font/local'
 import {SpeedInsights} from '@vercel/speed-insights/next'
 import type {Metadata} from 'next'
 import {Inter} from 'next/font/google'
@@ -55,11 +56,33 @@ const inter = Inter({
   display: 'swap',
 })
 
+const GTPressuraTrialMono = localFont({
+  src: '../fonts/GT-Pressura-Mono-Regular-Trial.woff2',
+})
+
+const GTPressuraTrial = localFont({
+  src: [
+    {
+      path: '../fonts/GT-Pressura-Extended-Bold-Trial.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/GT-Pressura-Extended-Text-Trial.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
+})
+
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
 
   return (
-    <html lang="en" className={`${inter.variable} bg-white text-black`}>
+    <html
+      lang="en"
+      className={` ${GTPressuraTrialMono.className}  ${GTPressuraTrial.className} bg-white text-black`}
+    >
       <body>
         <section className="min-h-screen">
           {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
