@@ -30,6 +30,8 @@
 
   --color-maroon: #4e221c;
   --color-cherry: #BE1C16;
+  --color-background: #f2f3ef;
+  --color-butter: #fffae4;
 
   /* --font-display: 'Inter', 'sans-serif'; */
   /* --font-sans: 'Inter', 'sans-serif'; */
@@ -37,4 +39,14 @@
   --font-sans: 'GT Pressura Extended Text Trial', serif;
 
   --default-transition-duration: 250ms;
+}
+
+body {
+  background-image: url('/images/texture.webp');
+  background-repeat: repeat;
+  background-size: 256px;
+}
+
+button {
+  cursor: pointer;
 }

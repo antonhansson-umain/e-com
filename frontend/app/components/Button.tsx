@@ -11,7 +11,7 @@ export default function Button({children, className, size, variant, ...props}: B
   return (
     <button
       className={cn(
-        'font-mono text-white rounded-lg transition-colors cursor-pointer',
+        'font-mono text-white rounded-lg transition-colors cursor-pointer uppercase',
         {
           'h-14 min-w-48 px-4': size === 'md' || !size,
           'h-10 min-w-32': size === 'sm',
