@@ -4,13 +4,8 @@ import {Menu, X} from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import CartIcon from './CartIcon'
-import {settingsQuery} from '@/sanity/lib/queries'
-import {sanityFetch} from '@/sanity/lib/live'
 
 export default function Header() {
-  // const {data: settings} = await sanityFetch({
-  //   query: settingsQuery,
-  // })
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const links = [
@@ -19,7 +14,7 @@ export default function Header() {
   ]
 
   const mobileMenu = isMenuOpen && (
-    <nav className="absolute top-full left-0 w-full bg-white md:hidden top-[1rem]">
+    <nav className="absolute left-0 w-full bg-white sm:hidden top-full">
       <ul className="flex flex-col items-center py-4 space-y-4 font-mono">
         {links.map((link) => (
           <li key={link.label}>
@@ -38,9 +33,9 @@ export default function Header() {
   )
 
   return (
-    <header className="fixed z-50 inset-x-0 bg-white flex items-center justify-between p-6 m-8">
+    <header className="fixed z-50 inset-x-0 top-0 bg-white flex items-center justify-between m-4 sm:m-8 h-16 px-4">
       <div className="flex items-center gap-8">
-        <nav className="hidden md:block">
+        <nav className="hidden sm:block">
           <ul className="flex items-center gap-6 text-xs sm:text-base">
             {links.map((link) => (
               <li key={link.label}>
@@ -53,7 +48,7 @@ export default function Header() {
         </nav>
         <button
           onClick={() => setIsMenuOpen((prev) => !prev)}
-          className="block md:hidden text-black w-[1.5rem] h-[1.5rem] top-[5rem] transition-all duration-200 hover:text-red-300"
+          className="block sm:hidden text-black w-[1.5rem] h-[1.5rem] top-[5rem] transition-all duration-200 hover:text-red-300"
           aria-label="Toggle menu"
         >
           {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
@@ -70,11 +65,11 @@ export default function Header() {
         </Link>
       </div>
       <div className="flex items-center gap-4 transition-all duration-200 hover:text-red-300">
-        <Link href="/products" className="md:hidden" aria-label="Cart">
+        <Link href="/products" className="sm:hidden" aria-label="Cart">
           <CartIcon className="mx-2 inline" />
         </Link>
 
-        <Link href="/products" className="hidden md:inline-flex">
+        <Link href="/products" className="hidden sm:inline-flex">
           [ Cart <CartIcon className="mx-2 inline" /> ]
         </Link>
       </div>
