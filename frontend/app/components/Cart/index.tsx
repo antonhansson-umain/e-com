@@ -1,10 +1,26 @@
 'use client'
 
+import {useSideBarContext} from '@/contexts/sidebar-context'
+import Button from '../Button'
 import SideBarFooter from '../SideBar/SideBarFooter'
 
 export default function index() {
-  const isEmpty = false
-  if (isEmpty) return <>Empty state</>
+  const {setIsOpen} = useSideBarContext()
+  const isEmpty = true
+  if (isEmpty)
+    return (
+      <div className="p-4 flex flex-col items-center gap-4 my-auto">
+        <p>Your cart is empty</p>
+        <Button
+          variant="secondary"
+          href="/shop"
+          className="w-full"
+          onClick={() => setIsOpen(false)}
+        >
+          Continue Shopping
+        </Button>
+      </div>
+    )
   return (
     <>
       <ul className="p-4">

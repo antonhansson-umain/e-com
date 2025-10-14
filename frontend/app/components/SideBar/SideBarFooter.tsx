@@ -17,7 +17,6 @@ export default function SideBarFooter({
   const {setIsOpen} = useSideBarContext()
 
   const handleClick = () => {
-    console.log('click')
     setIsOpen(false)
     action?.()
   }
