@@ -95,4 +95,13 @@ export const pagesSlugs = defineQuery(`
 `)
 
 export const getAlbumsQuery = defineQuery(`
-  *[_type == 'album']`)
+   *[_type == 'album']{
+    _id,
+    description,
+    genres,
+    title,
+    "artist": artist->artistName,
+    price,
+    "image": picture.asset->url
+  }
+  `)
