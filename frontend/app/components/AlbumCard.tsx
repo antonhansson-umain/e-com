@@ -15,7 +15,7 @@ export default function AlbumCard({album}: AlbumCardProps) {
         className="flex bg-white w-full items-center justify-center p-8"
       >
         <div className="h-[16rem] w-[16rem] relative">
-          <Image src={album.image} alt={album.title} fill />
+          <Image src={album.image} alt={album.title} fill sizes="16rem"/>
         </div>
       </Link>
       <footer className="flex items-start justify-between mt-4 --font-sans text-xl">
