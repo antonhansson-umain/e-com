@@ -1,4 +1,4 @@
-import type {Album} from './AlbumCard'
+import type { Album } from '@/types/types'
 import AlbumCard from './AlbumCard'
 
 interface AlbumGridProps {

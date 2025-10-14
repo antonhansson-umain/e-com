@@ -1,15 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import {Plus} from 'lucide-react'
-
-// move to types file
-export interface Album {
-  _id: string
-  title: string
-  artist: string
-  image: string
-  price: number
-}
+import type { Album } from '@/types/types'
 
 interface AlbumCardProps {
   album: Album
