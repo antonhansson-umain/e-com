@@ -81,7 +81,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   return (
     <html
       lang="en"
-      className={` ${GTPressuraTrialMono.className}  ${GTPressuraTrial.className} bg-white text-black`}
+      className={` ${GTPressuraTrialMono.className}  ${GTPressuraTrial.className} bg-background text-black`}
     >
       <body>
         <section className="min-h-screen pt-24 sm:pt-32 relative">
