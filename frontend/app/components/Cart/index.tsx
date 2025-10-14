@@ -4,7 +4,7 @@ import {useSideBarContext} from '@/contexts/sidebar-context'
 import Button from '../Button'
 import SideBarFooter from '../SideBar/SideBarFooter'
 
-export default function index() {
+export default function Cart() {
   const {setIsOpen} = useSideBarContext()
   const isEmpty = true // TODO: implement actual cart logic
   if (isEmpty)
