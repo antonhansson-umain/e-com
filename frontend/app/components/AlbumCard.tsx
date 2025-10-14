@@ -3,10 +3,10 @@ import {Plus} from 'lucide-react'
 
 // move to types file
 export interface Album {
-  _id: string,
-  title: string,
-  artist: string,
-  image: string,
+  _id: string
+  title: string
+  artist: string
+  image: string
   price: number
 }
 
@@ -16,22 +16,27 @@ interface AlbumCardProps {
 
 export default function AlbumCard({album}: AlbumCardProps) {
   return (
-    <div>
+    <article>
       <div className="flex bg-blue-100 w-full items-center justify-center p-8">
         <div className="h-[16rem] w-[16rem] relative">
-            <Image src={album.image} alt={album.title} fill/>
+          <Image src={album.image} alt={album.title} fill />
         </div>
       </div>
-      <div className="flex items-start justify-between --font-sans text-xl">
+      <footer className="flex items-start justify-between mt-4 --font-sans text-xl">
         <div>
           <p className="uppercase">{album.title}</p>
           <p className="capitalize">{album.artist}</p>
-          <p>{album.price}€</p>
+          <p>{album.price}
+            <span className="ml-1 text-base align-baseline text-[90%]">€</span>
+          </p>
         </div>
-        <button>
-          <Plus size={30}/>
+        <button
+          aria-label={`Add ${album.title} by ${album.artist} to cart`}
+          className="p-2 hover:text-blue-600 transition"
+        >
+          <Plus size={30} />
         </button>
-      </div>
-    </div>
+      </footer>
+    </article>
   )
 }
