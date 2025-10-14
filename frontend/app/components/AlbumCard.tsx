@@ -11,7 +11,7 @@ export default function AlbumCard({album}: AlbumCardProps) {
   return (
     <article>
       <Link
-        href={`/shop/${album.title}`}
+        href={`/shop/${album._id}`}
         className="flex bg-white w-full items-center justify-center p-8"
       >
         <div className="h-[16rem] w-[16rem] relative">
