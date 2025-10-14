@@ -1,8 +1,9 @@
 import type { Album } from '@/types/types'
 import AlbumCard from './AlbumCard'
+import { GetAlbumsQueryResult } from '@/sanity.types'
 
 interface AlbumGridProps {
-  albums: Album[]
+  albums: GetAlbumsQueryResult
 }
 
 export default function AlbumGrid({albums}: AlbumGridProps) {
