@@ -1,12 +1,13 @@
 import type {Metadata} from 'next'
 import Head from 'next/head'
-
+import {getAlbumsQuery} from '@/sanity/lib/queries'
 import PageBuilderPage from '@/app/components/PageBuilder'
 import {sanityFetch} from '@/sanity/lib/live'
 import {getHomePageQuery, pagesSlugs} from '@/sanity/lib/queries'
 import {GetHomePageQueryResult, GetPageQueryResult} from '@/sanity.types'
 import {PageOnboarding} from '@/app/components/Onboarding'
 import {STORE_NAME} from '@/constants'
+import SelectedProductsSection from './components/SelectedProductsSection'
 
 type Props = {
   params: Promise<{slug: string}>
@@ -48,6 +49,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function Page(props: Props) {
   const params = await props.params
   const [{data: homePage}] = await Promise.all([sanityFetch({query: getHomePageQuery, params})])
+  const {data: albums} = await sanityFetch({query: getAlbumsQuery, params: {}})
 
   if (!homePage?._id) {
     return (
@@ -74,6 +76,7 @@ export default async function Page(props: Props) {
               </p>
             </div>
           </div>
+        <SelectedProductsSection albums={albums}/>
         </div>
       </div>
       {/* <PageBuilderPage page={homePage as GetHomePageQueryResult} /> */}
