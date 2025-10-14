@@ -30,6 +30,7 @@
 
   --color-maroon: #4e221c;
   --color-background: #f2f3ef;
+  --color-butter: #fffae4;
 
   /* --font-display: 'Inter', 'sans-serif'; */
   /* --font-sans: 'Inter', 'sans-serif'; */
@@ -43,4 +44,8 @@ body {
   background-image: url('/images/texture.webp');
   background-repeat: repeat;
   background-size: 256px;
+}
+
+button {
+  cursor: pointer;
 }
