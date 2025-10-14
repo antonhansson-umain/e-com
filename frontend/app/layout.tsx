@@ -13,6 +13,8 @@ import {sanityFetch, SanityLive} from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {resolveOpenGraphImage} from '@/sanity/lib/utils'
 import {handleError} from './client-utils'
+import SideBar from './components/SideBar'
+import SideBarFooter from './components/SideBar/SideBarFooter'
 
 /**
  * Generate metadata for the page.
