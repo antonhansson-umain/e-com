@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import {Plus} from 'lucide-react'
 
 // move to types file
@@ -17,22 +18,26 @@ interface AlbumCardProps {
 export default function AlbumCard({album}: AlbumCardProps) {
   return (
     <article>
-      <div className="flex bg-blue-100 w-full items-center justify-center p-8">
+      <Link
+        href={`/shop/${album.title}`}
+        className="flex bg-white w-full items-center justify-center p-8"
+      >
         <div className="h-[16rem] w-[16rem] relative">
           <Image src={album.image} alt={album.title} fill />
         </div>
-      </div>
+      </Link>
       <footer className="flex items-start justify-between mt-4 --font-sans text-xl">
         <div>
           <p className="uppercase">{album.title}</p>
           <p className="capitalize">{album.artist}</p>
-          <p>{album.price}
+          <p>
+            {album.price}
             <span className="ml-1 text-base align-baseline text-[90%]">€</span>
           </p>
         </div>
         <button
           aria-label={`Add ${album.title} by ${album.artist} to cart`}
-          className="p-2 hover:text-blue-600 transition"
+          className="p-2 hover:text-(--color-cherry) transition cursor-pointer"
         >
           <Plus size={30} />
         </button>
