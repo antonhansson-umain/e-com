@@ -33,7 +33,7 @@ export default function Header() {
   )
 
   return (
-    <header className="fixed z-50 inset-x-0 top-0 bg-white flex items-center justify-between m-4 sm:m-8 h-16 px-4">
+    <header className="fixed z-50 inset-x-0 top-0 bg-white flex items-center justify-between m-4 sm:m-8 h-16 px-4 sm:px-16">
       <div className="flex items-center gap-8">
         <nav className="hidden sm:block">
           <ul className="flex items-center gap-6 text-xs sm:text-base">

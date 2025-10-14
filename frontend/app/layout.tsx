@@ -77,11 +77,11 @@ export default async function RootLayout({children}: {children: React.ReactNode}
       className={` ${GTPressuraTrialMono.className}  ${GTPressuraTrial.className} bg-background text-black`}
     >
       <body>
-        <section className="min-h-screen pt-24 sm:pt-32 relative">
+        <section className="min-h-screen pt-24 sm:pt-32 relative flex flex-col">
           {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
           <SanityLive onError={handleError} />
           <Header />
-          <main className="">{children}</main>
+          <main className="flex-grow">{children}</main>
           <Footer />
         </section>
         <SpeedInsights />
