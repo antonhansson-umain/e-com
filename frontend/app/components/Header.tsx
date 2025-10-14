@@ -18,8 +18,8 @@ export default function Header() {
   }
 
   const links = [
-    {href: '/products', label: '[ All records ]'},
-    {href: '/featured', label: '[ Featured ]'},
+    {href: '/shop', label: '[ All records ]'},
+    {href: '/shop/featured', label: '[ Featured ]'},
   ]
 
   const mobileMenu = isMenuOpen && (
@@ -36,7 +36,6 @@ export default function Header() {
             </Link>
           </li>
         ))}
-        <Link href="/cart">[ Cart ]</Link>
       </ul>
     </nav>
   )
