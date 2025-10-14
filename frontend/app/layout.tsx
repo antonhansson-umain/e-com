@@ -1,6 +1,7 @@
 import './globals.css'
 
 import localFont from 'next/font/local'
+import Cart from '@/app/components/Cart'
 import {SpeedInsights} from '@vercel/speed-insights/next'
 import type {Metadata} from 'next'
 import {draftMode} from 'next/headers'
@@ -15,6 +16,7 @@ import {resolveOpenGraphImage} from '@/sanity/lib/utils'
 import {handleError} from './client-utils'
 import SideBar from './components/SideBar'
 import SideBarFooter from './components/SideBar/SideBarFooter'
+import SideBarContextProvider from '@/contexts/sidebar-context'
 
 /**
  * Generate metadata for the page.
@@ -79,15 +81,17 @@ export default async function RootLayout({children}: {children: React.ReactNode}
       className={` ${GTPressuraTrialMono.className}  ${GTPressuraTrial.className} bg-background text-black`}
     >
       <body>
-        <section className="min-h-screen pt-24 sm:pt-32 relative flex flex-col">
-          {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
-          <SanityLive onError={handleError} />
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-        </section>
-        <SpeedInsights />
-        <DraftModeToast />
+        <SideBarContextProvider>
+          <section className="min-h-screen pt-24 sm:pt-32 relative flex flex-col">
+            {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
+            <SanityLive onError={handleError} />
+            <Header />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </section>
+          <SpeedInsights />
+          <DraftModeToast />
+        </SideBarContextProvider>
       </body>
     </html>
   )
