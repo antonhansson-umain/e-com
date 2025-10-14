@@ -6,7 +6,7 @@ import SideBarFooter from '../SideBar/SideBarFooter'
 
 export default function index() {
   const {setIsOpen} = useSideBarContext()
-  const isEmpty = true
+  const isEmpty = true // TODO: implement actual cart logic
   if (isEmpty)
     return (
       <div className="p-4 flex flex-col items-center gap-4 my-auto">
