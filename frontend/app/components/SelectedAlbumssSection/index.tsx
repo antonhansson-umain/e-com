@@ -8,20 +8,18 @@ interface SelectedAlbumsSectionProps {
 
 export default function SelectedAlbumsSection({albums}: SelectedAlbumsSectionProps) {
   return (
-    <section className="grid md:grid-cols-1 lg:grid-cols-3 gap-[1rem] md:gap-[2rem]">
+    <section className="grid grid-cols-1 lg:grid-cols-3 lg:max-w-none py-8 gap-[1rem] md:gap-[2rem]">
       <SelectedAlbumsIntro
         sectionTitle="New in"
         sectionDescription="Discover the latest releases"
         label="Shop all"
       />
 
-      {/* map the list of 2 first albums for homepage, use props for other queries (will be displayed depending on filters) */}
       {albums.slice(0, 2).map((album) => (
-        <div key={album._id}>
+        <div key={album._id} className="mt-0 lg:mt-14">
           <AlbumCard album={album} />
         </div>
       ))}
     </section>
   )
 }
-

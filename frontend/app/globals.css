@@ -28,13 +28,11 @@
   --color-gray-900: #1b1d27;
   --color-gray-950: #13141b;
 
-  --color-maroon: #331B20;
-  --color-cherry: #BE1C16;
+  --color-maroon: #331b20;
+  --color-cherry: #be1c16;
   --color-background: #f2f3ef;
   --color-butter: #fffae4;
 
-  /* --font-display: 'Inter', 'sans-serif'; */
-  /* --font-sans: 'Inter', 'sans-serif'; */
   --font-mono: 'GT Pressura Mono Trial', monospace;
   --font-sans: 'GT Pressura Extended Text Trial', serif;
 
@@ -49,4 +47,38 @@ body {
 
 button {
   cursor: pointer;
+}
+
+@layer components {
+  .font-bg-header {
+    font-size: 4rem;
+    text-transform: uppercase;
+  }
+
+  .font-md-header {
+    font-size: 3rem;
+    text-transform: uppercase;
+  }
+
+  .font-sm-header {
+    font-size: 2rem;
+    text-transform: uppercase;
+  }
+
+  .font-album-header {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .font-button {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .font-text {
+    font-family: var(--font-mono);
+    font-size: 1.25rem;
+  }
 }

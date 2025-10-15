@@ -9,7 +9,7 @@ interface AlbumCardProps {
 
 export default function AlbumCard({album}: AlbumCardProps) {
   return (
-    <article>
+    <article className="min-w-[20rem] w-full">
       <Link
         href={`/shop/${album._id}`}
         className="flex bg-white w-full items-center justify-center p-8"
@@ -18,9 +18,9 @@ export default function AlbumCard({album}: AlbumCardProps) {
           <Image src={album.image ?? "/images/placeholder.png"} alt={album.title} fill sizes="16rem"/>
         </div>
       </Link>
-      <footer className="flex items-start justify-between mt-4 --font-sans text-xl">
+      <footer className="flex items-start justify-between mt-4 font-album-header">
         <div>
-          <p className="uppercase">{album.title}</p>
+          <p>{album.title}</p>
           <p className="capitalize">{album.artist}</p>
           <p>
             {album.price}
@@ -29,7 +29,7 @@ export default function AlbumCard({album}: AlbumCardProps) {
         </div>
         <button
           aria-label={`Add ${album.title} by ${album.artist} to cart`}
-          className="p-2 hover:text-(--color-cherry) transition cursor-pointer"
+          className="p-2 hover:text-(--color-cherry) transition"
         >
           <Plus size={30} />
         </button>
