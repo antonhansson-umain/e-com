@@ -695,6 +695,49 @@ export type GetAlbumsQueryResult = Array<{
   price: number
   image: string | null
 }>
+// Variable: getAlbumById
+// Query: *[_type == 'album' && _id == $id][0]
+export type GetAlbumByIdResult = {
+  _id: string
+  _type: 'album'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  description?: BlockContent
+  price: number
+  picture: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  releaseDate: string
+  size: number
+  articleNumber: number
+  stockQuantity: number
+  artist: {
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    [internalGroqTypeReferenceTo]?: 'artist'
+  }
+  genres: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'genre'
+  }>
+} | null
 
 // Query TypeMap
 import '@sanity/client'
@@ -706,5 +749,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n   *[_type == \'album\']{\n    _id,\n    description,\n    genres,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumsQueryResult
+    "\n   *[_type == 'album' && _id == $id][0]": GetAlbumByIdResult
   }
 }

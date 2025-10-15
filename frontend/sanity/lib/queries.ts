@@ -105,3 +105,6 @@ export const getAlbumsQuery = defineQuery(`
     "image": picture.asset->url
   }
   `)
+
+export const getAlbumById = defineQuery(`
+   *[_type == 'album' && _id == $id][0]`)
