@@ -16,6 +16,9 @@ export default function Cart() {
   const [albums, setAlbums] = useState<UICart>({})
 
   const cart = useCartStore((state) => state.cart)
+  const calculateSubtotal = () => {
+    return Object.values(albums).reduce((acc, album) => acc + album.price * album.quantity, 0)
+  }
 
   useEffect(() => {
     const loadAlbums = async () => {
@@ -45,7 +48,7 @@ export default function Cart() {
       <SideBarFooter actionLabel="CHECKOUT" href="/checkout">
         <div className="flex justify-between items-center">
           <div className="text-xl">SUBTOTAL</div>
-          <div className="text-3xl">$</div>
+          <div className="text-3xl">${calculateSubtotal()}</div>
         </div>
       </SideBarFooter>
     </>
