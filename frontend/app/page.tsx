@@ -7,7 +7,7 @@ import {getHomePageQuery, pagesSlugs} from '@/sanity/lib/queries'
 import {GetHomePageQueryResult, GetPageQueryResult} from '@/sanity.types'
 import {PageOnboarding} from '@/app/components/Onboarding'
 import {STORE_NAME} from '@/constants'
-import SelectedAlbumsSection from './components/SelectedAlbumssSection'
+import SelectedAlbumsSection from './components/SelectedAlbumsSection'
 
 type Props = {
   params: Promise<{slug: string}>
