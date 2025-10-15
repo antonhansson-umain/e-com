@@ -19,10 +19,10 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const classNames = cn(
-    'font-mono text-white rounded-lg transition-colors cursor-pointer uppercase',
+    'font-mono text-white rounded-lg transition-colors cursor-pointer uppercase place-items-center',
     {
       'h-14 min-w-48 px-4': size === 'md' || !size,
-      'h-10 min-w-32': size === 'sm',
+      'h-10 px-2': size === 'sm',
     },
     {
       'bg-red-500 hover:bg-red-600': variant === 'primary' || !variant,
@@ -43,7 +43,7 @@ export default function Button({
       </Link>
     )
   return (
-    <button className={classNames} {...props}>
+    <button className={classNames} onClick={onClick} {...props}>
       {children}
     </button>
   )

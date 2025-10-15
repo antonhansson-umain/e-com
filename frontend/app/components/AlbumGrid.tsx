@@ -1,6 +1,6 @@
-import type { Album } from '@/types/types'
+import type {Album} from '@/types/types'
 import AlbumCard from './AlbumCard'
-import { GetAlbumsQueryResult } from '@/sanity.types'
+import {GetAlbumsQueryResult} from '@/sanity.types'
 
 interface AlbumGridProps {
   albums: GetAlbumsQueryResult

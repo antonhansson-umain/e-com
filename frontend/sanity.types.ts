@@ -695,6 +695,23 @@ export type GetAlbumsQueryResult = Array<{
   price: number
   image: string | null
 }>
+// Variable: getAlbumById
+// Query: *[_type == 'album' && _id == $id][0]{    _id,    description,    genres,    title,    "artist": artist->artistName,    price,    "image": picture.asset->url   }
+export type GetAlbumByIdResult = {
+  _id: string
+  description: BlockContent | null
+  genres: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'genre'
+  }>
+  title: string
+  artist: string
+  price: number
+  image: string | null
+} | null
 
 // Query TypeMap
 import '@sanity/client'
@@ -706,5 +723,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n   *[_type == \'album\']{\n    _id,\n    description,\n    genres,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumsQueryResult
+    '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    genres,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n   }': GetAlbumByIdResult
   }
 }
