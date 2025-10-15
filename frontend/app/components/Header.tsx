@@ -4,13 +4,22 @@ import {Menu, X} from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import CartIcon from './CartIcon'
+import Cart from './Cart'
+import {useSideBarContext} from '@/contexts/sidebar-context'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const {setIsOpen, setContent, setTitle} = useSideBarContext()
+
+  const handleCartOpen = () => {
+    setIsOpen(true)
+    setTitle('Cart')
+    setContent(<Cart />)
+  }
 
   const links = [
-    {href: '/products', label: '[ All records ]'},
-    {href: '/featured', label: '[ Featured ]'},
+    {href: '/shop', label: '[ All records ]'},
+    {href: '/shop/featured', label: '[ Featured ]'},
   ]
 
   const mobileMenu = isMenuOpen && (
@@ -27,7 +36,6 @@ export default function Header() {
             </Link>
           </li>
         ))}
-        <Link href="/cart">[ Cart ]</Link>
       </ul>
     </nav>
   )
@@ -67,12 +75,12 @@ export default function Header() {
           />
         </Link>
         <div className="flex items-center justify-end gap-4 transition-all duration-200 hover:text-red-300">
-          <Link href="/products" className="sm:hidden" aria-label="Cart">
+          <button className="sm:hidden" aria-label="Cart" onClick={handleCartOpen}>
             <CartIcon className="mx-2 inline" />
-          </Link>
-          <Link href="/products" className="hidden sm:inline-flex">
+          </button>
+          <button className="hidden sm:inline-flex" onClick={handleCartOpen}>
             [ Cart <CartIcon className="mx-2 inline" /> ]
-          </Link>
+          </button>
         </div>
         {mobileMenu}
       </div>
