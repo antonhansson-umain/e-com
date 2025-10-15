@@ -2,7 +2,7 @@
 
 import {Album} from '@/types/types'
 import {Plus} from 'lucide-react'
-import {useCartStore} from '../../hooks/useCart'
+import {useCartStore} from '../../../hooks/useCartStore'
 
 export default function AddToCartButton({
   ariaLabel,

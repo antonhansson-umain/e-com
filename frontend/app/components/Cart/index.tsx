@@ -1,7 +1,7 @@
 'use client'
 
 import SideBarFooter from '../SideBar/SideBarFooter'
-import {useCartStore} from '@/hooks/useCart'
+import {useCartStore} from '@/hooks/useCartStore'
 import {getAlbum} from '@/actions/getAlbum'
 import {useEffect, useState} from 'react'
 import EmptyCart from './empty'

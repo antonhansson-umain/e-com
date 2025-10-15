@@ -3,7 +3,7 @@
 import {Minus, Plus} from 'lucide-react'
 import Button from './Button'
 import {cn} from '@/lib/cn'
-import {useCartStore} from '@/hooks/useCart'
+import {useCartStore} from '@/hooks/useCartStore'
 
 export default function QuantityCounter({
   albumId,

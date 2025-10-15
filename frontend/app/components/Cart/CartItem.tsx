@@ -4,7 +4,7 @@ import QuantityCounter from '../QuantityCounter'
 import {X} from 'lucide-react'
 import Link from 'next/link'
 import {useSideBarContext} from '@/contexts/sidebar-context'
-import {useCartStore} from '@/hooks/useCart'
+import {useCartStore} from '@/hooks/useCartStore'
 
 export default function CartItem({
   album,
