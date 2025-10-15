@@ -93,6 +93,16 @@ export type BlockContent = Array<{
   _key: string
 }>
 
+export type Tag = {
+  _id: string
+  _type: 'tag'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  tagName?: string
+  tagDescription?: string
+}
+
 export type Album = {
   _id: string
   _type: 'album'
@@ -132,6 +142,13 @@ export type Album = {
     _weak?: boolean
     _key: string
     [internalGroqTypeReferenceTo]?: 'genre'
+  }>
+  tags?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'tag'
   }>
 }
 
@@ -191,6 +208,27 @@ export type HomePage = {
   _rev: string
   title: string
   description: string
+  hero?: HeroSection
+}
+
+export type HeroSection = {
+  _type: 'heroSection'
+  title?: string
+  description?: string
+  ctaText?: string
+  ctaLink?: string
+  backgroundImage?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
 }
 
 export type Settings = {
@@ -520,11 +558,13 @@ export type AllSanitySchemaTypes =
   | Link
   | InfoSection
   | BlockContent
+  | Tag
   | Album
   | Artist
   | Genre
   | Country
   | HomePage
+  | HeroSection
   | Settings
   | Page
   | SanityAssistInstructionTask
@@ -601,17 +641,6 @@ export type SettingsQueryResult = {
     metadataBase?: string
     _type: 'image'
   }
-} | null
-// Variable: getHomePageQuery
-// Query: *[_type == "homePage"][0]
-export type GetHomePageQueryResult = {
-  _id: string
-  _type: 'homePage'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  title: string
-  description: string
 } | null
 // Variable: getPageQuery
 // Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    // "post": post->slug.current  }      },      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    // "post": post->slug.current  }          }        }      },    },  }
@@ -695,16 +724,30 @@ export type GetAlbumsQueryResult = Array<{
   price: number
   image: string | null
 }>
+// Variable: getHomePageQuery
+// Query: *[_type == 'homePage'][0]{   _id,   title,   description,   hero{     title,     description,     ctaText,     ctaLink,     "backgroundImage": backgroundImage.asset->url     }   }
+export type GetHomePageQueryResult = {
+  _id: string
+  title: string
+  description: string
+  hero: {
+    title: string | null
+    description: string | null
+    ctaText: string | null
+    ctaLink: string | null
+    backgroundImage: string | null
+  } | null
+} | null
 
 // Query TypeMap
 import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult
-    '*[_type == "homePage"][0]': GetHomePageQueryResult
     '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n   *[_type == \'album\']{\n    _id,\n    description,\n    genres,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumsQueryResult
+    '\n   *[_type == \'homePage\'][0]{\n   _id,\n   title,\n   description,\n   hero{\n     title,\n     description,\n     ctaText,\n     ctaLink,\n     "backgroundImage": backgroundImage.asset->url\n     }\n   }\n  ': GetHomePageQueryResult
   }
 }

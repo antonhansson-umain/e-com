@@ -30,7 +30,7 @@ const linkFields = /* groq */ `
 // export const getHomePageQuery = defineQuery(`
 //   *[_type == 'homePage'][0]
 // `)
-export const getHomePageQuery = defineQuery(`*[_type == "homePage"][0]`)
+// export const getHomePageQuery = defineQuery(`*[_type == "homePage"][0]`)
 
 // {
 //     _id,
@@ -105,3 +105,19 @@ export const getAlbumsQuery = defineQuery(`
     "image": picture.asset->url
   }
   `)
+
+export const getHomePageQuery = defineQuery(`
+   *[_type == 'homePage'][0]{
+   _id,
+   title,
+   description,
+   hero{
+     title,
+     description,
+     ctaText,
+     ctaLink,
+     "backgroundImage": backgroundImage.asset->url
+     }
+   }
+  `)
+
