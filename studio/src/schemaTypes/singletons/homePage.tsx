@@ -80,6 +80,11 @@ export const homePage = defineType({
       initialValue: 'Wows or Woes.',
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'hero',
+      title: 'Hero section',
+      type: 'heroSection',
+    }),
   ],
   preview: {
     prepare() {
