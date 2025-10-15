@@ -9,34 +9,33 @@ interface AlbumCardProps {
 
 export default function AlbumCard({album}: AlbumCardProps) {
   return (
-    <article className="min-w-[20rem] w-full">
-      <Link
-        href={`/shop/${album._id}`}
-        className="flex bg-white w-full items-center justify-center p-8"
-      >
-        <div className="h-[16rem] w-[16rem] relative">
-          <Image
-            src={album.image ?? '/images/placeholder.png'}
-            alt={album.title}
-            fill
-            sizes="16rem"
+    <div className="sm:hover:bg-white/40 transition-colors sm:p-2">
+      <article className="w-full grid grid-cols-[1fr_auto] grid-rows-[1fr_auto]">
+        <Link
+          href={`/shop/${album._id}`}
+          className="grid grid-cols-subgrid grid-rows-subgrid row-span-2 col-span-2 col-start-1 row-start-1 "
+        >
+          <div className="p-8 w-full bg-white place-items-center col-span-2 row-start-1 row-span-1 mb-4">
+            <Image
+              src={album.image ?? '/images/placeholder.png'}
+              alt={album.title}
+              width={256}
+              height={256}
+            />
+          </div>
+          <footer className="col-start-1 row-start-2 row-span-2 pb-4">
+            <h3 className="uppercase">{album.title}</h3>
+            <div className="capitalize">{album.artist}</div>
+            <div className="row-start-3">${album.price}</div>
+          </footer>
+        </Link>
+        <div className="col-start-2 row-start-2 row-span-1">
+          <AddToCartButton
+            albumId={album._id}
+            ariaLabel={`Add ${album.title} by ${album.artist} to cart`}
           />
         </div>
-      </Link>
-      <footer className="flex items-start justify-between mt-4 font-album-header">
-        <div>
-          <p>{album.title}</p>
-          <p className="capitalize">{album.artist}</p>
-          <p>
-            {album.price}
-            <span className="ml-1 text-base align-baseline text-[90%]">€</span>
-          </p>
-        </div>
-        <AddToCartButton
-          albumId={album._id}
-          ariaLabel={`Add ${album.title} by ${album.artist} to cart`}
-        />
-      </footer>
-    </article>
+      </article>
+    </div>
   )
 }
