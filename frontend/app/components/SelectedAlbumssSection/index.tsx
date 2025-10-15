@@ -1,15 +1,15 @@
 import AlbumCard from '../AlbumCard'
-import SelectedProductsIntro from './SelectedProductsIntro'
+import SelectedAlbumsIntro from './SelectedAlbumsIntro'
 import {GetAlbumsQueryResult} from '@/sanity.types'
 
-interface SelectedProductsSectionProps {
+interface SelectedAlbumsSectionProps {
   albums: GetAlbumsQueryResult
 }
 
-export default function SelectedProductsSection({albums}: SelectedProductsSectionProps) {
+export default function SelectedAlbumsSection({albums}: SelectedAlbumsSectionProps) {
   return (
     <section className="grid md:grid-cols-1 lg:grid-cols-3 gap-[1rem] md:gap-[2rem]">
-      <SelectedProductsIntro
+      <SelectedAlbumsIntro
         sectionTitle="New in"
         sectionDescription="Discover the latest releases"
         label="Shop all"
@@ -25,4 +25,3 @@ export default function SelectedProductsSection({albums}: SelectedProductsSectio
   )
 }
 
-// slice(0, 2)

@@ -7,7 +7,7 @@ import {getHomePageQuery, pagesSlugs} from '@/sanity/lib/queries'
 import {GetHomePageQueryResult, GetPageQueryResult} from '@/sanity.types'
 import {PageOnboarding} from '@/app/components/Onboarding'
 import {STORE_NAME} from '@/constants'
-import SelectedProductsSection from './components/SelectedProductsSection'
+import SelectedAlbumsSection from './components/SelectedAlbumssSection'
 
 type Props = {
   params: Promise<{slug: string}>
@@ -76,7 +76,7 @@ export default async function Page(props: Props) {
               </p>
             </div>
           </div>
-        <SelectedProductsSection albums={albums}/>
+        <SelectedAlbumsSection albums={albums}/>
         </div>
       </div>
       {/* <PageBuilderPage page={homePage as GetHomePageQueryResult} /> */}
