@@ -107,4 +107,12 @@ export const getAlbumsQuery = defineQuery(`
   `)
 
 export const getAlbumById = defineQuery(`
-   *[_type == 'album' && _id == $id][0]`)
+   *[_type == 'album' && _id == $id][0]{
+    _id,
+    description,
+    genres,
+    title,
+    "artist": artist->artistName,
+    price,
+    "image": picture.asset->url
+   }`)

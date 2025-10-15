@@ -1,4 +1,3 @@
-// store/useCartStore.ts
 import {Album} from '@/types/types'
 import {create} from 'zustand'
 import {persist, createJSONStorage} from 'zustand/middleware'
@@ -7,6 +6,9 @@ type Cart = Record<Album['_id'], number>
 
 interface CartState {
   cart: Cart
+  getItemQty: (id: Album['_id']) => number
+  incrementItemInCart: (id: Album['_id']) => void
+  decrementItemInCart: (id: Album['_id']) => void
   addToCart: (id: Album['_id'], quantity?: number) => void
   removeFromCart: (id: string) => void
   clearCart: () => void
@@ -14,8 +16,26 @@ interface CartState {
 
 export const useCartStore = create<CartState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       cart: {},
+      getItemQty: (id) => {
+        const cart = get().cart
+        return cart[id]
+      },
+      incrementItemInCart: (id) =>
+        set((state) => ({
+          cart: {
+            ...state.cart,
+            [id]: state.cart[id] + 1,
+          },
+        })),
+      decrementItemInCart: (id) =>
+        set((state) => ({
+          cart: {
+            ...state.cart,
+            [id]: state.cart[id] - 1 < 1 ? 1 : state.cart[id] - 1, // prevent going to less than 1
+          },
+        })),
       addToCart: (id, quantity = 1) =>
         set((state) => ({
           cart: {

@@ -6,17 +6,16 @@ import {getAlbum} from '@/actions/getAlbum'
 import {useEffect, useState} from 'react'
 import EmptyCart from './empty'
 import {GetAlbumByIdResult} from '@/sanity.types'
+import CartItem from './CartItem'
 
 type UICart = {
   [id: string]: GetAlbumByIdResult & {quantity: number}
 }
 
 export default function Cart() {
-  const cart = useCartStore((state) => state.cart)
-  const isEmpty = Object.keys(cart).length <= 0
-  if (isEmpty) return <EmptyCart />
-
   const [albums, setAlbums] = useState<UICart>({})
+
+  const cart = useCartStore((state) => state.cart)
 
   useEffect(() => {
     const loadAlbums = async () => {
@@ -31,17 +30,18 @@ export default function Cart() {
     loadAlbums()
   }, [cart])
 
+  const isEmpty = Object.keys(cart).length <= 0
+  if (isEmpty) return <EmptyCart />
+
   return (
     <>
-      {Object.keys(albums).length <= 0 ? (
-        <>Loading..</>
-      ) : (
-        <ul className="p-4">
-          {Object.entries(albums).map(([id, album]) => (
-            <li key={id}>{album.title}</li>
-          ))}
-        </ul>
-      )}
+      <ul className="flex flex-col px-2 py-4 overflow-scroll">
+        {Object.keys(albums).length <= 0 ? (
+          <>Loading...</>
+        ) : (
+          Object.entries(albums).map(([id, album]) => <CartItem key={id} album={album} />)
+        )}
+      </ul>
       <SideBarFooter actionLabel="CHECKOUT" href="/checkout">
         <div className="flex justify-between items-center">
           <div className="text-xl">SUBTOTAL</div>
