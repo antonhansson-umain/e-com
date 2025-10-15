@@ -84,6 +84,7 @@ export const homePage = defineType({
       name: 'hero',
       title: 'Hero section',
       type: 'heroSection',
+      validation: (Rule) => Rule.required()
     }),
   ],
   preview: {

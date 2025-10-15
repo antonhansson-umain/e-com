@@ -208,7 +208,7 @@ export type HomePage = {
   _rev: string
   title: string
   description: string
-  hero?: HeroSection
+  hero: HeroSection
 }
 
 export type HeroSection = {
@@ -736,7 +736,7 @@ export type GetHomePageQueryResult = {
     ctaText: string | null
     ctaLink: string | null
     backgroundImage: string | null
-  } | null
+  }
 } | null
 
 // Query TypeMap

@@ -1272,7 +1272,7 @@
           "type": "inline",
           "name": "heroSection"
         },
-        "optional": true
+        "optional": false
       }
     }
   },
