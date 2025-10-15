@@ -9,7 +9,7 @@ interface AlbumCardProps {
 
 export default function AlbumCard({album}: AlbumCardProps) {
   return (
-    <article>
+    <article className="min-w-[20rem] w-full">
       <Link
         href={`/shop/${album._id}`}
         className="flex bg-white w-full items-center justify-center p-8"
@@ -23,9 +23,9 @@ export default function AlbumCard({album}: AlbumCardProps) {
           />
         </div>
       </Link>
-      <footer className="flex items-start justify-between mt-4 --font-sans text-xl">
+      <footer className="flex items-start justify-between mt-4 font-album-header">
         <div>
-          <p className="uppercase">{album.title}</p>
+          <p>{album.title}</p>
           <p className="capitalize">{album.artist}</p>
           <p>
             {album.price}
