@@ -15,7 +15,7 @@ export default function AddToCartButton({
   return (
     <button
       aria-label={ariaLabel}
-      className="p-2 hover:text-(--color-cherry) transition cursor-pointer"
+      className=" hover:text-(--color-cherry) transition cursor-pointer"
       onClick={() => addToCart(albumId)}
     >
       <Plus size={30} />

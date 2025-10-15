@@ -1,25 +1,34 @@
-import AlbumCard from '../AlbumCard'
-import SelectedAlbumsIntro from './SelectedAlbumsIntro'
+import AlbumGrid from '../AlbumGrid'
+import Button from '../Button'
 import {GetAlbumsQueryResult} from '@/sanity.types'
 
 interface SelectedAlbumsSectionProps {
   albums: GetAlbumsQueryResult
+  title: string
+  description: string
+  cta: string
 }
 
-export default function SelectedAlbumsSection({albums}: SelectedAlbumsSectionProps) {
+export default function SelectedAlbumsSection({
+  albums,
+  title,
+  description,
+  cta,
+}: SelectedAlbumsSectionProps) {
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-3 lg:max-w-none py-8 gap-[1rem] md:gap-[2rem]">
-      <SelectedAlbumsIntro
-        sectionTitle="New in"
-        sectionDescription="Discover the latest releases"
-        label="Shop all"
-      />
-
-      {albums.slice(0, 2).map((album) => (
-        <div key={album._id} className="mt-0 lg:mt-14">
-          <AlbumCard album={album} />
-        </div>
-      ))}
+    <section>
+      <h2 className="font-sm-header">{title}</h2>
+      <div className="grid md:grid-cols-[auto_1fr] gap-8">
+        <aside className="flex flex-col gap-4">
+          <p className="font-text">{description}</p>
+          <div className="h-full flex items-center">
+            <Button variant="primary" className="">
+              {cta}
+            </Button>
+          </div>
+        </aside>
+        <AlbumGrid albums={albums.slice(0, 2)} className="sm:grid-cols-2" />
+      </div>
     </section>
   )
 }

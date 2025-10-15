@@ -64,21 +64,16 @@ export default async function Page(props: Props) {
       <Head>
         <title>{homePage.title}</title>
       </Head>
-      <div className="">
-        <div className="container">
-          <div className="pb-6 border-b border-gray-100">
-            <div className="max-w-3xl">
-              <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-7xl">
-                {homePage.title}
-              </h2>
-              <p className="mt-4 text-base lg:text-lg leading-relaxed text-gray-600 uppercase font-light">
-                {homePage.description}
-              </p>
-            </div>
-          </div>
-        <SelectedAlbumsSection albums={albums}/>
-        </div>
-      </div>
+      <h1 className="text-6xl font-bold">{homePage.title}</h1>
+      <p className="mt-4 text-base lg:text-lg leading-relaxed text-gray-600 uppercase font-light">
+        {homePage.description}
+      </p>
+      <SelectedAlbumsSection
+        albums={albums}
+        title="New in"
+        cta="Shop All"
+        description="Discover the latest releases."
+      />
       {/* <PageBuilderPage page={homePage as GetHomePageQueryResult} /> */}
     </div>
   )
