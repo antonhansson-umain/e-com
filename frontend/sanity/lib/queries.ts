@@ -77,6 +77,13 @@ export const getPageQuery = defineQuery(`
           }
         }
       },
+      _type == "heroSection" => {
+        ...,
+        "backgroundImage": {
+          "url": backgroundImage.asset->url,
+          "metadata": backgroundImage.asset->metadata
+        }
+      },
     },
   }
 `)
@@ -106,18 +113,4 @@ export const getAlbumsQuery = defineQuery(`
   }
   `)
 
-export const getHomePageQuery = defineQuery(`
-   *[_type == 'homePage'][0]{
-   _id,
-   title,
-   description,
-   hero{
-     title,
-     description,
-     ctaText,
-     ctaLink,
-     "backgroundImage": backgroundImage.asset->url
-     }
-   }
-  `)
 
