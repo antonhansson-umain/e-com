@@ -25,7 +25,7 @@ export default function Button({
       'h-10 px-2': size === 'sm',
     },
     {
-      'bg-red-500 hover:bg-red-600': variant === 'primary' || !variant,
+      'bg-cherry hover:bg-cherry-700': variant === 'primary' || !variant,
       'bg-neutral-800 hover:bg-black': variant === 'secondary',
       'bg-transparent border-2 border-black/25 text-black hover:border-black':
         variant === 'tertiary',
