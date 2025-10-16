@@ -1,12 +1,12 @@
 import {defineField, defineType} from 'sanity'
 import {Dock} from 'lucide-react'
-// add preview componentlater
 
 export const heroSection = defineType({
   name: 'heroSection',
   title: 'Hero Section',
   type: 'object',
   icon: Dock,
+  // add validation, all fields required
   fields: [
     defineField({
       name: 'title',
@@ -37,14 +37,13 @@ export const heroSection = defineType({
   preview: {
     select: {
       title: 'title',
-      media: 'backgroundImage',
     },
-    prepare({title, media}) {
+    prepare(selection) {
+      const {title} = selection
       return {
-        title: `Hero: ${title || '—'}`,
-        media,
+        title: title,
+        subtitle: 'Hero Section',
       }
     },
-    // add preview component later
   },
 })
