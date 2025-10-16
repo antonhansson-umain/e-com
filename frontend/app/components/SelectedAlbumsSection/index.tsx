@@ -7,6 +7,7 @@ interface SelectedAlbumsSectionProps {
   title: string
   description: string
   cta: string
+  ctaHref: string
 }
 
 export default function SelectedAlbumsSection({
@@ -14,6 +15,7 @@ export default function SelectedAlbumsSection({
   title,
   description,
   cta,
+  ctaHref,
 }: SelectedAlbumsSectionProps) {
   return (
     <section>
@@ -22,7 +24,7 @@ export default function SelectedAlbumsSection({
         <aside className="flex flex-col gap-4">
           <p className="font-text">{description}</p>
           <div className="h-full flex items-center">
-            <Button variant="primary" className="">
+            <Button variant="primary" href={ctaHref}>
               {cta}
             </Button>
           </div>

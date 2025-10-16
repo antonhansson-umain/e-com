@@ -72,6 +72,7 @@ export default async function Page(props: Props) {
         albums={albums}
         title="New in"
         cta="Shop All"
+        ctaHref="/shop"
         description="Discover the latest releases."
       />
       {/* <PageBuilderPage page={homePage as GetHomePageQueryResult} /> */}
