@@ -44,6 +44,12 @@ export const page = defineType({
       title: 'Page builder',
       type: 'array',
       of: [{type: 'callToAction'}, {type: 'infoSection'}, {type: 'heroSection'}],
+      // validation: (Rule) =>
+      //   Rule.custom((blocks) => {
+      //     const heroCount = (blocks || []).filter((b) => b._type === "heroSection").length;
+      //     return heroCount > 1 ? "You can only have one Hero Section" : true;
+      //   }
+      //   ),
       options: {
         insertMenu: {
           // Configure the "Add Item" menu to display a thumbnail preview of the content type. https://www.sanity.io/docs/array-type#efb1fe03459d

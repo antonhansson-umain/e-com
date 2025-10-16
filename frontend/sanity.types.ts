@@ -297,6 +297,9 @@ export type Page = {
     | ({
         _key: string
       } & InfoSection)
+    | ({
+        _key: string
+      } & HeroSection)
   >
 }
 
@@ -665,6 +668,26 @@ export type GetPageQueryResult = {
           page: string | null
           openInNewTab?: boolean
         } | null
+      }
+    | {
+        _key: string
+        _type: 'heroSection'
+        title?: string
+        description?: string
+        ctaText?: string
+        ctaLink?: string
+        backgroundImage?: {
+          asset?: {
+            _ref: string
+            _type: 'reference'
+            _weak?: boolean
+            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+          }
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          _type: 'image'
+        }
       }
     | {
         _key: string
