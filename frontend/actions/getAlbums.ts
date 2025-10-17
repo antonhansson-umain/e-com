@@ -2,19 +2,14 @@
 
 import {sanityFetch} from '@/sanity/lib/live'
 import {getAlbumsQuery} from '@/sanity/lib/queries'
+import {Filters} from '@/types/Filters'
 
-type Filters = {
-  genres?: string[]
-  countries?: string[]
-}
-
-export async function getAlbums(filters?: Filters) {
+export async function getAlbums(filters: Filters) {
   const genres = filters?.genres ?? null
   const countries = filters?.countries ?? null
   const {data: albums} = await sanityFetch({
     query: getAlbumsQuery,
     params: {genres, countries},
   })
-  console.log(albums)
   return albums
 }

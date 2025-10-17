@@ -1,18 +1,9 @@
-'use client'
-
-import {Plus, X} from 'lucide-react'
+import {X} from 'lucide-react'
 import Button from './Button'
-import {useSideBarContext} from '@/contexts/sidebar-context'
-import FilterSidebar from './Filter/FilterSidebar'
+import NewFilterButton from './Filter/NewFilterButton'
+import {Filters} from '@/types/Filters'
 
-// {filters}: {filters: string[]}
-export default function Filter() {
-  const {setIsOpen, setContent, setTitle} = useSideBarContext()
-  const openFiltersSidebar = () => {
-    setContent(<FilterSidebar />)
-    setTitle('Filters')
-    setIsOpen(true)
-  }
+export default function Filter({filters}: {filters: Filters}) {
   return (
     <div className="grid sm:grid-cols-[1fr_auto] gap-4">
       <div className="grid gap-4">
@@ -22,14 +13,7 @@ export default function Filter() {
             <span>Test</span>
             <X />
           </Button>
-          <Button
-            variant="tertiary"
-            size="sm"
-            className="flex gap-2 justify-center items-center"
-            onClick={openFiltersSidebar}
-          >
-            <Plus />
-          </Button>
+          <NewFilterButton />
         </div>
       </div>
       <div className="grid gap-4">

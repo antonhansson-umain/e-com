@@ -1,21 +1,26 @@
-import {useState} from 'react'
+// import {useState} from 'react'
 import SideBarFooter from '../SideBar/SideBarFooter'
+import {getGenres} from '@/actions/getGenres'
 
-export default function FilterSidebar() {
-  const [filters, setFilters] = useState()
+export default async function FilterSidebar() {
+  //   const [filters, setFilters] = useState()
   const buildPath = () => {
     return '/'
   }
+  const filterOptions = {
+    genres: await getGenres(),
+  }
+
   return (
     <>
-      <ul className="flex flex-col px-2 py-4 overflow-scroll">
-        {/* {Object.keys(albums).length <= 0 ? (
-          <>Loading...</>
-        ) : (
-          Object.entries(albums).map(([id, album]) => <CartItem key={id} album={album} />)
-        )} */}
-      </ul>
-      <SideBarFooter actionLabel="apply" href={buildPath()}></SideBarFooter>
+      {/* <ul className="flex flex-col px-2 py-4 overflow-scroll">
+        {filterOptions.genres.map((genre) => (
+          <li>{genre.genreName}</li>
+        ))}
+      </ul> */}
+      <form>
+        <SideBarFooter actionLabel="apply"></SideBarFooter>
+      </form>
     </>
   )
 }

@@ -129,3 +129,9 @@ export const getAlbumById = defineQuery(`
     price,
     "image": picture.asset->url
    }`)
+
+export const getGenresQuery = defineQuery(`
+*[_type == 'genre']{
+genreName
+}
+`)
