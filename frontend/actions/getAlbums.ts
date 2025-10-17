@@ -17,5 +17,6 @@ export async function getAlbums(filters?: Filters) {
     query: getAlbumsQuery,
     params: {genres, countries, decades},
   })
+  console.log(albums)
   return albums
 }

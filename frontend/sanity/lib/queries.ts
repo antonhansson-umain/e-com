@@ -95,16 +95,17 @@ export const pagesSlugs = defineQuery(`
   {"slug": slug.current}
 `)
 
-// defined($genres) => count(genres[genreName in $genres]) > 0,
-// !defined($genres) => true,
-// defined($genres) => count([@ in $genres]) > 0,
-
 export const getAlbumsQuery = defineQuery(`
   *[
     _type == "album" &&
     select(
       !defined($genres) => true,
       defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,
+      true
+    ) &&
+    select(
+      !defined($countries) => true,
+      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,
       true
     )
   ]{

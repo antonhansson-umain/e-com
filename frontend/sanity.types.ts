@@ -679,7 +679,7 @@ export type PagesSlugsResult = Array<{
   slug: string
 }>
 // Variable: getAlbumsQuery
-// Query: *[    _type == "album" &&    select(      defined($genres) => *[count(genres[genreName in $genres]) > 0],      true    )  ]{    _id,    title,    description,    "artist": artist->artistName,    genres[]->{genreName},    price,    "image": picture.asset->url  }
+// Query: *[    _type == "album" &&    select(      !defined($genres) => true,      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,      true    ) &&    select(      !defined($countries) => true,      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,      true    )  ]{    _id,    title,    description,    "artist": artist->artistName,    genres[]->{genreName},    price,    "image": picture.asset->url  }
 export type GetAlbumsQueryResult = Array<{
   _id: string
   title: string
@@ -712,7 +712,7 @@ declare module '@sanity/client' {
     '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
-    '\n  *[\n    _type == "album" &&\n    select(\n      defined($genres) => *[count(genres[genreName in $genres]) > 0],\n      true\n    )\n  ]{\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    price,\n    "image": picture.asset->url\n  }\n': GetAlbumsQueryResult
+    '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    )\n  ]{\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    price,\n    "image": picture.asset->url\n  }\n': GetAlbumsQueryResult
     '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    "genres": genres[]->genreName,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n   }': GetAlbumByIdResult
   }
 }
