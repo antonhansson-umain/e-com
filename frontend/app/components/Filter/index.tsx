@@ -1,18 +1,20 @@
 import {X} from 'lucide-react'
-import Button from './Button'
-// import NewFilterButton from './Filter/NewFilterButton'
+import Button from '../Button'
+import NewFilterButton from './NewFilterButton'
 import {Filters} from '@/types/Filters'
+import FilterSidebar from './FilterSidebar'
 
 export default function Filter({filters}: {filters: Filters}) {
+  // const filterOptions =
   return (
     <div className="grid sm:grid-cols-[1fr_auto] gap-4">
       <div className="grid gap-4">
         <span className="uppercase text-3xl">Filters</span>
         <div className="flex flex-wrap gap-4">
           {Object.entries(filters).map(([k, v]) => {
-            return v?.map((s) => (
+            return v?.map((s, index) => (
               <Button
-                key={k + s}
+                key={k + s + index}
                 variant="tertiary"
                 size="sm"
                 className="flex gap-2 justify-center items-center"
@@ -23,7 +25,7 @@ export default function Filter({filters}: {filters: Filters}) {
               </Button>
             ))
           })}
-          {/* <NewFilterButton /> */}
+          <NewFilterButton />
         </div>
       </div>
       <div className="grid gap-4">

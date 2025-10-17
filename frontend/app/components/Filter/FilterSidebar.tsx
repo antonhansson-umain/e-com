@@ -1,26 +1,28 @@
-// import {useState} from 'react'
 import SideBarFooter from '../SideBar/SideBarFooter'
-import {getGenres} from '@/actions/getGenres'
 
-export default async function FilterSidebar() {
-  //   const [filters, setFilters] = useState()
-  const buildPath = () => {
-    return '/'
-  }
-  const filterOptions = {
-    genres: await getGenres(),
-  }
-
+export default function FilterSidebar() {
   return (
-    <>
-      {/* <ul className="flex flex-col px-2 py-4 overflow-scroll">
-        {filterOptions.genres.map((genre) => (
-          <li>{genre.genreName}</li>
-        ))}
-      </ul> */}
-      <form>
-        <SideBarFooter actionLabel="apply"></SideBarFooter>
-      </form>
-    </>
+    <form className="h-full flex flex-col justify-between text-xl overflow-y-scroll">
+      <div className="p-4 flex flex-col gap-4 overflow-y-scroll">
+        <fieldset
+          id="genres"
+          name="genres"
+          className="border-b border-black/25 py-4 flex flex-col gap-2"
+        >
+          <legend className="font-mono uppercase">Genres</legend>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="genre-Emo"
+              value={'Emo'}
+              name="genres"
+              className="w-6 aspect-square"
+            />
+            <label htmlFor="genre-Emo">Emo</label>
+          </div>
+        </fieldset>
+      </div>
+      <SideBarFooter actionLabel="apply" />
+    </form>
   )
 }
