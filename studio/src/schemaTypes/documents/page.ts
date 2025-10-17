@@ -43,7 +43,7 @@ export const page = defineType({
       name: 'pageBuilder',
       title: 'Page builder',
       type: 'array',
-      of: [{type: 'callToAction'}, {type: 'infoSection'}, {type: 'heroSection'}],
+      of: [{type: 'callToAction'}, {type: 'infoSection'}, {type: 'heroSection'}, {type: 'selectedAlbumsSection'}],
       validation: (Rule) =>
         Rule.custom((blocks) => {
           const heroCount = (blocks || []).filter((b) => b._type === 'heroSection').length

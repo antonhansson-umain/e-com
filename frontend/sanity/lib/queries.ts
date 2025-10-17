@@ -84,6 +84,9 @@ export const getPageQuery = defineQuery(`
           "metadata": backgroundImage.asset->metadata
         }
       },
+      _type == "selectedAlbumsSection" => {
+        ...,
+      },
     },
   }
 `)

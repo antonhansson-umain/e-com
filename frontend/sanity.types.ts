@@ -211,6 +211,13 @@ export type HomePage = {
   hero: HeroSection
 }
 
+export type SelectedAlbumsSection = {
+  _type: 'selectedAlbumsSection'
+  sectionTitle?: string
+  sectionDescription?: string
+  ctaText?: string
+}
+
 export type HeroSection = {
   _type: 'heroSection'
   title?: string
@@ -300,6 +307,9 @@ export type Page = {
     | ({
         _key: string
       } & HeroSection)
+    | ({
+        _key: string
+      } & SelectedAlbumsSection)
   >
 }
 
@@ -567,6 +577,7 @@ export type AllSanitySchemaTypes =
   | Genre
   | Country
   | HomePage
+  | SelectedAlbumsSection
   | HeroSection
   | Settings
   | Page
@@ -646,7 +657,7 @@ export type SettingsQueryResult = {
   }
 } | null
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    // "post": post->slug.current  }      },      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    // "post": post->slug.current  }          }        }      },    },  }
+// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    // "post": post->slug.current  }      },      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    // "post": post->slug.current  }          }        }      },      _type == "heroSection" => {        ...,        "backgroundImage": {          "url": backgroundImage.asset->url,          "metadata": backgroundImage.asset->metadata        }      },      _type == "selectedAlbumsSection" => {        ...,      },    },  }
 export type GetPageQueryResult = {
   _id: string
   _type: 'page'
@@ -676,17 +687,9 @@ export type GetPageQueryResult = {
         description?: string
         ctaText?: string
         ctaLink?: string
-        backgroundImage?: {
-          asset?: {
-            _ref: string
-            _type: 'reference'
-            _weak?: boolean
-            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-          }
-          media?: unknown
-          hotspot?: SanityImageHotspot
-          crop?: SanityImageCrop
-          _type: 'image'
+        backgroundImage: {
+          url: string | null
+          metadata: SanityImageMetadata | null
         }
       }
     | {
@@ -715,6 +718,13 @@ export type GetPageQueryResult = {
           _type: 'block'
           _key: string
         }> | null
+      }
+    | {
+        _key: string
+        _type: 'selectedAlbumsSection'
+        sectionTitle?: string
+        sectionDescription?: string
+        ctaText?: string
       }
   > | null
 } | null
@@ -747,30 +757,15 @@ export type GetAlbumsQueryResult = Array<{
   price: number
   image: string | null
 }>
-// Variable: getHomePageQuery
-// Query: *[_type == 'homePage'][0]{   _id,   title,   description,   hero{     title,     description,     ctaText,     ctaLink,     "backgroundImage": backgroundImage.asset->url     }   }
-export type GetHomePageQueryResult = {
-  _id: string
-  title: string
-  description: string
-  hero: {
-    title: string | null
-    description: string | null
-    ctaText: string | null
-    ctaLink: string | null
-    backgroundImage: string | null
-  }
-} | null
 
 // Query TypeMap
 import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult
-    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult
+    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n          }\n        }\n      },\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetPageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n   *[_type == \'album\']{\n    _id,\n    description,\n    genres,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumsQueryResult
-    '\n   *[_type == \'homePage\'][0]{\n   _id,\n   title,\n   description,\n   hero{\n     title,\n     description,\n     ctaText,\n     ctaLink,\n     "backgroundImage": backgroundImage.asset->url\n     }\n   }\n  ': GetHomePageQueryResult
   }
 }

@@ -15,11 +15,11 @@ export default function SelectedAlbumsSection({albums}: SelectedAlbumsSectionPro
         label="Shop all"
       />
 
-      {albums.slice(0, 2).map((album) => (
+      {/* {albums.slice(0, 2).map((album) => (
         <div key={album._id} className="mt-0 lg:mt-14">
           <AlbumCard album={album} />
         </div>
-      ))}
+      ))} */}
     </section>
   )
 }
