@@ -5,7 +5,6 @@ import PageBuilderPage from '@/app/components/PageBuilder'
 import {sanityFetch} from '@/sanity/lib/live'
 import {PageOnboarding} from '@/app/components/Onboarding'
 import {STORE_NAME} from '@/constants'
-import SelectedAlbumsSection from './components/SelectedAlbumsSection'
 
 type Props = {
   params: Promise<{slug: string}>
@@ -34,7 +33,6 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const {data: homePage} = await sanityFetch({
     query: getHomePageQuery,
     params: {slug: 'home'},
-    // Metadata should never contain stega
     stega: false,
   })
 
@@ -70,6 +68,7 @@ export default async function Page(props: Props) {
         <title>{homePage.heading}</title>
       </Head>
       <div className="">
+        <PageBuilderPage page={homePage}/>
         <div className="container">
           <div className="pb-6 border-b border-gray-100">
             <div className="max-w-3xl">
@@ -81,11 +80,8 @@ export default async function Page(props: Props) {
               </p>
             </div>
           </div>
-          
-        <SelectedAlbumsSection albums={albums}/>
         </div>
       </div>
-      <PageBuilderPage page={homePage}/>
     </div>
   )
 }

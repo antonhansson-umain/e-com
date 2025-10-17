@@ -307,12 +307,6 @@ export type Page = {
   pageBuilder?: Array<
     | ({
         _key: string
-      } & CallToAction)
-    | ({
-        _key: string
-      } & InfoSection)
-    | ({
-        _key: string
       } & HeroSection)
     | ({
         _key: string
@@ -675,14 +669,6 @@ export type GetPageQueryResult = {
   pageBuilder: Array<
     | {
         _key: string
-        _type: 'callToAction'
-        heading: string
-        text?: string
-        buttonText?: string
-        link?: Link
-      }
-    | {
-        _key: string
         _type: 'heroSection'
         title?: string
         description?: string
@@ -692,38 +678,6 @@ export type GetPageQueryResult = {
           url: string | null
           metadata: SanityImageMetadata | null
         }
-      }
-    | {
-        _key: string
-        _type: 'infoSection'
-        heading?: string
-        subheading?: string
-        content?: Array<{
-          children?: Array<{
-            marks?: Array<string>
-            text?: string
-            _type: 'span'
-            _key: string
-          }>
-          style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
-          listItem?: 'bullet' | 'number'
-          markDefs?: Array<{
-            linkType?: 'href' | 'page' | 'post'
-            href?: string
-            page?: {
-              _ref: string
-              _type: 'reference'
-              _weak?: boolean
-              [internalGroqTypeReferenceTo]?: 'page'
-            }
-            openInNewTab?: boolean
-            _type: 'link'
-            _key: string
-          }>
-          level?: number
-          _type: 'block'
-          _key: string
-        }>
       }
     | {
         _key: string
