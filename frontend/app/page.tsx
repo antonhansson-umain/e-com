@@ -1,6 +1,6 @@
 import type {Metadata} from 'next'
 import Head from 'next/head'
-import {getAlbumsQuery, getPageQuery, pagesSlugs} from '@/sanity/lib/queries'
+import {getAlbumsQuery, getHomePageQuery, pagesSlugs} from '@/sanity/lib/queries'
 import PageBuilderPage from '@/app/components/PageBuilder'
 import {sanityFetch} from '@/sanity/lib/live'
 import {PageOnboarding} from '@/app/components/Onboarding'
@@ -32,8 +32,8 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
   const {data: homePage} = await sanityFetch({
-    query: getPageQuery,
-    params,
+    query: getHomePageQuery,
+    params: {slug: 'home'},
     // Metadata should never contain stega
     stega: false,
   })
@@ -46,12 +46,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function Page(props: Props) {
   const params = await props.params
+  
 
  const [
     { data: homePage },
     { data: albums },
   ] = await Promise.all([
-    sanityFetch({ query: getPageQuery, params }),
+    sanityFetch({ query: getHomePageQuery, params }),
     sanityFetch({ query: getAlbumsQuery }),
   ]);
 

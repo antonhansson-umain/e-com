@@ -208,7 +208,14 @@ export type HomePage = {
   _rev: string
   title: string
   description: string
-  hero: HeroSection
+  pageBuilder?: Array<
+    | ({
+        _key: string
+      } & HeroSection)
+    | ({
+        _key: string
+      } & SelectedAlbumsSection)
+  >
 }
 
 export type SelectedAlbumsSection = {
@@ -657,7 +664,7 @@ export type SettingsQueryResult = {
   }
 } | null
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    // "post": post->slug.current  }      },      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    // "post": post->slug.current  }          }        }      },      _type == "heroSection" => {        ...,        "backgroundImage": {          "url": backgroundImage.asset->url,          "metadata": backgroundImage.asset->metadata        }      },      _type == "selectedAlbumsSection" => {        ...,      },    },  }
+// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "heroSection" => {        ...,        "backgroundImage": {          "url": backgroundImage.asset->url,          "metadata": backgroundImage.asset->metadata        }      },      _type == "selectedAlbumsSection" => {        ...,      },    },  }
 export type GetPageQueryResult = {
   _id: string
   _type: 'page'
@@ -672,13 +679,7 @@ export type GetPageQueryResult = {
         heading: string
         text?: string
         buttonText?: string
-        link: {
-          _type: 'link'
-          linkType?: 'href' | 'page'
-          href?: string
-          page: string | null
-          openInNewTab?: boolean
-        } | null
+        link?: Link
       }
     | {
         _key: string
@@ -697,7 +698,7 @@ export type GetPageQueryResult = {
         _type: 'infoSection'
         heading?: string
         subheading?: string
-        content: Array<{
+        content?: Array<{
           children?: Array<{
             marks?: Array<string>
             text?: string
@@ -706,18 +707,54 @@ export type GetPageQueryResult = {
           }>
           style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
           listItem?: 'bullet' | 'number'
-          markDefs: Array<{
+          markDefs?: Array<{
             linkType?: 'href' | 'page' | 'post'
             href?: string
-            page: string | null
+            page?: {
+              _ref: string
+              _type: 'reference'
+              _weak?: boolean
+              [internalGroqTypeReferenceTo]?: 'page'
+            }
             openInNewTab?: boolean
             _type: 'link'
             _key: string
-          }> | null
+          }>
           level?: number
           _type: 'block'
           _key: string
-        }> | null
+        }>
+      }
+    | {
+        _key: string
+        _type: 'selectedAlbumsSection'
+        sectionTitle?: string
+        sectionDescription?: string
+        ctaText?: string
+      }
+  > | null
+} | null
+// Variable: getHomePageQuery
+// Query: *[_type == 'homePage'][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "heroSection" => {        ...,        "backgroundImage": {          "url": backgroundImage.asset->url,          "metadata": backgroundImage.asset->metadata        }      },      _type == "selectedAlbumsSection" => {        ...,      },    },  }
+export type GetHomePageQueryResult = {
+  _id: string
+  _type: 'homePage'
+  name: null
+  slug: null
+  heading: null
+  subheading: null
+  pageBuilder: Array<
+    | {
+        _key: string
+        _type: 'heroSection'
+        title?: string
+        description?: string
+        ctaText?: string
+        ctaLink?: string
+        backgroundImage: {
+          url: string | null
+          metadata: SanityImageMetadata | null
+        }
       }
     | {
         _key: string
@@ -763,7 +800,8 @@ import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult
-    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n          }\n        }\n      },\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetPageQueryResult
+    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetPageQueryResult
+    '\n  *[_type == \'homePage\'][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetHomePageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n   *[_type == \'album\']{\n    _id,\n    description,\n    genres,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumsQueryResult

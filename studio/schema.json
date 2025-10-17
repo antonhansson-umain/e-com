@@ -1266,13 +1266,47 @@
         },
         "optional": false
       },
-      "hero": {
+      "pageBuilder": {
         "type": "objectAttribute",
         "value": {
-          "type": "inline",
-          "name": "heroSection"
+          "type": "array",
+          "of": {
+            "type": "union",
+            "of": [
+              {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rest": {
+                  "type": "inline",
+                  "name": "heroSection"
+                }
+              },
+              {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rest": {
+                  "type": "inline",
+                  "name": "selectedAlbumsSection"
+                }
+              }
+            ]
+          }
         },
-        "optional": false
+        "optional": true
       }
     }
   },

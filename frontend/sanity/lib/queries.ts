@@ -65,18 +65,30 @@ export const getPageQuery = defineQuery(`
     subheading,
     "pageBuilder": pageBuilder[]{
       ...,
-      _type == "callToAction" => {
-        ${linkFields},
-      },
-      _type == "infoSection" => {
-        content[]{
-          ...,
-          markDefs[]{
-            ...,
-            ${linkReference}
-          }
+      _type == "heroSection" => {
+        ...,
+        "backgroundImage": {
+          "url": backgroundImage.asset->url,
+          "metadata": backgroundImage.asset->metadata
         }
       },
+      _type == "selectedAlbumsSection" => {
+        ...,
+      },
+    },
+  }
+`)
+
+export const getHomePageQuery = defineQuery(`
+  *[_type == 'homePage'][0]{
+    _id,
+    _type,
+    name,
+    slug,
+    heading,
+    subheading,
+    "pageBuilder": pageBuilder[]{
+      ...,
       _type == "heroSection" => {
         ...,
         "backgroundImage": {
