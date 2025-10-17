@@ -7,6 +7,8 @@ import {getPageQuery, pagesSlugs} from '@/sanity/lib/queries'
 import {GetPageQueryResult} from '@/sanity.types'
 import {PageOnboarding} from '@/app/components/Onboarding'
 import {notFound} from 'next/navigation'
+import SelectedAlbumsSection from '../components/SelectedAlbumsSection'
+import {getAlbums} from '@/actions/getAlbums'
 
 type Props = {
   params: Promise<{slug: string}>
@@ -72,7 +74,6 @@ export default async function Page(props: Props) {
           </div>
         </div>
       </div>
-      <PageBuilderPage page={page as GetPageQueryResult} />
     </div>
   )
 }
