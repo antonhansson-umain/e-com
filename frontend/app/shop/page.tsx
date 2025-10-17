@@ -1,12 +1,15 @@
-import {sanityFetch} from '@/sanity/lib/live'
-import {getAlbumsQuery} from '@/sanity/lib/queries'
 import AlbumGrid from '@/app/components/AlbumGrid'
+import {getAlbums} from '@/actions/getAlbums'
 
 export default async function page() {
-  const {data: albums} = await sanityFetch({query: getAlbumsQuery, params: {}})
+  const albums = await getAlbums()
+  // {genres: ['Emo']}
+  // {countries: ['US']}
+  // {countries: ['US'], genres: ['Emo']}
+  // {countries: ['US', 'AU'], genres: ['Indie Rock']}
   return (
-      <section>
-        <AlbumGrid albums={albums} />
-      </section>
+    <section>
+      <AlbumGrid albums={albums} />
+    </section>
   )
 }
