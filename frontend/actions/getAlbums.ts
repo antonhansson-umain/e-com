@@ -3,21 +3,16 @@
 import {sanityFetch} from '@/sanity/lib/live'
 import {getAlbumsQuery} from '@/sanity/lib/queries'
 
-export async function getAlbums(
-  {
-    genres,
-    countries,
-    decades,
-  }: {
-    genres?: string[] | null
-    countries?: string[]
-    decades?: number[]
-  } = {
-    genres: null,
-    countries: [],
-    decades: [],
-  },
-) {
+type Filters = {
+  genres?: string[]
+  countries?: string[]
+  decades?: number[]
+}
+
+export async function getAlbums(filters?: Filters) {
+  const genres = filters?.genres ?? null
+  const countries = filters?.countries ?? null
+  const decades = filters?.decades ?? null
   const {data: albums} = await sanityFetch({
     query: getAlbumsQuery,
     params: {genres, countries, decades},

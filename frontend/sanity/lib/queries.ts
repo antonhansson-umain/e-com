@@ -103,7 +103,7 @@ export const getAlbumsQuery = defineQuery(`
   *[
     _type == "album" &&
     select(
-      !defined(genres) => true,
+      !defined($genres) => true,
       defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,
       true
     )
