@@ -1,6 +1,6 @@
 import {X} from 'lucide-react'
 import Button from './Button'
-import NewFilterButton from './Filter/NewFilterButton'
+// import NewFilterButton from './Filter/NewFilterButton'
 import {Filters} from '@/types/Filters'
 
 export default function Filter({filters}: {filters: Filters}) {
@@ -9,11 +9,21 @@ export default function Filter({filters}: {filters: Filters}) {
       <div className="grid gap-4">
         <span className="uppercase text-3xl">Filters</span>
         <div className="flex flex-wrap gap-4">
-          <Button variant="tertiary" size="sm" className="flex gap-2 justify-center items-center">
-            <span>Test</span>
-            <X />
-          </Button>
-          <NewFilterButton />
+          {Object.entries(filters).map(([k, v]) => {
+            return v?.map((s) => (
+              <Button
+                key={k + s}
+                variant="tertiary"
+                size="sm"
+                className="flex gap-2 justify-center items-center"
+                datatype={k}
+              >
+                <span>{s}</span>
+                <X />
+              </Button>
+            ))
+          })}
+          {/* <NewFilterButton /> */}
         </div>
       </div>
       <div className="grid gap-4">

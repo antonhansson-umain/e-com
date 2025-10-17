@@ -17,7 +17,7 @@ export default async function page({
         <h1 className="text-5xl uppercase">All Records</h1>
         <p className="font-mono">All records that exists in our store.</p>
       </div>
-      {/* <Filter filters={filters} /> */}
+      <Filter filters={filters} />
       <AlbumGrid albums={albums} />
     </section>
   )
