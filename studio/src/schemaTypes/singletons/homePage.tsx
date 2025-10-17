@@ -81,10 +81,29 @@ export const homePage = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'hero',
-      title: 'Hero section',
-      type: 'heroSection',
-      validation: (Rule) => Rule.required()
+      name: 'pageBuilder',
+      title: 'Page builder',
+      type: 'array',
+      of: [
+        {type: 'heroSection'},
+        {type: 'selectedAlbumsSection'},
+      ],
+      // validation: (Rule) =>
+      //   Rule.custom((blocks) => {
+      //     const heroCount = (blocks || []).filter((b) => b._type === 'heroSection').length
+      //     return heroCount > 1 ? 'Only the first Hero Section will be displayed on the page' : true
+      //   }),
+      options: {
+        insertMenu: {
+          views: [
+            {
+              name: 'grid',
+              previewImageUrl: (schemaTypeName) =>
+                `/static/page-builder-thumbnails/${schemaTypeName}.webp`,
+            },
+          ],
+        },
+      },
     }),
   ],
   preview: {

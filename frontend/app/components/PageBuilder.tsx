@@ -5,7 +5,7 @@ import {useOptimistic} from 'next-sanity/hooks'
 import Link from 'next/link'
 
 import BlockRenderer from '@/app/components/BlockRenderer'
-import {GetHomePageQueryResult, GetPageQueryResult} from '@/sanity.types'
+import {GetPageQueryResult} from '@/sanity.types'
 import {dataAttr} from '@/sanity/lib/utils'
 import {studioUrl} from '@/sanity/lib/api'
 
