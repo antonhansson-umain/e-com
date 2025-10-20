@@ -26,7 +26,7 @@ export default function Filter({filters}: {filters: Filters}) {
           <NewFilterButton />
         </div>
       </div>
-      <div className="grid gap-4">
+      <div className="flex flex-col gap-4 place-content-start">
         <span className="uppercase text-3xl">Sort By</span>
         <select
           name="sortBy"
