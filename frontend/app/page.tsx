@@ -68,7 +68,7 @@ export default async function Page(props: Props) {
         <title>{homePage.heading}</title>
       </Head>
       <div className="">
-        <PageBuilderPage page={homePage}/>
+        <PageBuilderPage page={homePage} albums={albums}/>
         <div className="container">
           <div className="pb-6 border-b border-gray-100">
             <div className="max-w-3xl">

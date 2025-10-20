@@ -5,11 +5,13 @@ import {useOptimistic} from 'next-sanity/hooks'
 import Link from 'next/link'
 import BlockRenderer from '@/app/components/BlockRenderer'
 import {GetPageQueryResult, GetHomePageQueryResult} from '@/sanity.types'
+import {Album} from '@/types/types'
 import {dataAttr} from '@/sanity/lib/utils'
 import {studioUrl} from '@/sanity/lib/api'
 
 type PageBuilderPageProps = {
-  page: GetPageQueryResult | GetHomePageQueryResult
+  page: GetPageQueryResult | GetHomePageQueryResult;
+  albums: Album[];
 }
 
 type PageBuilderSection = {
@@ -27,7 +29,7 @@ type PageData = {
  * The PageBuilder component is used to render the blocks from the `pageBuilder` field in the Page type in your Sanity Studio.
  */
 
-function renderSections(pageBuilderSections: PageBuilderSection[], page: {_id: string; _type: string}) {
+function renderSections(pageBuilderSections: PageBuilderSection[], page: {_id: string; _type: string}, albums: Album[]) {
   if (!page) {
     return null
   }
@@ -46,6 +48,7 @@ function renderSections(pageBuilderSections: PageBuilderSection[], page: {_id: s
           block={block}
           pageId={page._id}
           pageType={page._type}
+          albums={albums}
         />
       ))}
     </div>
@@ -76,7 +79,7 @@ function renderEmptyState(page?: {_id: string; _type: string}) {
   )
 }
 
-export default function PageBuilder({page}: PageBuilderPageProps) {
+export default function PageBuilder({page, albums}: PageBuilderPageProps) {
   const pageBuilderSections = useOptimistic<
     PageBuilderSection[] | undefined,
     SanityDocument<PageData>
@@ -106,6 +109,6 @@ export default function PageBuilder({page}: PageBuilderPageProps) {
   }
 
   return pageBuilderSections && pageBuilderSections.length > 0
-    ? renderSections(pageBuilderSections, page)
+    ? renderSections(pageBuilderSections, page, albums)
     : renderEmptyState(page)
 }

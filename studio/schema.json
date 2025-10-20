@@ -1328,21 +1328,21 @@
           "value": {
             "type": "string"
           },
-          "optional": true
+          "optional": false
         },
         "sectionDescription": {
           "type": "objectAttribute",
           "value": {
             "type": "string"
           },
-          "optional": true
+          "optional": false
         },
         "ctaText": {
           "type": "objectAttribute",
           "value": {
             "type": "string"
           },
-          "optional": true
+          "optional": false
         }
       }
     }

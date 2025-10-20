@@ -220,9 +220,9 @@ export type HomePage = {
 
 export type SelectedAlbumsSection = {
   _type: 'selectedAlbumsSection'
-  sectionTitle?: string
-  sectionDescription?: string
-  ctaText?: string
+  sectionTitle: string
+  sectionDescription: string
+  ctaText: string
 }
 
 export type HeroSection = {
@@ -682,9 +682,9 @@ export type GetPageQueryResult = {
     | {
         _key: string
         _type: 'selectedAlbumsSection'
-        sectionTitle?: string
-        sectionDescription?: string
-        ctaText?: string
+        sectionTitle: string
+        sectionDescription: string
+        ctaText: string
       }
   > | null
 } | null
@@ -713,9 +713,9 @@ export type GetHomePageQueryResult = {
     | {
         _key: string
         _type: 'selectedAlbumsSection'
-        sectionTitle?: string
-        sectionDescription?: string
-        ctaText?: string
+        sectionTitle: string
+        sectionDescription: string
+        ctaText: string
       }
   > | null
 } | null

@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import PageBuilderPage from '@/app/components/PageBuilder'
 import {sanityFetch} from '@/sanity/lib/live'
-import {getPageQuery, pagesSlugs} from '@/sanity/lib/queries'
+import {getPageQuery, pagesSlugs, getAlbumsQuery} from '@/sanity/lib/queries'
 import {GetPageQueryResult} from '@/sanity.types'
 import {PageOnboarding} from '@/app/components/Onboarding'
 import {notFound} from 'next/navigation'
@@ -47,7 +47,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function Page(props: Props) {
   const params = await props.params
-  const [{data: page}] = await Promise.all([sanityFetch({query: getPageQuery, params})])
+  const [{data: page}, {data: albums}] = await Promise.all([sanityFetch({query: getPageQuery, params}), sanityFetch({query: getAlbumsQuery, params})])
 
   if (!page?._id) {
     return notFound()
@@ -72,7 +72,7 @@ export default async function Page(props: Props) {
           </div>
         </div>
       </div>
-      <PageBuilderPage page={page as GetPageQueryResult} />
+      <PageBuilderPage page={page as GetPageQueryResult} albums={albums}/>
     </div>
   )
 }
