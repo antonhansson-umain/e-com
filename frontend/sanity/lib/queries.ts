@@ -132,6 +132,14 @@ export const getAlbumById = defineQuery(`
 
 export const getGenresQuery = defineQuery(`
 *[_type == 'genre']{
-genreName
+  "label": genreName,
+  "value": genreName
 }
 `)
+
+export const getCountriesQuery = defineQuery(`
+  *[_type == 'country']{
+    "label": name,
+    "value": isoCode
+  }
+  `)

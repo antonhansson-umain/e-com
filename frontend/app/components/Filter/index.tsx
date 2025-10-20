@@ -2,10 +2,8 @@ import {X} from 'lucide-react'
 import Button from '../Button'
 import NewFilterButton from './NewFilterButton'
 import {Filters} from '@/types/Filters'
-import FilterSidebar from './FilterSidebar'
 
 export default function Filter({filters}: {filters: Filters}) {
-  // const filterOptions =
   return (
     <div className="grid sm:grid-cols-[1fr_auto] gap-4">
       <div className="grid gap-4">
