@@ -25,8 +25,8 @@ export const heroSection = defineType({
     }),
     defineField({
       name: 'ctaLink',
-      title: 'Button Link',
-      type: 'url',
+      title: 'Page endpoint',
+      type: 'string',
     }),
     defineField({
       name: 'backgroundImage',
