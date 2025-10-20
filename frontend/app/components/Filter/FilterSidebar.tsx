@@ -1,9 +1,9 @@
 import {getFilterOptions} from '@/actions/getFilterOptions'
 import SideBarFooter from '../SideBar/SideBarFooter'
+import FilterCheckBox from './FilterCheckBox'
 
 export default async function FilterSidebar() {
   const filterOptions = await getFilterOptions()
-  console.log(filterOptions)
   return (
     <form className="h-full flex flex-col justify-between text-xl overflow-y-scroll">
       <div className="p-4 flex flex-col gap-4 overflow-y-scroll">
@@ -16,15 +16,14 @@ export default async function FilterSidebar() {
           >
             <legend className="font-mono uppercase">{o.label}</legend>
             {o.filters.map((filter) => (
-              <div className={`flex items-center gap-2`} key={o.label + filter.value}>
-                <input
-                  type="checkbox"
-                  id={o.label + filter.value}
-                  value={filter.value}
-                  name={o.label}
-                  className="w-6 aspect-square"
-                />
-                <label htmlFor={o.label + filter.value}>{filter.label}</label>
+              <div
+                className={`grid grid-cols-[auto_1fr] items-center gap-2`}
+                key={o.label + filter.value}
+              >
+                <FilterCheckBox category={o.label} value={filter.value} />
+                <label htmlFor={o.label + filter.value} className="truncate">
+                  {filter.label}
+                </label>
               </div>
             ))}
           </fieldset>

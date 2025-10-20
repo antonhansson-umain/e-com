@@ -139,7 +139,7 @@ export const getGenresQuery = defineQuery(`
 
 export const getCountriesQuery = defineQuery(`
   *[_type == 'country']{
-    "label": name,
+    "label": flag + " " + name,
     "value": isoCode
   }
   `)
