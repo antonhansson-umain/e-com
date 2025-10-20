@@ -1,4 +1,5 @@
 import {defineQuery} from 'next-sanity'
+import test from 'node:test'
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
 
@@ -117,10 +118,34 @@ export const pagesSlugs = defineQuery(`
 `)
 
 export const getAlbumsQuery = defineQuery(`
-   *[_type == 'album']{
+  *[
+    _type == "album" &&
+    select(
+      !defined($genres) => true,
+      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,
+      true
+    ) &&
+    select(
+      !defined($countries) => true,
+      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,
+      true
+    )
+  ]{
+    _id,
+    title,
+    description,
+    "artist": artist->artistName,
+    genres[]->{genreName},
+    price,
+    "image": picture.asset->url
+  }
+`)
+
+export const getAlbumById = defineQuery(`
+   *[_type == 'album' && _id == $id][0]{
     _id,
     description,
-    genres,
+    "genres": genres[]->genreName,
     title,
     "artist": artist->artistName,
     price,
@@ -128,4 +153,9 @@ export const getAlbumsQuery = defineQuery(`
   }
   `)
 
+export const getGenresQuery = defineQuery(`
+*[_type == 'genre']{
+genreName
+}
+`)
 

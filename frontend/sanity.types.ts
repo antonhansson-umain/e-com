@@ -730,21 +730,33 @@ export type PagesSlugsResult = Array<{
   slug: string
 }>
 // Variable: getAlbumsQuery
-// Query: *[_type == 'album']{    _id,    description,    genres,    title,    "artist": artist->artistName,    price,    "image": picture.asset->url  }
+// Query: *[    _type == "album" &&    select(      !defined($genres) => true,      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,      true    ) &&    select(      !defined($countries) => true,      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,      true    )  ]{    _id,    title,    description,    "artist": artist->artistName,    genres[]->{genreName},    price,    "image": picture.asset->url  }
 export type GetAlbumsQueryResult = Array<{
   _id: string
+  title: string
   description: BlockContent | null
+  artist: string
   genres: Array<{
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    _key: string
-    [internalGroqTypeReferenceTo]?: 'genre'
+    genreName: string
   }>
+  price: number
+  image: string | null
+}>
+// Variable: getAlbumById
+// Query: *[_type == 'album' && _id == $id][0]{    _id,    description,    "genres": genres[]->genreName,    title,    "artist": artist->artistName,    price,    "image": picture.asset->url  }
+export type GetAlbumByIdResult = {
+  _id: string
+  description: BlockContent | null
+  genres: Array<string>
   title: string
   artist: string
   price: number
   image: string | null
+} | null
+// Variable: getGenresQuery
+// Query: *[_type == 'genre']{genreName}
+export type GetGenresQueryResult = Array<{
+  genreName: string
 }>
 
 // Query TypeMap
@@ -756,6 +768,8 @@ declare module '@sanity/client' {
     '\n  *[_type == \'homePage\'][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetHomePageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
-    '\n   *[_type == \'album\']{\n    _id,\n    description,\n    genres,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumsQueryResult
+    '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    )\n  ]{\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    price,\n    "image": picture.asset->url\n  }\n': GetAlbumsQueryResult
+    '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    "genres": genres[]->genreName,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumByIdResult
+    "\n*[_type == 'genre']{\ngenreName\n}\n": GetGenresQueryResult
   }
 }

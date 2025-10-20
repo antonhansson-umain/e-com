@@ -1,35 +1,54 @@
 'use client'
 
-import {useSideBarContext} from '@/contexts/sidebar-context'
-import Button from '../Button'
 import SideBarFooter from '../SideBar/SideBarFooter'
+import {useCartStore} from '@/hooks/useCartStore'
+import {getAlbum} from '@/actions/getAlbum'
+import {useEffect, useState} from 'react'
+import EmptyCart from './empty'
+import {GetAlbumByIdResult} from '@/sanity.types'
+import CartItem from './CartItem'
+
+type UICart = {
+  [id: string]: GetAlbumByIdResult & {quantity: number}
+}
 
 export default function Cart() {
-  const {setIsOpen} = useSideBarContext()
-  const isEmpty = true // TODO: implement actual cart logic
-  if (isEmpty)
-    return (
-      <div className="p-4 flex flex-col items-center gap-4 my-auto">
-        <p>Your cart is empty</p>
-        <Button
-          variant="secondary"
-          href="/shop"
-          className="w-full"
-          onClick={() => setIsOpen(false)}
-        >
-          Continue Shopping
-        </Button>
-      </div>
-    )
+  const [albums, setAlbums] = useState<UICart>({})
+
+  const cart = useCartStore((state) => state.cart)
+  const calculateSubtotal = () => {
+    return Object.values(albums).reduce((acc, album) => acc + album.price * album.quantity, 0)
+  }
+
+  useEffect(() => {
+    const loadAlbums = async () => {
+      const results = await Promise.all(
+        Object.entries(cart).map(async ([id, quantity]) => {
+          const album = await getAlbum(id)
+          return [id, {...album, quantity}]
+        }),
+      )
+      setAlbums(Object.fromEntries(results))
+    }
+    loadAlbums()
+  }, [cart])
+
+  const isEmpty = Object.keys(cart).length <= 0
+  if (isEmpty) return <EmptyCart />
+
   return (
     <>
-      <ul className="p-4">
-        <li>Item</li>
+      <ul className="flex flex-col px-2 py-4 overflow-scroll">
+        {Object.keys(albums).length <= 0 ? (
+          <>Loading...</>
+        ) : (
+          Object.entries(albums).map(([id, album]) => <CartItem key={id} album={album} />)
+        )}
       </ul>
       <SideBarFooter actionLabel="CHECKOUT" href="/checkout">
         <div className="flex justify-between items-center">
           <div className="text-xl">SUBTOTAL</div>
-          <div className="text-3xl">$</div>
+          <div className="text-3xl">${calculateSubtotal()}</div>
         </div>
       </SideBarFooter>
     </>

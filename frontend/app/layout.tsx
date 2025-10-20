@@ -82,13 +82,13 @@ export default async function RootLayout({children}: {children: React.ReactNode}
     >
       <body>
         <SideBarContextProvider>
-          <section className="min-h-screen pt-24 sm:pt-32 relative flex flex-col">
+          <section className="min-h-screen pt-24 sm:pt-32 relative flex flex-col max-w-screen-xl mx-auto px-4 sm:px-8">
             {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
             <SanityLive onError={handleError} />
             <Header />
             <main className="flex-grow">{children}</main>
-            <Footer />
           </section>
+          <Footer />
           <SpeedInsights />
           <DraftModeToast />
         </SideBarContextProvider>

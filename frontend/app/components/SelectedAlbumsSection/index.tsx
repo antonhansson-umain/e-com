@@ -17,10 +17,6 @@ export default function SelectedAlbumsSection({block, albums}: SelectedAlbumsSec
         label={ctaText}
       />
 
-{/* homepage: albums query: first 2 results
-product page: specific genre query first 2 results
-campaing pages: specific tag query first 2 results */}
-
       {albums.slice(0, 2).map((album) => (
         <div key={album._id} className="mt-0 lg:mt-14">
           <AlbumCard album={album} />
