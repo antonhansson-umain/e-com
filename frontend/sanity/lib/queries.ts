@@ -159,3 +159,9 @@ genreName
 }
 `)
 
+export const getCountriesQuery = defineQuery(`
+  *[_type == 'country']{
+    "label": flag + " " + name,
+    "value": isoCode
+  }
+  `)
