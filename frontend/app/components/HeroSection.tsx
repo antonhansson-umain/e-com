@@ -1,7 +1,5 @@
 import Button from './Button'
-import Link from 'next/link'
 import type {HeroSectionType} from '@/types/types'
-import {usePathname} from 'next/navigation'
 
 type HeroSectionProps = {
   block: HeroSectionType
@@ -20,7 +18,7 @@ export default function HeroSection({block}: HeroSectionProps) {
         backgroundImage: backgroundImage ? `url(${block.backgroundImage?.url})` : undefined,
       }}
     >
-      <h1 className="font-bg-header">{title}</h1>
+      <h1 className="font-bg-header text-white font-bold">{title}</h1>
       <p className="font-text text-white my-6">{description}</p>
       <Button href={cleanSlug} variant="primary" size="sm">
         {ctaText}
