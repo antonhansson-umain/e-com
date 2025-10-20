@@ -6,11 +6,15 @@ import {X} from 'lucide-react'
 import {useEffect, useRef} from 'react'
 
 type SideBarProps = React.HTMLAttributes<HTMLDivElement> & {
-  title?: string
+  // title: string
+  views: {
+    cart: React.ReactNode
+    filters: React.ReactNode
+  }
 }
 
-export default function SideBar({title, children}: SideBarProps) {
-  const {isOpen, setIsOpen} = useSideBarContext()
+export default function SideBar({views}: SideBarProps) {
+  const {isOpen, setIsOpen, content} = useSideBarContext()
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -39,7 +43,9 @@ export default function SideBar({title, children}: SideBarProps) {
       )}
     >
       <header className="flex justify-between items-center p-4 border-b border-black/50 gap-4">
-        {title && <h2 className="text-4xl uppercase">{title}</h2>}
+        <h2 className="text-4xl uppercase">
+          {content === 'cart' ? 'Cart' : content === 'filters' ? 'Filters' : ''}
+        </h2>
         <button
           onClick={() => setIsOpen(false)}
           className="ml-auto"
@@ -48,7 +54,8 @@ export default function SideBar({title, children}: SideBarProps) {
           <X width={48} height={48} strokeWidth={1} />
         </button>
       </header>
-      {children}
+      {content === 'cart' && views.cart}
+      {content === 'filters' && views.filters}
     </aside>
   )
 }

@@ -9,12 +9,11 @@ import {useSideBarContext} from '@/contexts/sidebar-context'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const {setIsOpen, setContent, setTitle} = useSideBarContext()
+  const {setIsOpen, setContent} = useSideBarContext()
 
   const handleCartOpen = () => {
     setIsOpen(true)
-    setTitle('Cart')
-    setContent(<Cart />)
+    setContent('cart')
   }
 
   const links = [
