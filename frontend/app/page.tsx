@@ -1,10 +1,8 @@
 import type {Metadata} from 'next'
 import Head from 'next/head'
-import {getAlbumsQuery} from '@/sanity/lib/queries'
+import {getAlbumsQuery, getHomePageQuery, pagesSlugs} from '@/sanity/lib/queries'
 import PageBuilderPage from '@/app/components/PageBuilder'
 import {sanityFetch} from '@/sanity/lib/live'
-import {getHomePageQuery, pagesSlugs} from '@/sanity/lib/queries'
-import {GetHomePageQueryResult, GetPageQueryResult} from '@/sanity.types'
 import {PageOnboarding} from '@/app/components/Onboarding'
 import {STORE_NAME} from '@/constants'
 import SelectedAlbumsSection from './components/SelectedAlbumsSection'
@@ -21,7 +19,6 @@ type Props = {
 export async function generateStaticParams() {
   const {data} = await sanityFetch({
     query: pagesSlugs,
-    // // Use the published perspective in generateStaticParams
     perspective: 'published',
     stega: false,
   })
@@ -37,20 +34,22 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const {data: homePage} = await sanityFetch({
     query: getHomePageQuery,
     params,
-    // Metadata should never contain stega
     stega: false,
   })
 
   return {
-    title: homePage?.title,
-    description: homePage?.description,
+    title: homePage?.heading ?? STORE_NAME,
+    description: homePage?.subheading,
   } satisfies Metadata
 }
 
 export default async function Page(props: Props) {
   const params = await props.params
-  const [{data: homePage}] = await Promise.all([sanityFetch({query: getHomePageQuery, params})])
-  const albums = await getAlbums()
+
+  const [{data: homePage}, albums] = await Promise.all([
+    sanityFetch({query: getHomePageQuery, params}),
+    getAlbums(),
+  ])
 
   if (!homePage?._id) {
     return (
@@ -63,20 +62,23 @@ export default async function Page(props: Props) {
   return (
     <div>
       <Head>
-        <title>{homePage.title}</title>
+        <title>{homePage.heading}</title>
       </Head>
-      <h1 className="text-6xl font-bold">{homePage.title}</h1>
-      <p className="mt-4 text-base lg:text-lg leading-relaxed text-gray-600 uppercase font-light">
-        {homePage.description}
-      </p>
-      <SelectedAlbumsSection
-        albums={albums}
-        title="New in"
-        cta="Shop All"
-        ctaHref="/shop"
-        description="Discover the latest releases."
-      />
-      {/* <PageBuilderPage page={homePage as GetHomePageQueryResult} /> */}
+      <div className="">
+        <PageBuilderPage page={homePage} albums={albums} />
+        <div className="container">
+          <div className="pb-6 border-b border-gray-100">
+            <div className="max-w-3xl">
+              <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-7xl">
+                {homePage.heading}
+              </h2>
+              <p className="mt-4 text-base lg:text-lg leading-relaxed text-gray-600 uppercase font-light">
+                {homePage.subheading}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

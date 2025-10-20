@@ -52,8 +52,11 @@ button {
 
 @layer components {
   .font-bg-header {
-    font-size: 4rem;
+    font-size: clamp(2.5rem, 1.8rem + 3.5vw, 4rem);
+    line-height: 96%;
     text-transform: uppercase;
+    font-weight: 700;
+    color: white;
   }
 
   .font-md-header {

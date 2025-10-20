@@ -1,36 +1,30 @@
-import AlbumGrid from '../AlbumGrid'
+import AlbumCard from '../AlbumCard'
 import Button from '../Button'
-import {GetAlbumsQueryResult} from '@/sanity.types'
+import type {SelectedAlbumsSectionType, Album} from '@/types/types'
 
 interface SelectedAlbumsSectionProps {
-  albums: GetAlbumsQueryResult
-  title: string
-  description: string
-  cta: string
-  ctaHref: string
+  block: SelectedAlbumsSectionType
+  albums: Album[]
 }
 
-export default function SelectedAlbumsSection({
-  albums,
-  title,
-  description,
-  cta,
-  ctaHref,
-}: SelectedAlbumsSectionProps) {
+export default function SelectedAlbumsSection({block, albums}: SelectedAlbumsSectionProps) {
+  const {sectionTitle, sectionDescription, ctaText, ctaLink} = block
   return (
-    <section>
-      <h2 className="font-sm-header">{title}</h2>
-      <div className="grid md:grid-cols-[auto_1fr] gap-8">
-        <aside className="flex flex-col gap-4">
-          <p className="font-text">{description}</p>
-          <div className="h-full flex items-center">
-            <Button variant="primary" href={ctaHref}>
-              {cta}
-            </Button>
-          </div>
-        </aside>
-        <AlbumGrid albums={albums.slice(0, 2)} className="sm:grid-cols-2" />
-      </div>
+    <section className="grid grid-cols-1 lg:grid-cols-3 lg:max-w-none py-8 gap-[1rem] md:gap-[2rem]">
+      <aside className="grid grid-rows-[1fr_0.5fr] gap-4 lg:gap-0">
+        <div>
+          <h2 className="font-sm-header">{sectionTitle}</h2>
+          <p className="font-text">{sectionDescription}</p>
+        </div>
+        <Button variant="primary" href={ctaLink} className="justify-self-start">
+          {ctaText}
+        </Button>
+      </aside>
+      {albums.slice(0, 2).map((album) => (
+        <div key={album._id} className="mt-0 lg:mt-14">
+          <AlbumCard album={album} />
+        </div>
+      ))}
     </section>
   )
 }

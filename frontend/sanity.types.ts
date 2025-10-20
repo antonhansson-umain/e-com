@@ -93,6 +93,16 @@ export type BlockContent = Array<{
   _key: string
 }>
 
+export type Tag = {
+  _id: string
+  _type: 'tag'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  tagName?: string
+  tagDescription?: string
+}
+
 export type Album = {
   _id: string
   _type: 'album'
@@ -132,6 +142,13 @@ export type Album = {
     _weak?: boolean
     _key: string
     [internalGroqTypeReferenceTo]?: 'genre'
+  }>
+  tags?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'tag'
   }>
 }
 
@@ -191,6 +208,42 @@ export type HomePage = {
   _rev: string
   title: string
   description: string
+  pageBuilder?: Array<
+    | ({
+        _key: string
+      } & HeroSection)
+    | ({
+        _key: string
+      } & SelectedAlbumsSection)
+  >
+}
+
+export type SelectedAlbumsSection = {
+  _type: 'selectedAlbumsSection'
+  sectionTitle: string
+  sectionDescription: string
+  ctaText: string
+  ctaLink: string
+}
+
+export type HeroSection = {
+  _type: 'heroSection'
+  title?: string
+  description?: string
+  ctaText?: string
+  ctaLink?: string
+  backgroundImage?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
 }
 
 export type Settings = {
@@ -250,15 +303,13 @@ export type Page = {
   _rev: string
   name: string
   slug: Slug
-  heading: string
-  subheading?: string
   pageBuilder?: Array<
     | ({
         _key: string
-      } & CallToAction)
+      } & HeroSection)
     | ({
         _key: string
-      } & InfoSection)
+      } & SelectedAlbumsSection)
   >
 }
 
@@ -520,11 +571,14 @@ export type AllSanitySchemaTypes =
   | Link
   | InfoSection
   | BlockContent
+  | Tag
   | Album
   | Artist
   | Genre
   | Country
   | HomePage
+  | SelectedAlbumsSection
+  | HeroSection
   | Settings
   | Page
   | SanityAssistInstructionTask
@@ -602,67 +656,67 @@ export type SettingsQueryResult = {
     _type: 'image'
   }
 } | null
-// Variable: getHomePageQuery
-// Query: *[_type == "homePage"][0]
-export type GetHomePageQueryResult = {
-  _id: string
-  _type: 'homePage'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  title: string
-  description: string
-} | null
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,    // "post": post->slug.current  }      },      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    // "post": post->slug.current  }          }        }      },    },  }
+// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "heroSection" => {        ...,        "backgroundImage": {          "url": backgroundImage.asset->url,          "metadata": backgroundImage.asset->metadata        }      },      _type == "selectedAlbumsSection" => {        ...,      },    },  }
 export type GetPageQueryResult = {
   _id: string
   _type: 'page'
   name: string
   slug: Slug
-  heading: string
-  subheading: string | null
+  heading: null
+  subheading: null
   pageBuilder: Array<
     | {
         _key: string
-        _type: 'callToAction'
-        heading: string
-        text?: string
-        buttonText?: string
-        link: {
-          _type: 'link'
-          linkType?: 'href' | 'page'
-          href?: string
-          page: string | null
-          openInNewTab?: boolean
-        } | null
+        _type: 'heroSection'
+        title?: string
+        description?: string
+        ctaText?: string
+        ctaLink?: string
+        backgroundImage: {
+          url: string | null
+          metadata: SanityImageMetadata | null
+        }
       }
     | {
         _key: string
-        _type: 'infoSection'
-        heading?: string
-        subheading?: string
-        content: Array<{
-          children?: Array<{
-            marks?: Array<string>
-            text?: string
-            _type: 'span'
-            _key: string
-          }>
-          style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
-          listItem?: 'bullet' | 'number'
-          markDefs: Array<{
-            linkType?: 'href' | 'page' | 'post'
-            href?: string
-            page: string | null
-            openInNewTab?: boolean
-            _type: 'link'
-            _key: string
-          }> | null
-          level?: number
-          _type: 'block'
-          _key: string
-        }> | null
+        _type: 'selectedAlbumsSection'
+        sectionTitle: string
+        sectionDescription: string
+        ctaText: string
+        ctaLink: string
+      }
+  > | null
+} | null
+// Variable: getHomePageQuery
+// Query: *[_type == 'homePage'][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "heroSection" => {        ...,        "backgroundImage": {          "url": backgroundImage.asset->url,          "metadata": backgroundImage.asset->metadata        }      },      _type == "selectedAlbumsSection" => {        ...,      },    },  }
+export type GetHomePageQueryResult = {
+  _id: string
+  _type: 'homePage'
+  name: null
+  slug: null
+  heading: null
+  subheading: null
+  pageBuilder: Array<
+    | {
+        _key: string
+        _type: 'heroSection'
+        title?: string
+        description?: string
+        ctaText?: string
+        ctaLink?: string
+        backgroundImage: {
+          url: string | null
+          metadata: SanityImageMetadata | null
+        }
+      }
+    | {
+        _key: string
+        _type: 'selectedAlbumsSection'
+        sectionTitle: string
+        sectionDescription: string
+        ctaText: string
+        ctaLink: string
       }
   > | null
 } | null
@@ -692,7 +746,7 @@ export type GetAlbumsQueryResult = Array<{
   image: string | null
 }>
 // Variable: getAlbumById
-// Query: *[_type == 'album' && _id == $id][0]{    _id,    description,    "genres": genres[]->genreName,    title,    "artist": artist->artistName,    price,    "image": picture.asset->url   }
+// Query: *[_type == 'album' && _id == $id][0]{    _id,    description,    "genres": genres[]->genreName,    title,    "artist": artist->artistName,    price,    "image": picture.asset->url  }
 export type GetAlbumByIdResult = {
   _id: string
   description: BlockContent | null
@@ -720,12 +774,12 @@ import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult
-    '*[_type == "homePage"][0]': GetHomePageQueryResult
-    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n      }\n,\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    // "post": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult
+    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetPageQueryResult
+    '\n  *[_type == \'homePage\'][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetHomePageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    )\n  ]{\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    price,\n    "image": picture.asset->url\n  }\n': GetAlbumsQueryResult
-    '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    "genres": genres[]->genreName,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n   }': GetAlbumByIdResult
+    '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    "genres": genres[]->genreName,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumByIdResult
     '\n*[_type == \'genre\']{\n  "label": genreName,\n  "value": genreName\n}\n': GetGenresQueryResult
     '\n  *[_type == \'country\']{\n    "label": flag + " " + name,\n    "value": isoCode\n  }\n  ': GetCountriesQueryResult
   }

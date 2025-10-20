@@ -3,14 +3,15 @@
 import {SanityDocument} from 'next-sanity'
 import {useOptimistic} from 'next-sanity/hooks'
 import Link from 'next/link'
-
 import BlockRenderer from '@/app/components/BlockRenderer'
-import {GetHomePageQueryResult, GetPageQueryResult} from '@/sanity.types'
+import {GetPageQueryResult, GetHomePageQueryResult} from '@/sanity.types'
+import {Album} from '@/types/types'
 import {dataAttr} from '@/sanity/lib/utils'
 import {studioUrl} from '@/sanity/lib/api'
 
 type PageBuilderPageProps = {
-  page: GetPageQueryResult
+  page: GetPageQueryResult | GetHomePageQueryResult;
+  albums: Album[];
 }
 
 type PageBuilderSection = {
@@ -28,7 +29,7 @@ type PageData = {
  * The PageBuilder component is used to render the blocks from the `pageBuilder` field in the Page type in your Sanity Studio.
  */
 
-function renderSections(pageBuilderSections: PageBuilderSection[], page: GetPageQueryResult) {
+function renderSections(pageBuilderSections: PageBuilderSection[], page: {_id: string; _type: string}, albums: Album[]) {
   if (!page) {
     return null
   }
@@ -47,13 +48,14 @@ function renderSections(pageBuilderSections: PageBuilderSection[], page: GetPage
           block={block}
           pageId={page._id}
           pageType={page._type}
+          albums={albums}
         />
       ))}
     </div>
   )
 }
 
-function renderEmptyState(page: GetPageQueryResult) {
+function renderEmptyState(page?: {_id: string; _type: string}) {
   if (!page) {
     return null
   }
@@ -77,7 +79,7 @@ function renderEmptyState(page: GetPageQueryResult) {
   )
 }
 
-export default function PageBuilder({page}: PageBuilderPageProps) {
+export default function PageBuilder({page, albums}: PageBuilderPageProps) {
   const pageBuilderSections = useOptimistic<
     PageBuilderSection[] | undefined,
     SanityDocument<PageData>
@@ -103,10 +105,10 @@ export default function PageBuilder({page}: PageBuilderPageProps) {
   })
 
   if (!page) {
-    return renderEmptyState(page)
+    return renderEmptyState()
   }
 
   return pageBuilderSections && pageBuilderSections.length > 0
-    ? renderSections(pageBuilderSections, page)
+    ? renderSections(pageBuilderSections, page, albums)
     : renderEmptyState(page)
 }

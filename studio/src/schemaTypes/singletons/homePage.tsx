@@ -80,6 +80,31 @@ export const homePage = defineType({
       initialValue: 'Wows or Woes.',
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'pageBuilder',
+      title: 'Page builder',
+      type: 'array',
+      of: [
+        {type: 'heroSection'},
+        {type: 'selectedAlbumsSection'},
+      ],
+      // validation: (Rule) =>
+      //   Rule.custom((blocks) => {
+      //     const heroCount = (blocks || []).filter((b) => b._type === 'heroSection').length
+      //     return heroCount > 1 ? 'Only the first Hero Section will be displayed on the page' : true
+      //   }),
+      options: {
+        insertMenu: {
+          views: [
+            {
+              name: 'grid',
+              previewImageUrl: (schemaTypeName) =>
+                `/static/page-builder-thumbnails/${schemaTypeName}.webp`,
+            },
+          ],
+        },
+      },
+    }),
   ],
   preview: {
     prepare() {

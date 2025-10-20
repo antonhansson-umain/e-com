@@ -29,21 +29,16 @@ export const page = defineType({
       },
     }),
     defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'subheading',
-      title: 'Subheading',
-      type: 'string',
-    }),
-    defineField({
       name: 'pageBuilder',
       title: 'Page builder',
       type: 'array',
-      of: [{type: 'callToAction'}, {type: 'infoSection'}],
+      of: [{type: 'heroSection'}, {type: 'selectedAlbumsSection'}],
+      // validation: (Rule) =>
+      //   Rule.custom((blocks) => {
+      //     const heroCount = (blocks || []).filter((b) => b._type === 'heroSection').length
+      //     return heroCount > 1 ? 'Only the first Hero Section will be displayed on the page' : true
+      //   }),
+
       options: {
         insertMenu: {
           // Configure the "Add Item" menu to display a thumbnail preview of the content type. https://www.sanity.io/docs/array-type#efb1fe03459d

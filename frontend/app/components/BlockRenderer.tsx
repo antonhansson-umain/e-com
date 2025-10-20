@@ -1,8 +1,8 @@
 import React from 'react'
-
-import Cta from '@/app/components/Cta'
-import Info from '@/app/components/InfoSection'
+import HeroSection from '@/app/components/HeroSection'
 import {dataAttr} from '@/sanity/lib/utils'
+import SelectedAlbumsSection from '@/app/components/SelectedAlbumsSection/index'
+import type {Album} from '@/types/types'
 
 type BlocksType = {
   [key: string]: React.FC<any>
@@ -18,17 +18,18 @@ type BlockProps = {
   block: BlockType
   pageId: string
   pageType: string
+  albums: Album[]
 }
 
 const Blocks: BlocksType = {
-  callToAction: Cta,
-  infoSection: Info,
+  heroSection: HeroSection,
+  selectedAlbumsSection: SelectedAlbumsSection
 }
 
 /**
  * Used by the <PageBuilder>, this component renders a the component that matches the block type.
  */
-export default function BlockRenderer({block, index, pageId, pageType}: BlockProps) {
+export default function BlockRenderer({block, index, pageId, pageType, albums}: BlockProps) {
   // Block does exist
   if (typeof Blocks[block._type] !== 'undefined') {
     return (
@@ -44,6 +45,7 @@ export default function BlockRenderer({block, index, pageId, pageType}: BlockPro
           key: block._key,
           block: block,
           index: index,
+          albums: albums
         })}
       </div>
     )
