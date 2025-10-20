@@ -302,8 +302,6 @@ export type Page = {
   _rev: string
   name: string
   slug: Slug
-  heading: string
-  subheading?: string
   pageBuilder?: Array<
     | ({
         _key: string
@@ -664,8 +662,8 @@ export type GetPageQueryResult = {
   _type: 'page'
   name: string
   slug: Slug
-  heading: string
-  subheading: string | null
+  heading: null
+  subheading: null
   pageBuilder: Array<
     | {
         _key: string
