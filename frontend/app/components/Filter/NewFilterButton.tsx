@@ -2,14 +2,12 @@
 
 import {Plus} from 'lucide-react'
 import Button from '../Button'
-import FilterSidebar from './FilterSidebar'
 import {useSideBarContext} from '@/contexts/sidebar-context'
 
 export default function NewFilterButton() {
-  const {setIsOpen, setContent, setTitle} = useSideBarContext()
+  const {setIsOpen, setContent} = useSideBarContext()
   const openFiltersSidebar = () => {
-    setContent(<FilterSidebar />)
-    setTitle('Filters')
+    setContent('filters')
     setIsOpen(true)
   }
   return (
