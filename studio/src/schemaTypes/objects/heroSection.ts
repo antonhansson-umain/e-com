@@ -6,32 +6,37 @@ export const heroSection = defineType({
   title: 'Hero Section',
   type: 'object',
   icon: Dock,
-  // add validation, all fields required
+
   fields: [
     defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'string',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'ctaText',
       title: 'Button Text',
       type: 'string',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'ctaLink',
       title: 'Page endpoint',
       type: 'string',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'backgroundImage',
       title: 'Background Image',
       type: 'image',
+      validation: (rule) => rule.required(),
     }),
   ],
   preview: {

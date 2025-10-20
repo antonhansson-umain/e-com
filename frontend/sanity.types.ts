@@ -228,11 +228,11 @@ export type SelectedAlbumsSection = {
 
 export type HeroSection = {
   _type: 'heroSection'
-  title?: string
-  description?: string
-  ctaText?: string
-  ctaLink?: string
-  backgroundImage?: {
+  title: string
+  description: string
+  ctaText: string
+  ctaLink: string
+  backgroundImage: {
     asset?: {
       _ref: string
       _type: 'reference'
@@ -669,10 +669,10 @@ export type GetPageQueryResult = {
     | {
         _key: string
         _type: 'heroSection'
-        title?: string
-        description?: string
-        ctaText?: string
-        ctaLink?: string
+        title: string
+        description: string
+        ctaText: string
+        ctaLink: string
         backgroundImage: {
           url: string | null
           metadata: SanityImageMetadata | null
@@ -701,10 +701,10 @@ export type GetHomePageQueryResult = {
     | {
         _key: string
         _type: 'heroSection'
-        title?: string
-        description?: string
-        ctaText?: string
-        ctaLink?: string
+        title: string
+        description: string
+        ctaText: string
+        ctaLink: string
         backgroundImage: {
           url: string | null
           metadata: SanityImageMetadata | null
