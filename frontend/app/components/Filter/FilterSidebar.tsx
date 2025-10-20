@@ -1,26 +1,21 @@
-// import {useState} from 'react'
+import {getFilterOptions} from '@/actions/getFilterOptions'
 import SideBarFooter from '../SideBar/SideBarFooter'
-import {getGenres} from '@/actions/getGenres'
+import FilterGroup from './FilterGroup'
 
 export default async function FilterSidebar() {
-  //   const [filters, setFilters] = useState()
-  const buildPath = () => {
-    return '/'
-  }
-  const filterOptions = {
-    genres: await getGenres(),
-  }
-
+  const filterOptions = await getFilterOptions()
   return (
-    <>
-      {/* <ul className="flex flex-col px-2 py-4 overflow-scroll">
-        {filterOptions.genres.map((genre) => (
-          <li>{genre.genreName}</li>
+    <form className="h-full flex flex-col justify-between text-xl overflow-y-scroll">
+      <div className="p-4 flex flex-col gap-4 overflow-y-scroll">
+        {filterOptions.map((o) => (
+          <FilterGroup
+            key={o.label}
+            category={o}
+            {...(o.label === 'genres' ? {initCollapse: true} : {})}
+          />
         ))}
-      </ul> */}
-      <form>
-        <SideBarFooter actionLabel="apply"></SideBarFooter>
-      </form>
-    </>
+      </div>
+      <SideBarFooter actionLabel="apply" />
+    </form>
   )
 }

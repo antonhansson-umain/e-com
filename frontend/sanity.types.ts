@@ -754,9 +754,16 @@ export type GetAlbumByIdResult = {
   image: string | null
 } | null
 // Variable: getGenresQuery
-// Query: *[_type == 'genre']{genreName}
+// Query: *[_type == 'genre']{  "label": genreName,  "value": genreName}
 export type GetGenresQueryResult = Array<{
-  genreName: string
+  label: string
+  value: string
+}>
+// Variable: getCountriesQuery
+// Query: *[_type == 'country']{    "label": flag + " " + name,    "value": isoCode  }
+export type GetCountriesQueryResult = Array<{
+  label: string
+  value: string
 }>
 
 // Query TypeMap
@@ -769,7 +776,8 @@ declare module '@sanity/client' {
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    )\n  ]{\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    price,\n    "image": picture.asset->url\n  }\n': GetAlbumsQueryResult
-    '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    "genres": genres[]->genreName,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumByIdResult
-    "\n*[_type == 'genre']{\ngenreName\n}\n": GetGenresQueryResult
+    '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    "genres": genres[]->genreName,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n   }': GetAlbumByIdResult
+    '\n*[_type == \'genre\']{\n  "label": genreName,\n  "value": genreName\n}\n': GetGenresQueryResult
+    '\n  *[_type == \'country\']{\n    "label": flag + " " + name,\n    "value": isoCode\n  }\n  ': GetCountriesQueryResult
   }
 }

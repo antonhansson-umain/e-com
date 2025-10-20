@@ -17,6 +17,7 @@ import {handleError} from './client-utils'
 import SideBar from './components/SideBar'
 import SideBarFooter from './components/SideBar/SideBarFooter'
 import SideBarContextProvider from '@/contexts/sidebar-context'
+import SideBarWrapper from './components/SideBar/SideBarWrapper'
 
 /**
  * Generate metadata for the page.
@@ -86,6 +87,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
             {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
             <SanityLive onError={handleError} />
             <Header />
+            <SideBarWrapper />
             <main className="flex-grow">{children}</main>
           </section>
           <Footer />
