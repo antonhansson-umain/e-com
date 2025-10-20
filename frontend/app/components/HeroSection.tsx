@@ -10,11 +10,8 @@ type HeroSectionProps = {
 
 export default function HeroSection({block}: HeroSectionProps) {
   const {title, description, ctaText, ctaLink, backgroundImage} = block
-  const pathname = usePathname()
   const cleanSlug = ctaLink?.replace(/[\u200B-\u200D\uFEFF]/g, '') || ''
-  const fullLink = `${pathname.replace(/\/$/, '')}/${cleanSlug}`
 
-  console.log('background image: ', backgroundImage)
 
   return (
     <section
@@ -25,7 +22,7 @@ export default function HeroSection({block}: HeroSectionProps) {
     >
       <h1 className="font-bg-header">{title}</h1>
       <p className="font-text text-white my-6">{description}</p>
-      <Button href={fullLink} variant="primary" size="sm">
+      <Button href={cleanSlug} variant="primary" size="sm">
         {ctaText}
       </Button>
     </section>

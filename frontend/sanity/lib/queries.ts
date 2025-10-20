@@ -3,17 +3,6 @@ import test from 'node:test'
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
 
-// const postFields = /* groq */ `
-//   _id,
-//   "status": select(_originalId in path("drafts.**") => "draft", "published"),
-//   "title": coalesce(title, "Untitled"),
-//   "slug": slug.current,
-//   excerpt,
-//   coverImage,
-//   "date": coalesce(date, _updatedAt),
-//   "author": author->{firstName, lastName, picture},
-// `
-
 const linkReference = /* groq */ `
   _type == "link" => {
     "page": page->slug.current,
@@ -27,34 +16,6 @@ const linkFields = /* groq */ `
       ${linkReference}
       }
 `
-
-// export const getHomePageQuery = defineQuery(`
-//   *[_type == 'homePage'][0]
-// `)
-// export const getHomePageQuery = defineQuery(`*[_type == "homePage"][0]`)
-
-// {
-//     _id,
-//     _type,
-//     heading,
-//     subheading,
-//   }
-// put this in getHomePageQuery
-// "pageBuilder": pageBuilder[]{
-//   ...,
-//   _type == "callToAction" => {
-//     ${linkFields},
-//   },
-//   _type == "infoSection" => {
-//     content[]{
-//       ...,
-//       markDefs[]{
-//         ...,
-//         ${linkReference}
-//       }
-//     }
-//   },
-// },
 
 export const getPageQuery = defineQuery(`
   *[_type == 'page' && slug.current == $slug][0]{

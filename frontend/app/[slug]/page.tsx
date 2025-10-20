@@ -37,7 +37,6 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const {data: page} = await sanityFetch({
     query: getPageQuery,
     params,
-    // Metadata should never contain stega
     stega: false,
   })
 
@@ -49,10 +48,6 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function Page(props: Props) {
   const params = await props.params
-  // const [{data: page}, {data: albums}] = await Promise.all([
-  //   sanityFetch({query: getPageQuery, params}),
-  //   sanityFetch({query: getAlbumsQuery, params}),
-  // ])
 
     const [{data: page}, albums] = await Promise.all([
       sanityFetch({query: getPageQuery, params}),

@@ -1,5 +1,3 @@
-// section title, section description, cta label, query?
-
 import {defineField, defineType} from 'sanity'
 import {Disc} from 'lucide-react'
 
@@ -25,6 +23,12 @@ export const selectedAlbumsSection = defineType({
     defineField({
       name: 'ctaText',
       title: 'Button Text',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'ctaLink',
+      title: 'Button link',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),

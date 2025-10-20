@@ -19,7 +19,6 @@ type Props = {
 export async function generateStaticParams() {
   const {data} = await sanityFetch({
     query: pagesSlugs,
-    // // Use the published perspective in generateStaticParams
     perspective: 'published',
     stega: false,
   })
@@ -34,7 +33,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
   const {data: homePage} = await sanityFetch({
     query: getHomePageQuery,
-    params: {slug: 'home'},
+    params,
     stega: false,
   })
 
@@ -51,10 +50,6 @@ export default async function Page(props: Props) {
     sanityFetch({query: getHomePageQuery, params}),
     getAlbums(),
   ])
-
-  // const [{data: homePage}] = await Promise.all([sanityFetch({query: getHomePageQuery, params})])
-  //   const [{data: albums}] = await Promise.all([sanityFetch({query: getAlbumsQuery, params})])
-  // const albums = await getAlbums()
 
   if (!homePage?._id) {
     return (
