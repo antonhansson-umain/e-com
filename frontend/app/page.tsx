@@ -60,7 +60,7 @@ export default async function Page(props: Props) {
         className="!max-w-full w-screen h-[90vh] flex flex-col items-center justify-center text-center bg-cover bg-center !p-4"
         style={{
           backgroundImage: homePage.image
-            ? `url(${urlForImage(homePage.image)?.minWidth(320).maxWidth(1280).minHeight(667)})`
+            ? `url(${urlForImage(homePage.image)?.minWidth(320).minHeight(667)})`
             : undefined,
         }}
       >
