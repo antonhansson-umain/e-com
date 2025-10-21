@@ -8,9 +8,16 @@ export default async function page({params}: {params: Promise<{id: string}>}) {
   const album = await getAlbum(id)
   if (!album) return notFound()
   const relatedAlbums = await getAlbums({genres: album.genres})
+  const block = {
+    sectionTitle: 'You may also like...',
+    sectionDescription: "If you like this, you'll love these.",
+    ctaText: 'Shop Similar',
+    ctaLink: `/shop?genres=${album.genres[0]}`,
+  }
   return (
     <div>
       <h1>{album?.title}</h1>
+      <SelectedAlbumsSection block={block} albums={relatedAlbums.slice(0, 2)} />
     </div>
   )
 }
