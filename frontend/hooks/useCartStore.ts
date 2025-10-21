@@ -2,12 +2,11 @@ import {Album} from '@/types/types'
 import {create} from 'zustand'
 import {persist, createJSONStorage} from 'zustand/middleware'
 
-type Cart = Record<Album['_id'], number>
+export type Cart = Record<Album['_id'], number>
 
 interface CartState {
   cart: Cart
   getItemQty: (id: Album['_id']) => number
-  // getTotalQty: () => number
   incrementItemInCart: (id: Album['_id']) => void
   decrementItemInCart: (id: Album['_id']) => void
   addToCart: (id: Album['_id'], quantity?: number) => void
@@ -23,10 +22,6 @@ export const useCartStore = create<CartState>()(
         const cart = get().cart
         return cart[id]
       },
-      // getTotalQty: () => {
-      //   const cart = get().cart
-      //   return Object.values(cart).reduce((acc, qty) => acc + qty, 0)
-      // },
       incrementItemInCart: (id) =>
         set((state) => ({
           cart: {
