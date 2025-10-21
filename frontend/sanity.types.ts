@@ -733,7 +733,7 @@ export type PagesSlugsResult = Array<{
   slug: string
 }>
 // Variable: getAlbumsQuery
-// Query: *[    _type == "album" &&    select(      !defined($genres) => true,      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,      true    ) &&    select(      !defined($countries) => true,      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,      true    )  ] | order(      select(      $sortBy == "price-high" => -price,      $sortBy == "price-low" => price,      true => _createdAt    ) asc    )   {    _id,    title,    description,    "artist": artist->artistName,    genres[]->{genreName},    price,    "image": picture.asset->url  }
+// Query: *[    _type == "album" &&    select(      !defined($genres) => true,      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,      true    ) &&    select(      !defined($countries) => true,      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,      true    )  ] | order(      select(      $sortBy == "price-high" => -price,      $sortBy == "price-low" => price,      true => _createdAt    ) asc    )   {    _id,    title,    description,    "artist": artist->artistName,    genres[]->{genreName},    price,    // "image": picture.asset->url    picture, // will be using urlForImage()  }
 export type GetAlbumsQueryResult = Array<{
   _id: string
   title: string
@@ -743,7 +743,19 @@ export type GetAlbumsQueryResult = Array<{
     genreName: string
   }>
   price: number
-  image: string | null
+  picture: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
 }>
 // Variable: getAlbumById
 // Query: *[_type == 'album' && _id == $id][0]{    _id,    description,    "genres": genres[]->genreName,    title,    "artist": artist->artistName,    price,    "image": picture.asset->url  }
@@ -778,7 +790,7 @@ declare module '@sanity/client' {
     '\n  *[_type == \'homePage\'][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetHomePageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
-    '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    )\n  ] | order(\n      select(\n      $sortBy == "price-high" => -price,\n      $sortBy == "price-low" => price,\n      true => _createdAt\n    ) asc\n    ) \n  {\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    price,\n    "image": picture.asset->url\n  }\n': GetAlbumsQueryResult
+    '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    )\n  ] | order(\n      select(\n      $sortBy == "price-high" => -price,\n      $sortBy == "price-low" => price,\n      true => _createdAt\n    ) asc\n    ) \n  {\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    price,\n    // "image": picture.asset->url\n    picture, // will be using urlForImage()\n  }\n': GetAlbumsQueryResult
     '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    "genres": genres[]->genreName,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumByIdResult
     '\n*[_type == \'genre\']{\n  "label": genreName,\n  "value": genreName\n}\n': GetGenresQueryResult
     '\n  *[_type == \'country\']{\n    "label": flag + " " + name,\n    "value": isoCode\n  }\n  ': GetCountriesQueryResult

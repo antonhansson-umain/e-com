@@ -105,7 +105,7 @@ export const getAlbumsQuery = defineQuery(`
     "artist": artist->artistName,
     genres[]->{genreName},
     price,
-    "image": picture.asset->url
+    picture, // will be using urlForImage()
   }
 `)
 
