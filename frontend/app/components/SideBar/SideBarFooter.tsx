@@ -8,16 +8,18 @@ export default function SideBarFooter({
   actionLabel,
   action,
   href,
+  closeOnClick = true,
 }: {
   children?: React.ReactNode
-  actionLabel: string
+  actionLabel: React.ReactNode
   action?: () => void
   href?: string
+  closeOnClick?: boolean
 }) {
   const {setIsOpen} = useSideBarContext()
 
   const handleClick = () => {
-    setIsOpen(false)
+    if (closeOnClick) setIsOpen(false)
     action?.()
   }
   return (

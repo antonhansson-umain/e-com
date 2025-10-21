@@ -7,6 +7,7 @@ import {useEffect, useState} from 'react'
 import EmptyCart from './empty'
 import {GetAlbumByIdResult} from '@/sanity.types'
 import CartItem from './CartItem'
+import Spinner from '../Spinner'
 
 type UICart = {
   [id: string]: GetAlbumByIdResult & {quantity: number}
@@ -14,6 +15,7 @@ type UICart = {
 
 export default function Cart() {
   const [albums, setAlbums] = useState<UICart>({})
+  const [buttonLabel, setButtonLabel] = useState<React.ReactNode>('CHECKOUT')
 
   const cart = useCartStore((state) => state.cart)
   const calculateSubtotal = () => {
@@ -36,6 +38,17 @@ export default function Cart() {
   const isEmpty = Object.keys(cart).length <= 0
   if (isEmpty) return <EmptyCart />
 
+  async function handleCheckout() {
+    setButtonLabel(<Spinner />)
+    const res = await fetch('/api/checkout_sessions', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(cart),
+    })
+    const {url} = await res.json()
+    window.location.href = url
+  }
+
   return (
     <>
       <ul className="flex flex-col px-2 py-4 overflow-scroll">
@@ -45,7 +58,7 @@ export default function Cart() {
           Object.entries(albums).map(([id, album]) => <CartItem key={id} album={album} />)
         )}
       </ul>
-      <SideBarFooter actionLabel="CHECKOUT" href="/checkout">
+      <SideBarFooter actionLabel={buttonLabel} action={handleCheckout} closeOnClick={false}>
         <div className="flex justify-between items-center">
           <div className="text-xl">SUBTOTAL</div>
           <div className="text-3xl">${calculateSubtotal()}</div>

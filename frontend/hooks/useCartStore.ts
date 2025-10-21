@@ -2,7 +2,7 @@ import {Album} from '@/types/types'
 import {create} from 'zustand'
 import {persist, createJSONStorage} from 'zustand/middleware'
 
-type Cart = Record<Album['_id'], number>
+export type Cart = Record<Album['_id'], number>
 
 interface CartState {
   cart: Cart
