@@ -3,7 +3,14 @@ import Button from '../Button'
 import type {SelectedAlbumsSectionType, Album} from '@/types/types'
 
 interface SelectedAlbumsSectionProps {
-  block: SelectedAlbumsSectionType
+  block:
+    | SelectedAlbumsSectionType
+    | {
+        sectionTitle: string
+        sectionDescription: string
+        ctaText: string
+        ctaLink: string
+      }
   albums: Album[]
 }
 
