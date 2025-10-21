@@ -13,16 +13,16 @@ export default async function page({
   const sessionId = Array.isArray(session_id) ? session_id[0] : session_id
 
   const albums = await getAlbums()
+  const block = {
+    sectionTitle: 'You may also like...',
+    sectionDescription: 'Based on your recent purchase.',
+    ctaText: 'Shop Now',
+    ctaLink: '/shop',
+  }
   return (
     <>
       <Message sessionId={sessionId} />
-      <SelectedAlbumsSection
-        albums={albums.slice(0, 2)}
-        title="You may also like..."
-        description="Based on your recent purchase."
-        cta="Shop All"
-        ctaHref="/shop"
-      />
+      <SelectedAlbumsSection albums={albums.slice(0, 2)} block={block} />
     </>
   )
 }
