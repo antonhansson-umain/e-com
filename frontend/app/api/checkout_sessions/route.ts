@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
       cancel_url: `${origin}/?canceled=true`,
     })
     if (!session.url) throw Error('No sessions url')
-    return NextResponse.json({url: session.url}) // ✅ Return JSON not redirect
+    return NextResponse.json({url: session.url, session_id: session.id}) // ✅ Return JSON not redirect
   } catch (err) {
     return NextResponse.json({error: 'Could not create checkout session'}, {status: 500})
   }

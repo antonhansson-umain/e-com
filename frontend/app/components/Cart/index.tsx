@@ -8,6 +8,7 @@ import EmptyCart from './empty'
 import {GetAlbumByIdResult} from '@/sanity.types'
 import CartItem from './CartItem'
 import Spinner from '../Spinner'
+import {useCheckoutSession} from '@/hooks/useCheckoutSession'
 
 type UICart = {
   [id: string]: GetAlbumByIdResult & {quantity: number}
@@ -21,6 +22,7 @@ export default function Cart() {
   const calculateSubtotal = () => {
     return Object.values(albums).reduce((acc, album) => acc + album.price * album.quantity, 0)
   }
+  const setSessionId = useCheckoutSession((state) => state.setSessionId)
 
   useEffect(() => {
     const loadAlbums = async () => {
@@ -45,7 +47,9 @@ export default function Cart() {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(cart),
     })
-    const {url} = await res.json()
+    const {url, session_id} = await res.json()
+
+    setSessionId(session_id)
     window.location.href = url
   }
 
