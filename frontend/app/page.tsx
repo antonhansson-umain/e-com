@@ -30,19 +30,19 @@ export async function generateStaticParams() {
  * Generate metadata for the page.
  * Learn more: https://nextjs.org/docs/app/api-reference/functions/generate-metadata#generatemetadata-function
  */
-export async function generateMetadata(props: Props): Promise<Metadata> {
-  const params = await props.params
-  const {data: homePage} = await sanityFetch({
-    query: getHomePageQuery,
-    params,
-    stega: false,
-  })
+// export async function generateMetadata(props: Props): Promise<Metadata> {
+//   const params = await props.params
+//   const {data: homePage} = await sanityFetch({
+//     query: getHomePageQuery,
+//     params,
+//     stega: false,
+//   })
 
-  return {
-    title: homePage?.title ?? STORE_NAME,
-    description: homePage?.subtitle,
-  } satisfies Metadata
-}
+//   return {
+//     title: homePage?.title ?? STORE_NAME,
+//     description: homePage?.subtitle,
+//   } satisfies Metadata
+// }
 
 export default async function Page(props: Props) {
   const params = await props.params
