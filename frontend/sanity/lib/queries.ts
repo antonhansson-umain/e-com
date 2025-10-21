@@ -91,7 +91,14 @@ export const getAlbumsQuery = defineQuery(`
       defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,
       true
     )
-  ]{
+  ] | order(
+      select(
+      $sortBy == "price-high" => -price,
+      $sortBy == "price-low" => price,
+      true => _createdAt
+    ) asc
+    ) 
+  {
     _id,
     title,
     description,
