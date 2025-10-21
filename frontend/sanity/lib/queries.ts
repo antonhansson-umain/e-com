@@ -43,21 +43,15 @@ export const getPageQuery = defineQuery(`
 
 export const getHomePageQuery = defineQuery(`
   *[_type == 'homePage'][0]{
-    _id,
-    _type,
-    name,
-    slug,
-    heading,
-    subheading,
+    _id, // apparently required
+    _type, // apparently required
+    title,
+    subtitle,
+    cta,
+    ctaHref,
+    image,
     "pageBuilder": pageBuilder[]{
       ...,
-      _type == "heroSection" => {
-        ...,
-        "backgroundImage": {
-          "url": backgroundImage.asset->url,
-          "metadata": backgroundImage.asset->metadata
-        }
-      },
       _type == "selectedAlbumsSection" => {
         ...,
       },

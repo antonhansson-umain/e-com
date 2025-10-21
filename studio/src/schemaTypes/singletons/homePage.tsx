@@ -1,55 +1,3 @@
-// import {defineField, defineType} from 'sanity'
-
-// /**
-//  * Page schema.  Define and edit the fields for the 'page' content type.
-//  * Learn more: https://www.sanity.io/docs/schema-types
-//  */
-
-// export const homePage = defineType({
-//   name: 'homePage',
-//   title: 'Home Page',
-//   type: 'document',
-//   fields: [
-//     defineField({
-//       name: 'heading',
-//       title: 'Heading',
-//       type: 'string',
-//       initialValue: 'Welcome to Wow Records',
-//       validation: (Rule) => Rule.required(),
-//     }),
-//     defineField({
-//       name: 'subheading',
-//       title: 'Subheading',
-//       initialValue: 'Wows or Woes.',
-//       type: 'string',
-//     }),
-//     // defineField({
-//     //   name: 'pageBuilder',
-//     //   title: 'Page builder',
-//     //   type: 'array',
-//     //   of: [{type: 'callToAction'}, {type: 'infoSection'}],
-//     //   options: {
-//     //     insertMenu: {
-//     //       // Configure the "Add Item" menu to display a thumbnail preview of the content type. https://www.sanity.io/docs/array-type#efb1fe03459d
-//     //       views: [
-//     //         {
-//     //           name: 'grid',
-//     //           previewImageUrl: (schemaTypeName) =>
-//     //             `/static/page-builder-thumbnails/${schemaTypeName}.webp`,
-//     //         },
-//     //       ],
-//     //     },
-//     //   },
-//     // }),
-//   ],
-//   preview: {
-//     prepare() {
-//       return {
-//         title: 'Home Page',
-//       }
-//     },
-//   },
-// })
 import {HomeIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
@@ -73,26 +21,41 @@ export const homePage = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'description',
-      description: 'Used on the Homepage',
-      title: 'Description',
+      name: 'subtitle',
+      description: 'Appears below title.',
+      title: 'Subtitle',
       type: 'string',
       initialValue: 'Wows or Woes.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'cta',
+      description: 'Label for CTA button',
+      title: 'Call-To-Action',
+      type: 'string',
+      initialValue: 'Shop Now',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'ctaHref',
+      description: 'Path for CTA button',
+      title: 'Call-To-Action Path',
+      type: 'string',
+      initialValue: '/shop',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'image',
+      description: 'Background image.',
+      title: 'Hero Image',
+      type: 'image',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'pageBuilder',
       title: 'Page builder',
       type: 'array',
-      of: [
-        {type: 'heroSection'},
-        {type: 'selectedAlbumsSection'},
-      ],
-      // validation: (Rule) =>
-      //   Rule.custom((blocks) => {
-      //     const heroCount = (blocks || []).filter((b) => b._type === 'heroSection').length
-      //     return heroCount > 1 ? 'Only the first Hero Section will be displayed on the page' : true
-      //   }),
+      of: [{type: 'selectedAlbumsSection'}],
       options: {
         insertMenu: {
           views: [
