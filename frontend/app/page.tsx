@@ -51,8 +51,6 @@ export default async function Page(props: Props) {
     getAlbums(),
   ])
 
-  console.log('albums', albums)
-
   if (!homePage?._id) {
     return (
       <div className="py-40">

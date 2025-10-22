@@ -27,42 +27,48 @@ export const getPageQuery = defineQuery(`
     subheading,
     "pageBuilder": pageBuilder[]{
       ...,
-      _type == "heroSection" => {
-        ...,
-        "backgroundImage": {
-          "url": backgroundImage.asset->url,
-          "metadata": backgroundImage.asset->metadata
-        }
-      },
       _type == "selectedAlbumsSection" => {
-        ...,
-      },
+      ...,
+      "tag": tag[]->{_id, title},
+      "related": *[
+        _type == "album" &&
+        count(tags[]._ref[@ in ^.tag[]._ref]) > 0
+      ]{
+        _id,
+        title,
+        description,
+        "artist": artist->artistName,
+        "image": picture.asset->url,
+        tags[]->{_id, tagName}
+      }
+    }
     },
   }
 `)
 
 export const getHomePageQuery = defineQuery(`
   *[_type == 'homePage'][0]{
-    _id,
-    _type,
-    name,
-    slug,
-    heading,
-    subheading,
-    "pageBuilder": pageBuilder[]{
+  _id,
+  title,
+  "pageBuilder": pageBuilder[]{
+    ...,
+    _type == "selectedAlbumsSection" => {
       ...,
-      _type == "heroSection" => {
-        ...,
-        "backgroundImage": {
-          "url": backgroundImage.asset->url,
-          "metadata": backgroundImage.asset->metadata
-        }
-      },
-      _type == "selectedAlbumsSection" => {
-        ...,
-      },
-    },
+      "tag": tag[]->{_id, title},
+      "related": *[
+        _type == "album" &&
+        count(tags[]._ref[@ in ^.tag[]._ref]) > 0
+      ]{
+        _id,
+        title,
+        description,
+        "artist": artist->artistName,
+        "image": picture.asset->url,
+        tags[]->{_id, tagName}
+      }
+    }
   }
+}
 `)
 
 export const sitemapData = defineQuery(`
