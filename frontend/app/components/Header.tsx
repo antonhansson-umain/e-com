@@ -6,6 +6,7 @@ import Image from 'next/image'
 import CartIcon from './CartIcon'
 import Cart from './Cart'
 import {useSideBarContext} from '@/contexts/sidebar-context'
+import Logo from './Logo'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -65,13 +66,7 @@ export default function Header() {
           </button>
         </div>
         <Link href="/">
-          <Image
-            src="/images/wow_logo.svg"
-            alt="WOW records logo"
-            width={72}
-            height={20}
-            className="place-self-center"
-          />
+          <Logo />
         </Link>
         <div className="flex items-center justify-end gap-4 transition-all duration-200 hover:text-red-300">
           <button className="sm:hidden" aria-label="Cart" onClick={handleCartOpen}>

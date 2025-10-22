@@ -1,5 +1,6 @@
 import {TAGLINE} from '@/constants'
 import Link from 'next/link'
+import Logo from './Logo'
 
 export default function Footer() {
   const columns = [
@@ -54,7 +55,9 @@ export default function Footer() {
   return (
     <footer className="bg-maroon text-white px-4 sm:px-20 py-16 sm:py-16  grid lg:grid-cols-[2fr_3fr] gap-y-16">
       <div>
-        <div>WOW</div>
+        <Link href={'/'}>
+          <Logo />
+        </Link>
         <p className="font-mono">{TAGLINE}</p>
       </div>
       <div className="grid sm:grid-cols-3 gap-16">
