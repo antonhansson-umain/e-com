@@ -93,6 +93,34 @@ export type BlockContent = Array<{
   _key: string
 }>
 
+export type SelectedAlbumsSection = {
+  _type: 'selectedAlbumsSection'
+  sectionTitle: string
+  sectionDescription: string
+  ctaText: string
+  ctaLink: string
+}
+
+export type HeroSection = {
+  _type: 'heroSection'
+  title?: string
+  description?: string
+  ctaText?: string
+  ctaLink?: string
+  backgroundImage?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+}
+
 export type Tag = {
   _id: string
   _type: 'tag'
@@ -200,6 +228,26 @@ export type Country = {
   isoCode: string
 }
 
+export type Footer = {
+  _id: string
+  _type: 'footer'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  tagline?: string
+  linkGroups?: Array<{
+    linkGroupTitle: string
+    links?: Array<{
+      linkLabel: string
+      linkPath: string
+      _type: 'link'
+      _key: string
+    }>
+    _type: 'linkGroup'
+    _key: string
+  }>
+}
+
 export type HomePage = {
   _id: string
   _type: 'homePage'
@@ -227,34 +275,6 @@ export type HomePage = {
       _key: string
     } & SelectedAlbumsSection
   >
-}
-
-export type SelectedAlbumsSection = {
-  _type: 'selectedAlbumsSection'
-  sectionTitle: string
-  sectionDescription: string
-  ctaText: string
-  ctaLink: string
-}
-
-export type HeroSection = {
-  _type: 'heroSection'
-  title?: string
-  description?: string
-  ctaText?: string
-  ctaLink?: string
-  backgroundImage?: {
-    asset?: {
-      _ref: string
-      _type: 'reference'
-      _weak?: boolean
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-    }
-    media?: unknown
-    hotspot?: SanityImageHotspot
-    crop?: SanityImageCrop
-    _type: 'image'
-  }
 }
 
 export type Settings = {
@@ -582,14 +602,15 @@ export type AllSanitySchemaTypes =
   | Link
   | InfoSection
   | BlockContent
+  | SelectedAlbumsSection
+  | HeroSection
   | Tag
   | Album
   | Artist
   | Genre
   | Country
+  | Footer
   | HomePage
-  | SelectedAlbumsSection
-  | HeroSection
   | Settings
   | Page
   | SanityAssistInstructionTask
@@ -666,6 +687,18 @@ export type SettingsQueryResult = {
     metadataBase?: string
     _type: 'image'
   }
+} | null
+// Variable: footerQuery
+// Query: *[_type == "footer"][0]{    tagline,    linkGroups[]{      linkGroupTitle,      links[]{        linkLabel,        linkPath      }  }}
+export type FooterQueryResult = {
+  tagline: string | null
+  linkGroups: Array<{
+    linkGroupTitle: string
+    links: Array<{
+      linkLabel: string
+      linkPath: string
+    }> | null
+  }> | null
 } | null
 // Variable: getPageQuery
 // Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "heroSection" => {        ...,        "backgroundImage": {          "url": backgroundImage.asset->url,          "metadata": backgroundImage.asset->metadata        }      },      _type == "selectedAlbumsSection" => {        ...,      },    },  }
@@ -795,6 +828,7 @@ import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult
+    '\n  *[_type == "footer"][0]{\n    tagline,\n    linkGroups[]{\n      linkGroupTitle,\n      links[]{\n        linkLabel,\n        linkPath\n      }\n  }}\n': FooterQueryResult
     '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetPageQueryResult
     '\n  *[_type == \'homePage\'][0]{\n    _id, // apparently required\n    _type, // apparently required\n    title,\n    subtitle,\n    cta,\n    ctaHref,\n    image,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetHomePageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult

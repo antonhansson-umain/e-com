@@ -1,6 +1,7 @@
 import {CogIcon, HomeIcon} from '@sanity/icons'
 import type {StructureBuilder, StructureResolver} from 'sanity/structure'
 import pluralize from 'pluralize-esm'
+import {FootprintsIcon} from 'lucide-react'
 
 /**
  * Structure builder is useful whenever you want to control how documents are grouped and
@@ -8,7 +9,7 @@ import pluralize from 'pluralize-esm'
  * Learn more: https://www.sanity.io/docs/structure-builder-introduction
  */
 
-const DISABLED_TYPES = ['settings', 'assist.instruction.context', 'country', 'homePage']
+const DISABLED_TYPES = ['settings', 'assist.instruction.context', 'country', 'homePage', 'footer']
 
 export const structure: StructureResolver = (S: StructureBuilder) =>
   S.list()
@@ -25,6 +26,11 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
         .title('Home Page')
         .child(S.document().schemaType('homePage').documentId('siteHome'))
         .icon(HomeIcon),
+      // Footer
+      S.listItem()
+        .title('Footer')
+        .child(S.document().schemaType('footer').documentId('elementFooter'))
+        .icon(FootprintsIcon),
       // Settings Singleton in order to view/edit the one particular document for Settings.  Learn more about Singletons: https://www.sanity.io/docs/create-a-link-to-a-single-edit-page-in-your-main-document-type-list
       S.listItem()
         .title('Site Settings')

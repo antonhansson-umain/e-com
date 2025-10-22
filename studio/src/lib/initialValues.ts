@@ -57,5 +57,3 @@ export const description = [
 ]
 
 export const ogImageTitle = 'A Next.js Blog with a Native Authoring Experience'
-
-export const STORE_NAME = 'Wow'
