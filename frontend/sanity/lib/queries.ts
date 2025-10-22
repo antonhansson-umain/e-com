@@ -90,13 +90,19 @@ export const getAlbumsQuery = defineQuery(`
       !defined($countries) => true,
       defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,
       true
-    )
+    ) &&
+      select(
+      !defined($tags) => true,
+      defined($tags) => count([@ in $tags]) > 0 && count((tags[]->_id)[@ in $tags]) > 0,
+      true
+)
   ]{
     _id,
     title,
     description,
     "artist": artist->artistName,
     genres[]->{genreName},
+    "tags": tags[]->_id,
     price,
     "image": picture.asset->url
   }

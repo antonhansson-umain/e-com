@@ -7,9 +7,11 @@ import {Filters} from '@/types/Filters'
 export async function getAlbums(filters?: Filters) {
   const genres = filters?.genres ?? null
   const countries = filters?.countries ?? null
+  const tags = filters?.tags ?? null
   const {data: albums} = await sanityFetch({
     query: getAlbumsQuery,
-    params: {genres, countries},
+    params: {genres, countries, tags},
   })
   return albums
 }
+
