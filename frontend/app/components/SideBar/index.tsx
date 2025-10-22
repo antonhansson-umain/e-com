@@ -38,7 +38,7 @@ export default function SideBar({views}: SideBarProps) {
       ref={ref}
       aria-hidden={!isOpen}
       className={cn(
-        'fixed top-0 right-0 bg-butter/80 backdrop-blur-xl h-screen w-full sm:w-80 z-[1000] border-l border-black/50 transition-all grid grid-rows-[auto_1fr_auto]',
+        'fixed top-0 right-0 bg-background/80 backdrop-blur-xl h-screen w-full sm:w-80 z-[1000] border-l border-black/50 transition-all grid grid-rows-[auto_1fr_auto]',
         {'translate-x-full': !isOpen},
       )}
     >

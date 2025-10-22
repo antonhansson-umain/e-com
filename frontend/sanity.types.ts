@@ -93,6 +93,16 @@ export type BlockContent = Array<{
   _key: string
 }>
 
+export type Tag = {
+  _id: string
+  _type: 'tag'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  tagName?: string
+  tagDescription?: string
+}
+
 export type Album = {
   _id: string
   _type: 'album'
@@ -197,14 +207,25 @@ export type HomePage = {
   _updatedAt: string
   _rev: string
   title: string
-  description: string
+  subtitle: string
+  cta: string
+  ctaHref: string
+  image: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
   pageBuilder?: Array<
-    | ({
-        _key: string
-      } & HeroSection)
-    | ({
-        _key: string
-      } & SelectedAlbumsSection)
+    {
+      _key: string
+    } & SelectedAlbumsSection
   >
 }
 
@@ -212,24 +233,15 @@ export type SelectedAlbumsSection = {
   _type: 'selectedAlbumsSection'
   title: string
   sectionDescription: string
-  tag?: {
+  tag?: Array<{
     _ref: string
     _type: 'reference'
     _weak?: boolean
+    _key: string
     [internalGroqTypeReferenceTo]?: 'tag'
-  }
+  }>
   ctaText: string
   ctaLink: string
-}
-
-export type Tag = {
-  _id: string
-  _type: 'tag'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  tagName?: string
-  tagDescription?: string
 }
 
 export type HeroSection = {
@@ -577,13 +589,13 @@ export type AllSanitySchemaTypes =
   | Link
   | InfoSection
   | BlockContent
+  | Tag
   | Album
   | Artist
   | Genre
   | Country
   | HomePage
   | SelectedAlbumsSection
-  | Tag
   | HeroSection
   | Settings
   | Page
@@ -663,7 +675,7 @@ export type SettingsQueryResult = {
   }
 } | null
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "selectedAlbumsSection" => {      ...,      "tag": tag[]->{_id, title},      "related": *[        _type == "album" &&        count(tags[]._ref[@ in ^.tag[]._ref]) > 0      ]{        _id,        title,        description,        "artist": artist->artistName,        "image": picture.asset->url,        tags[]->{_id, tagName}      }    }    },  }
+// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "selectedAlbumsSection" => {      ...,      "tag": tag[]->{_id, title},      "related": *[        _type == "album" &&        count(tags[]._ref[@ in ^.tag[]._ref]) > 0      ]{        _id,        title,        description,        "artist": artist->artistName,        image,        tags[]->{_id, tagName}        }      }    }  }
 export type GetPageQueryResult = {
   _id: string
   _type: 'page'
@@ -697,7 +709,10 @@ export type GetPageQueryResult = {
         _type: 'selectedAlbumsSection'
         title: string
         sectionDescription: string
-        tag: null
+        tag: Array<{
+          _id: string
+          title: null
+        }> | null
         ctaText: string
         ctaLink: string
         related: Array<{
@@ -705,7 +720,7 @@ export type GetPageQueryResult = {
           title: string
           description: BlockContent | null
           artist: string
-          image: string | null
+          image: null
           tags: Array<{
             _id: string
             tagName: string | null
@@ -715,52 +730,49 @@ export type GetPageQueryResult = {
   > | null
 } | null
 // Variable: getHomePageQuery
-// Query: *[_type == 'homePage'][0]{  _id,  title,  "pageBuilder": pageBuilder[]{    ...,    _type == "selectedAlbumsSection" => {      ...,      "tag": tag[]->{_id, title},      "related": *[        _type == "album" &&        count(tags[]._ref[@ in ^.tag[]._ref]) > 0      ]{        _id,        title,        description,        "artist": artist->artistName,        "image": picture.asset->url,        tags[]->{_id, tagName}      }    }  }}
+// Query: *[_type == 'homePage'][0]{    _id, // apparently required    _type, // apparently required    title,    subtitle,    cta,    ctaHref,    image,    "pageBuilder": pageBuilder[]{      ...,      _type == "selectedAlbumsSection" => {      ...,      "tag": tag[]->{_id, title},      "related": *[        _type == "album" &&        count(tags[]._ref[@ in ^.tag[]._ref]) > 0      ]{        _id,        title,        description,        "artist": artist->artistName,        image,        tags[]->{_id, tagName}      }    }  }}
 export type GetHomePageQueryResult = {
   _id: string
+  _type: 'homePage'
   title: string
-  pageBuilder: Array<
-    | {
-        _key: string
-        _type: 'heroSection'
-        title: string
-        description: string
-        ctaText: string
-        ctaLink: string
-        backgroundImage: {
-          asset?: {
-            _ref: string
-            _type: 'reference'
-            _weak?: boolean
-            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-          }
-          media?: unknown
-          hotspot?: SanityImageHotspot
-          crop?: SanityImageCrop
-          _type: 'image'
-        }
-      }
-    | {
-        _key: string
-        _type: 'selectedAlbumsSection'
-        title: string
-        sectionDescription: string
-        tag: null
-        ctaText: string
-        ctaLink: string
-        related: Array<{
-          _id: string
-          title: string
-          description: BlockContent | null
-          artist: string
-          image: string | null
-          tags: Array<{
-            _id: string
-            tagName: string | null
-          }> | null
-        }>
-      }
-  > | null
+  subtitle: string
+  cta: string
+  ctaHref: string
+  image: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  pageBuilder: Array<{
+    _key: string
+    _type: 'selectedAlbumsSection'
+    title: string
+    sectionDescription: string
+    tag: Array<{
+      _id: string
+      title: null
+    }> | null
+    ctaText: string
+    ctaLink: string
+    related: Array<{
+      _id: string
+      title: string
+      description: BlockContent | null
+      artist: string
+      image: null
+      tags: Array<{
+        _id: string
+        tagName: string | null
+      }> | null
+    }>
+  }> | null
 } | null
 // Variable: sitemapData
 // Query: *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {    "slug": slug.current,    _type,    _updatedAt,  }
@@ -775,7 +787,7 @@ export type PagesSlugsResult = Array<{
   slug: string
 }>
 // Variable: getAlbumsQuery
-// Query: *[    _type == "album" &&    select(      !defined($genres) => true,      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,      true    ) &&    select(      !defined($countries) => true,      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,      true    ) &&      select(      !defined($tags) => true,      defined($tags) => count([@ in $tags]) > 0 && count((tags[]->_id)[@ in $tags]) > 0,      true)  ]{    _id,    title,    description,    "artist": artist->artistName,    genres[]->{genreName},    "tags": tags[]->_id,    price,    "image": picture.asset->url  }
+// Query: *[    _type == "album" &&    select(      !defined($genres) => true,      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,      true    ) &&    select(      !defined($countries) => true,      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,      true    ) &&     select(      !defined($tags) => true,      defined($tags) => count([@ in $tags]) > 0 && count((tags[]._ref)[@ in $tags]) > 0,      true    )  ] | order(      select(      $sortBy == "price-high" => -price,      $sortBy == "price-low" => price,      true => _createdAt    ) asc    )   {    _id,    title,    description,    "artist": artist->artistName,    genres[]->{genreName},    "tags": tags[]->_id,    price,    picture, // will be using urlForImage()  }
 export type GetAlbumsQueryResult = Array<{
   _id: string
   title: string
@@ -786,7 +798,19 @@ export type GetAlbumsQueryResult = Array<{
   }>
   tags: Array<string> | null
   price: number
-  image: string | null
+  picture: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
 }>
 // Variable: getAlbumById
 // Query: *[_type == 'album' && _id == $id][0]{    _id,    description,    "genres": genres[]->genreName,    title,    "artist": artist->artistName,    price,    "image": picture.asset->url  }
@@ -817,11 +841,11 @@ import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult
-    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "selectedAlbumsSection" => {\n      ...,\n      "tag": tag[]->{_id, title},\n      "related": *[\n        _type == "album" &&\n        count(tags[]._ref[@ in ^.tag[]._ref]) > 0\n      ]{\n        _id,\n        title,\n        description,\n        "artist": artist->artistName,\n        "image": picture.asset->url,\n        tags[]->{_id, tagName}\n      }\n    }\n    },\n  }\n': GetPageQueryResult
-    '\n  *[_type == \'homePage\'][0]{\n  _id,\n  title,\n  "pageBuilder": pageBuilder[]{\n    ...,\n    _type == "selectedAlbumsSection" => {\n      ...,\n      "tag": tag[]->{_id, title},\n      "related": *[\n        _type == "album" &&\n        count(tags[]._ref[@ in ^.tag[]._ref]) > 0\n      ]{\n        _id,\n        title,\n        description,\n        "artist": artist->artistName,\n        "image": picture.asset->url,\n        tags[]->{_id, tagName}\n      }\n    }\n  }\n}\n': GetHomePageQueryResult
+    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "selectedAlbumsSection" => {\n      ...,\n      "tag": tag[]->{_id, title},\n      "related": *[\n        _type == "album" &&\n        count(tags[]._ref[@ in ^.tag[]._ref]) > 0\n      ]{\n        _id,\n        title,\n        description,\n        "artist": artist->artistName,\n        image,\n        tags[]->{_id, tagName}\n        }\n      }\n    }\n  }\n': GetPageQueryResult
+    '\n  *[_type == \'homePage\'][0]{\n    _id, // apparently required\n    _type, // apparently required\n    title,\n    subtitle,\n    cta,\n    ctaHref,\n    image,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "selectedAlbumsSection" => {\n      ...,\n      "tag": tag[]->{_id, title},\n      "related": *[\n        _type == "album" &&\n        count(tags[]._ref[@ in ^.tag[]._ref]) > 0\n      ]{\n        _id,\n        title,\n        description,\n        "artist": artist->artistName,\n        image,\n        tags[]->{_id, tagName}\n      }\n    }\n  }\n}\n': GetHomePageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
-    '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    ) &&\n      select(\n      !defined($tags) => true,\n      defined($tags) => count([@ in $tags]) > 0 && count((tags[]->_id)[@ in $tags]) > 0,\n      true\n)\n  ]{\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    "tags": tags[]->_id,\n    price,\n    "image": picture.asset->url\n  }\n': GetAlbumsQueryResult
+    '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    ) &&\n     select(\n      !defined($tags) => true,\n      defined($tags) => count([@ in $tags]) > 0 && count((tags[]._ref)[@ in $tags]) > 0,\n      true\n    )\n  ] | order(\n      select(\n      $sortBy == "price-high" => -price,\n      $sortBy == "price-low" => price,\n      true => _createdAt\n    ) asc\n    ) \n  {\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    "tags": tags[]->_id,\n    price,\n    picture, // will be using urlForImage()\n  }\n': GetAlbumsQueryResult
     '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    "genres": genres[]->genreName,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumByIdResult
     '\n*[_type == \'genre\']{\n  "label": genreName,\n  "value": genreName\n}\n': GetGenresQueryResult
     '\n  *[_type == \'country\']{\n    "label": flag + " " + name,\n    "value": isoCode\n  }\n  ': GetCountriesQueryResult

@@ -10,8 +10,8 @@ import {dataAttr} from '@/sanity/lib/utils'
 import {studioUrl} from '@/sanity/lib/api'
 
 type PageBuilderPageProps = {
-  page: GetPageQueryResult | GetHomePageQueryResult;
-  albums: Album[];
+  page: GetPageQueryResult | GetHomePageQueryResult
+  albums: Album[]
 }
 
 type PageBuilderSection = {
@@ -29,7 +29,11 @@ type PageData = {
  * The PageBuilder component is used to render the blocks from the `pageBuilder` field in the Page type in your Sanity Studio.
  */
 
-function renderSections(pageBuilderSections: PageBuilderSection[], page: {_id: string; _type: string}, albums: Album[]) {
+function renderSections(
+  pageBuilderSections: PageBuilderSection[],
+  page: {_id: string; _type: string},
+  albums: Album[],
+) {
   if (!page) {
     return null
   }

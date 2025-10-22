@@ -1,12 +1,13 @@
 import type {Metadata} from 'next'
-import Head from 'next/head'
-import {getAlbumsQuery, getHomePageQuery, pagesSlugs} from '@/sanity/lib/queries'
+// import Head from 'next/head'
+import {getHomePageQuery, pagesSlugs} from '@/sanity/lib/queries'
 import PageBuilderPage from '@/app/components/PageBuilder'
 import {sanityFetch} from '@/sanity/lib/live'
-import {PageOnboarding} from '@/app/components/Onboarding'
 import {STORE_NAME} from '@/constants'
-import SelectedAlbumsSection from './components/SelectedAlbumsSection'
 import {getAlbums} from '@/actions/getAlbums'
+import Button from './components/Button'
+import {notFound} from 'next/navigation'
+import {urlForImage} from '@/sanity/lib/utils'
 
 type Props = {
   params: Promise<{slug: string}>
@@ -29,19 +30,19 @@ export async function generateStaticParams() {
  * Generate metadata for the page.
  * Learn more: https://nextjs.org/docs/app/api-reference/functions/generate-metadata#generatemetadata-function
  */
-export async function generateMetadata(props: Props): Promise<Metadata> {
-  const params = await props.params
-  const {data: homePage} = await sanityFetch({
-    query: getHomePageQuery,
-    params,
-    stega: false,
-  })
+// export async function generateMetadata(props: Props): Promise<Metadata> {
+//   const params = await props.params
+//   const {data: homePage} = await sanityFetch({
+//     query: getHomePageQuery,
+//     params,
+//     stega: false,
+//   })
 
-  return {
-    title: homePage?.heading ?? STORE_NAME,
-    description: homePage?.subheading,
-  } satisfies Metadata
-}
+//   return {
+//     title: homePage?.title ?? STORE_NAME,
+//     description: homePage?.subtitle,
+//   } satisfies Metadata
+// }
 
 export default async function Page(props: Props) {
   const params = await props.params
@@ -51,34 +52,23 @@ export default async function Page(props: Props) {
     getAlbums(),
   ])
 
-  if (!homePage?._id) {
-    return (
-      <div className="py-40">
-        <PageOnboarding />
-      </div>
-    )
-  }
+  if (!homePage) return notFound()
 
   return (
-    <div>
-      <Head>
-        <title>{homePage.heading}</title>
-      </Head>
-      <div className="">
-        <PageBuilderPage page={homePage} albums={albums} />
-        <div className="container">
-          <div className="pb-6 border-b border-gray-100">
-            <div className="max-w-3xl">
-              <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-7xl">
-                {homePage.heading}
-              </h2>
-              <p className="mt-4 text-base lg:text-lg leading-relaxed text-gray-600 uppercase font-light">
-                {homePage.subheading}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+      <section
+        className="!max-w-full w-screen h-[90vh] flex flex-col items-center justify-center text-center bg-cover bg-center !p-4"
+        style={{
+          backgroundImage: homePage.image
+            ? `url(${urlForImage(homePage.image)?.minWidth(320).minHeight(667)})`
+            : undefined,
+        }}
+      >
+        <h1 className="font-bg-header">{homePage.title}</h1>
+        <p className="font-text text-white my-6">{homePage.subtitle}</p>
+        <Button href={homePage.ctaHref}>{homePage.cta}</Button>
+      </section>
+      <PageBuilderPage page={homePage} albums={albums} />
+    </>
   )
 }

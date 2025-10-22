@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type {Album} from '@/types/types'
 import AddToCartButton from './AddToCartButton'
+import {urlForImage} from '@/sanity/lib/utils'
 
 interface AlbumCardProps {
   album: Album
@@ -17,8 +18,11 @@ export default function AlbumCard({album}: AlbumCardProps) {
         >
           <div className="p-8 w-full bg-white place-items-center col-span-2 row-start-1 row-span-1 mb-4">
             <Image
-              src={album.image ?? '/images/placeholder.png'}
-              alt={album.title}
+              src={
+                urlForImage(album.picture)?.width(448).height(448).url() ??
+                '/images/placeholder.webp'
+              }
+              alt={`Album art for ${album.title} by ${album.artist}`}
               width={256}
               height={256}
             />

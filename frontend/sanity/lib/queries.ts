@@ -38,21 +38,26 @@ export const getPageQuery = defineQuery(`
         title,
         description,
         "artist": artist->artistName,
-        "image": picture.asset->url,
+        image,
         tags[]->{_id, tagName}
+        }
       }
     }
-    },
   }
 `)
 
 export const getHomePageQuery = defineQuery(`
   *[_type == 'homePage'][0]{
-  _id,
-  title,
-  "pageBuilder": pageBuilder[]{
-    ...,
-    _type == "selectedAlbumsSection" => {
+    _id, // apparently required
+    _type, // apparently required
+    title,
+    subtitle,
+    cta,
+    ctaHref,
+    image,
+    "pageBuilder": pageBuilder[]{
+      ...,
+      _type == "selectedAlbumsSection" => {
       ...,
       "tag": tag[]->{_id, title},
       "related": *[
@@ -63,7 +68,7 @@ export const getHomePageQuery = defineQuery(`
         title,
         description,
         "artist": artist->artistName,
-        "image": picture.asset->url,
+        image,
         tags[]->{_id, tagName}
       }
     }
@@ -97,12 +102,19 @@ export const getAlbumsQuery = defineQuery(`
       defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,
       true
     ) &&
-      select(
+     select(
       !defined($tags) => true,
-      defined($tags) => count([@ in $tags]) > 0 && count((tags[]->_id)[@ in $tags]) > 0,
+      defined($tags) => count([@ in $tags]) > 0 && count((tags[]._ref)[@ in $tags]) > 0,
       true
-)
-  ]{
+    )
+  ] | order(
+      select(
+      $sortBy == "price-high" => -price,
+      $sortBy == "price-low" => price,
+      true => _createdAt
+    ) asc
+    ) 
+  {
     _id,
     title,
     description,
@@ -110,7 +122,7 @@ export const getAlbumsQuery = defineQuery(`
     genres[]->{genreName},
     "tags": tags[]->_id,
     price,
-    "image": picture.asset->url
+    picture, // will be using urlForImage()
   }
 `)
 

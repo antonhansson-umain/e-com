@@ -4,12 +4,20 @@ import Button from '../Button'
 import type {SelectedAlbumsSectionType, Album} from '@/types/types'
 
 interface SelectedAlbumsSectionProps {
-  block: SelectedAlbumsSectionType
+  block:
+    | SelectedAlbumsSectionType
+    | {
+        sectionTitle: string
+        sectionDescription: string
+        ctaText: string
+        ctaLink: string
+        title: string
+      }
   albums: Album[]
 }
 
 export default function SelectedAlbumsSection({block, albums}: SelectedAlbumsSectionProps) {
-  const {title, sectionDescription, ctaText, ctaLink, tag} = block
+  const {title, sectionDescription, ctaText, ctaLink} = block
   
   return (
     <section className="grid grid-cols-1 lg:grid-cols-3 lg:max-w-none py-8 gap-[1rem] md:gap-[2rem]">
