@@ -3,6 +3,24 @@ import test from 'node:test'
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
 
+export const footerQuery = defineQuery(`
+  *[_type == "footer"][0]{
+    tagline,
+    linkGroups[]{
+      linkGroupTitle,
+      links[]{
+        linkLabel,
+        linkPath
+      }
+  }}
+`)
+
+export const headerQuery = defineQuery(`
+  *[_type == "header"][0]{
+    linkGroups
+  }
+`)
+
 const linkReference = /* groq */ `
   _type == "link" => {
     "page": page->slug.current,

@@ -1,80 +1,38 @@
-import {TAGLINE} from '@/constants'
 import Link from 'next/link'
 import Logo from './Logo'
+import {footerQuery} from '@/sanity/lib/queries'
+import {sanityFetch} from '@/sanity/lib/live'
 
-export default function Footer() {
-  const columns = [
-    {
-      title: 'Categories',
-      links: [
-        {
-          path: '/shop',
-          label: 'All records',
-        },
-        {
-          path: '/shop/featured',
-          label: 'Featured',
-        },
-      ],
-    },
-    {
-      title: 'Resources',
-      links: [
-        {
-          path: '/orders',
-          label: 'Orders',
-        },
-        {
-          path: '/support',
-          label: 'Support',
-        },
-        {
-          path: '/privacy',
-          label: 'Privacy Policy',
-        },
-      ],
-    },
-    {
-      title: 'Contact',
-      links: [
-        {
-          path: 'mailto:hi@umain-ecom.com',
-          label: 'hi@umain-ecom.com',
-        },
-        {
-          path: 'tel:+46700000000',
-          label: '070-000 00 00',
-        },
-        {
-          path: 'https://maps.app.goo.gl/dEefnU1XW1ETcK6b9',
-          label: 'Grev Turegatan 1, 114 46 Stockholm',
-        },
-      ],
-    },
-  ]
+export default async function Footer() {
+  const {data: footer} = await sanityFetch({
+    query: footerQuery,
+  })
   return (
-    <footer className="bg-maroon text-white px-4 sm:px-20 py-16 sm:py-16  grid lg:grid-cols-[2fr_3fr] gap-y-16">
-      <div>
-        <Link href={'/'}>
+    <footer className="bg-maroon text-white px-4 sm:px-20 py-16 sm:py-16 grid sm:grid-cols-[2fr_5fr] gap-16">
+      <div className="flex flex-col gap-2">
+        <Link href={'/'} className="w-max">
           <Logo />
         </Link>
-        <p className="font-mono">{TAGLINE}</p>
+        <p className="font-mono">{footer?.tagline}</p>
       </div>
-      <div className="grid sm:grid-cols-3 gap-16">
-        {columns.map((column) => (
-          <div key={column.title}>
-            <h3 className="uppercase mb-4">{column.title}</h3>
-            <ul className="space-y-2">
-              {column.links.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.path} className="hover:underline font-mono">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+      <div className="grid sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-16">
+        {footer &&
+          footer.linkGroups &&
+          footer.linkGroups.map((group, index) => (
+            <div key={group.linkGroupTitle + index}>
+              <h3 className="uppercase mb-4">{group.linkGroupTitle}</h3>
+              <ul className="space-y-2">
+                {group.links &&
+                  group.links.map((link) => (
+                    <li key={link.linkLabel}>
+                      <Link href={link.linkPath} className="hover:underline font-mono">
+                        {link.linkLabel}
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          ))}
       </div>
     </footer>
   )
