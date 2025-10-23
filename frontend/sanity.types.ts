@@ -749,7 +749,7 @@ export type HeaderQueryResult = {
   > | null
 } | null
 // Variable: getPageQuery
-// Query: *[_type == "page" && slug.current == $slug][0]{  _id,  _type,  name,  slug,  heading,  subheading,  "pageBuilder": pageBuilder[]{      ...,      _type == "selectedAlbumsSection" => {      ...,      "tag": tag[]->{_id, title},      "related": {      "albums": *[        _type == "album" &&        count(tags[]._ref[@ in ^.tag[]._ref]) > 0      ][0...2]{      _id,      title,      description,      "artist": artist->artistName,      genres[]->{genreName},      "tags": tags[]->_id,      price,      picture,         }      }    }  }}
+// Query: *[_type == "page" && slug.current == $slug][0]{  _id,  _type,  name,  slug,  heading,  subheading,  "pageBuilder": pageBuilder[]{      ...,      _type == "selectedAlbumsSection" => {        ...,        "related": {          "albums": *[            _type == "album" &&             references(^.tag[]._ref)          ][0...2]{            _id,            title,            description,            "artist": artist->artistName,            genres[]->{genreName},            "tags": tags[]->_id,            price,            picture,         }      }    }  }}
 export type GetPageQueryResult = {
   _id: string
   _type: 'page'
@@ -783,10 +783,13 @@ export type GetPageQueryResult = {
         _type: 'selectedAlbumsSection'
         title: string
         sectionDescription: string
-        tag: Array<{
-          _id: string
-          title: null
-        }> | null
+        tag?: Array<{
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          _key: string
+          [internalGroqTypeReferenceTo]?: 'tag'
+        }>
         ctaText: string
         ctaLink: string
         related: {
@@ -819,7 +822,7 @@ export type GetPageQueryResult = {
   > | null
 } | null
 // Variable: getHomePageQuery
-// Query: *[_type == 'homePage'][0]{    _id, // apparently required    _type, // apparently required    title,    subtitle,    cta,    ctaHref,    image,    "pageBuilder": pageBuilder[]{      ...,      _type == "selectedAlbumsSection" => {      ...,      "tag": tag[]->{_id, title},      "related": {      "albums": *[        _type == "album" &&        count(tags[]._ref[@ in ^.tag[]._ref]) > 0      ][0...2]{      _id,      title,      description,      "artist": artist->artistName,      genres[]->{genreName},      "tags": tags[]->_id,      price,      picture,         }      }    }  }}
+// Query: *[_type == 'homePage'][0]{    _id, // apparently required    _type, // apparently required    title,    subtitle,    cta,    ctaHref,    image,    "pageBuilder": pageBuilder[]{      ...,      _type == "selectedAlbumsSection" => {      ...,      "related": {      "albums": *[        _type == "album" &&        references(^.tag[]._ref)      ][0...2]{      _id,      title,      description,      "artist": artist->artistName,      genres[]->{genreName},      "tags": tags[]->_id,      price,      picture,         }      }    }  }}
 export type GetHomePageQueryResult = {
   _id: string
   _type: 'homePage'
@@ -844,10 +847,13 @@ export type GetHomePageQueryResult = {
     _type: 'selectedAlbumsSection'
     title: string
     sectionDescription: string
-    tag: Array<{
-      _id: string
-      title: null
-    }> | null
+    tag?: Array<{
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      _key: string
+      [internalGroqTypeReferenceTo]?: 'tag'
+    }>
     ctaText: string
     ctaLink: string
     related: {
@@ -946,8 +952,8 @@ declare module '@sanity/client' {
     '*[_type == "settings"][0]': SettingsQueryResult
     '\n  *[_type == "footer"][0]{\n    tagline,\n    linkGroups[]{\n      linkGroupTitle,\n      links[]{\n        linkLabel,\n        linkPath\n      }\n  }}\n': FooterQueryResult
     '\n  *[_type == "header"][0]{\n    linkGroups\n  }\n': HeaderQueryResult
-    '\n*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _type,\n  name,\n  slug,\n  heading,\n  subheading,\n  "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "selectedAlbumsSection" => {\n      ...,\n      "tag": tag[]->{_id, title},\n      "related": {\n      "albums": *[\n        _type == "album" &&\n        count(tags[]._ref[@ in ^.tag[]._ref]) > 0\n      ][0...2]{\n      _id,\n      title,\n      description,\n      "artist": artist->artistName,\n      genres[]->{genreName},\n      "tags": tags[]->_id,\n      price,\n      picture, \n        }\n      }\n    }\n  }\n}\n': GetPageQueryResult
-    '\n  *[_type == \'homePage\'][0]{\n    _id, // apparently required\n    _type, // apparently required\n    title,\n    subtitle,\n    cta,\n    ctaHref,\n    image,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "selectedAlbumsSection" => {\n      ...,\n      "tag": tag[]->{_id, title},\n      "related": {\n      "albums": *[\n        _type == "album" &&\n        count(tags[]._ref[@ in ^.tag[]._ref]) > 0\n      ][0...2]{\n      _id,\n      title,\n      description,\n      "artist": artist->artistName,\n      genres[]->{genreName},\n      "tags": tags[]->_id,\n      price,\n      picture, \n        }\n      }\n    }\n  }\n}\n': GetHomePageQueryResult
+    '\n*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _type,\n  name,\n  slug,\n  heading,\n  subheading,\n  "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "selectedAlbumsSection" => {\n        ...,\n        "related": {\n          "albums": *[\n            _type == "album" &&\n             references(^.tag[]._ref)\n          ][0...2]{\n            _id,\n            title,\n            description,\n            "artist": artist->artistName,\n            genres[]->{genreName},\n            "tags": tags[]->_id,\n            price,\n            picture, \n        }\n      }\n    }\n  }\n}\n': GetPageQueryResult
+    '\n  *[_type == \'homePage\'][0]{\n    _id, // apparently required\n    _type, // apparently required\n    title,\n    subtitle,\n    cta,\n    ctaHref,\n    image,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "selectedAlbumsSection" => {\n      ...,\n      "related": {\n      "albums": *[\n        _type == "album" &&\n        references(^.tag[]._ref)\n      ][0...2]{\n      _id,\n      title,\n      description,\n      "artist": artist->artistName,\n      genres[]->{genreName},\n      "tags": tags[]->_id,\n      price,\n      picture, \n        }\n      }\n    }\n  }\n}\n': GetHomePageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    )\n  ] | order(\n      select(\n      $sortBy == "price-high" => -price,\n      $sortBy == "price-low" => price,\n      true => _createdAt\n    ) asc\n    )\n  {\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    price,\n    picture, // will be using urlForImage()\n  }\n': GetAlbumsQueryResult
