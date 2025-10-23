@@ -45,6 +45,13 @@ export const getPageQuery = defineQuery(`
   subheading,
   "pageBuilder": pageBuilder[]{
       ...,
+      _type == "heroSection" => {
+        ...,
+        "backgroundImage": {
+          "url": backgroundImage.asset->url,
+          "metadata": backgroundImage.asset->metadata
+        }
+      },
       _type == "selectedAlbumsSection" => {
         ...,
         "related": {
