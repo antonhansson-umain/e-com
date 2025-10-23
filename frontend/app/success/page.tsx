@@ -14,7 +14,7 @@ export default async function page({
 
   const albums = await getAlbums()
   const block = {
-    sectionTitle: 'You may also like...',
+    title: 'You may also like...',
     sectionDescription: 'Based on your recent purchase.',
     ctaText: 'Shop Now',
     ctaLink: '/shop',
