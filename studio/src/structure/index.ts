@@ -1,7 +1,7 @@
 import {CogIcon, HomeIcon} from '@sanity/icons'
 import type {StructureBuilder, StructureResolver} from 'sanity/structure'
 import pluralize from 'pluralize-esm'
-import {FootprintsIcon, MenuIcon} from 'lucide-react'
+import {Compass, FootprintsIcon, MenuIcon} from 'lucide-react'
 
 /**
  * Structure builder is useful whenever you want to control how documents are grouped and
@@ -33,16 +33,27 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
         .title('Home Page')
         .child(S.document().schemaType('homePage').documentId('siteHome'))
         .icon(HomeIcon),
-      // Header
+      // Navigation
       S.listItem()
-        .title('Header')
-        .child(S.document().schemaType('header').documentId('elementHeader'))
-        .icon(MenuIcon),
-      // Footer
-      S.listItem()
-        .title('Footer')
-        .child(S.document().schemaType('footer').documentId('elementFooter'))
-        .icon(FootprintsIcon),
+        .title('Navigation')
+        .icon(Compass)
+        .child(
+          S.list()
+            .title('Navigation Elements')
+            .items([
+              // Header
+              S.listItem()
+                .title('Header')
+                .child(S.document().schemaType('header').documentId('elementHeader'))
+                .icon(MenuIcon),
+              // Footer
+              S.listItem()
+                .title('Footer')
+                .child(S.document().schemaType('footer').documentId('elementFooter'))
+                .icon(FootprintsIcon),
+            ]),
+        ),
+
       // Settings Singleton in order to view/edit the one particular document for Settings.  Learn more about Singletons: https://www.sanity.io/docs/create-a-link-to-a-single-edit-page-in-your-main-document-type-list
       S.listItem()
         .title('Site Settings')
