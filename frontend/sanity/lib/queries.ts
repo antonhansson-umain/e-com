@@ -15,6 +15,12 @@ export const footerQuery = defineQuery(`
   }}
 `)
 
+export const headerQuery = defineQuery(`
+  *[_type == "header"][0]{
+    linkGroups
+  }
+`)
+
 const linkReference = /* groq */ `
   _type == "link" => {
     "page": page->slug.current,

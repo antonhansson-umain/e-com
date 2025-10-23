@@ -13,6 +13,24 @@
  */
 
 // Source: schema.json
+export type LinkGroup = {
+  _type: 'linkGroup'
+  linkGroupTitle: string
+  links?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'navLink'
+  }>
+}
+
+export type NavLink = {
+  _type: 'navLink'
+  linkLabel: string
+  linkPath: string
+}
+
 export type CallToAction = {
   _type: 'callToAction'
   heading: string
@@ -245,6 +263,21 @@ export type Footer = {
     }>
     _type: 'linkGroup'
     _key: string
+  }>
+}
+
+export type Header = {
+  _id: string
+  _type: 'header'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  linkGroups?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'linkGroup'
   }>
 }
 
@@ -598,6 +631,8 @@ export type SanityAssetSourceData = {
 }
 
 export type AllSanitySchemaTypes =
+  | LinkGroup
+  | NavLink
   | CallToAction
   | Link
   | InfoSection
@@ -610,6 +645,7 @@ export type AllSanitySchemaTypes =
   | Genre
   | Country
   | Footer
+  | Header
   | HomePage
   | Settings
   | Page
@@ -698,6 +734,17 @@ export type FooterQueryResult = {
       linkLabel: string
       linkPath: string
     }> | null
+  }> | null
+} | null
+// Variable: headerQuery
+// Query: *[_type == "header"][0]{    linkGroups  }
+export type HeaderQueryResult = {
+  linkGroups: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'linkGroup'
   }> | null
 } | null
 // Variable: getPageQuery
@@ -829,6 +876,7 @@ declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult
     '\n  *[_type == "footer"][0]{\n    tagline,\n    linkGroups[]{\n      linkGroupTitle,\n      links[]{\n        linkLabel,\n        linkPath\n      }\n  }}\n': FooterQueryResult
+    '\n  *[_type == "header"][0]{\n    linkGroups\n  }\n': HeaderQueryResult
     '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetPageQueryResult
     '\n  *[_type == \'homePage\'][0]{\n    _id, // apparently required\n    _type, // apparently required\n    title,\n    subtitle,\n    cta,\n    ctaHref,\n    image,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetHomePageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
