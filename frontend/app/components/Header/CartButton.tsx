@@ -13,7 +13,7 @@ export default function CartButton() {
   return (
     <button
       onClick={handleCartOpen}
-      className="flex items-center justify-end transition-colors hover:text-red-300"
+      className="flex items-center justify-end transition-colors hover:text-red-300 w-max justify-self-end"
     >
       <span className="hidden sm:inline-flex">{'[ Cart '}</span>
       <CartIcon className="mx-2 inline" />
