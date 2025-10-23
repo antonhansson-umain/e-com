@@ -7,17 +7,18 @@ interface SelectedAlbumsSectionProps {
   block:
     | SelectedAlbumsSectionType
     | {
-        sectionTitle: string
         sectionDescription: string
         ctaText: string
         ctaLink: string
         title: string
+        related?: {albums: Album[]}
       }
   albums: Album[]
 }
 
 export default function SelectedAlbumsSection({block, albums}: SelectedAlbumsSectionProps) {
-  const {title, sectionDescription, ctaText, ctaLink} = block
+  const {title, sectionDescription, ctaText, ctaLink, related} = block
+  albums = related?.albums ?? albums
   
   return (
     <section className="grid grid-cols-1 lg:grid-cols-3 lg:max-w-none py-8 gap-[1rem] md:gap-[2rem]">

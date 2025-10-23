@@ -18,32 +18,36 @@ const linkFields = /* groq */ `
 `
 
 export const getPageQuery = defineQuery(`
-  *[_type == 'page' && slug.current == $slug][0]{
-    _id,
-    _type,
-    name,
-    slug,
-    heading,
-    subheading,
-    "pageBuilder": pageBuilder[]{
+*[_type == "page" && slug.current == $slug][0]{
+  _id,
+  _type,
+  name,
+  slug,
+  heading,
+  subheading,
+  "pageBuilder": pageBuilder[]{
       ...,
       _type == "selectedAlbumsSection" => {
       ...,
       "tag": tag[]->{_id, title},
-      "related": *[
+      "related": {
+      "albums": *[
         _type == "album" &&
         count(tags[]._ref[@ in ^.tag[]._ref]) > 0
-      ]{
-        _id,
-        title,
-        description,
-        "artist": artist->artistName,
-        image,
-        tags[]->{_id, tagName}
+      ][0...2]{
+      _id,
+      title,
+      description,
+      "artist": artist->artistName,
+      genres[]->{genreName},
+      "tags": tags[]->_id,
+      price,
+      picture, 
         }
       }
     }
   }
+}
 `)
 
 export const getHomePageQuery = defineQuery(`
@@ -60,16 +64,20 @@ export const getHomePageQuery = defineQuery(`
       _type == "selectedAlbumsSection" => {
       ...,
       "tag": tag[]->{_id, title},
-      "related": *[
+      "related": {
+      "albums": *[
         _type == "album" &&
         count(tags[]._ref[@ in ^.tag[]._ref]) > 0
-      ]{
-        _id,
-        title,
-        description,
-        "artist": artist->artistName,
-        image,
-        tags[]->{_id, tagName}
+      ][0...2]{
+      _id,
+      title,
+      description,
+      "artist": artist->artistName,
+      genres[]->{genreName},
+      "tags": tags[]->_id,
+      price,
+      picture, 
+        }
       }
     }
   }
@@ -101,11 +109,6 @@ export const getAlbumsQuery = defineQuery(`
       !defined($countries) => true,
       defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,
       true
-    ) &&
-     select(
-      !defined($tags) => true,
-      defined($tags) => count([@ in $tags]) > 0 && count((tags[]._ref)[@ in $tags]) > 0,
-      true
     )
   ] | order(
       select(
@@ -113,14 +116,13 @@ export const getAlbumsQuery = defineQuery(`
       $sortBy == "price-low" => price,
       true => _createdAt
     ) asc
-    ) 
+    )
   {
     _id,
     title,
     description,
     "artist": artist->artistName,
     genres[]->{genreName},
-    "tags": tags[]->_id,
     price,
     picture, // will be using urlForImage()
   }
@@ -151,3 +153,5 @@ export const getCountriesQuery = defineQuery(`
     "value": isoCode
   }
   `)
+
+  
