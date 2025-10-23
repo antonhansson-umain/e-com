@@ -46,27 +46,29 @@ export const getPageQuery = defineQuery(`
   "pageBuilder": pageBuilder[]{
       ...,
       _type == "selectedAlbumsSection" => {
-      ...,
-      "tag": tag[]->{_id, title},
-      "related": {
-      "albums": *[
-        _type == "album" &&
-        count(tags[]._ref[@ in ^.tag[]._ref]) > 0
-      ][0...2]{
-      _id,
-      title,
-      description,
-      "artist": artist->artistName,
-      genres[]->{genreName},
-      "tags": tags[]->_id,
-      price,
-      picture, 
+        ...,
+        "related": {
+          "albums": *[
+            _type == "album" &&
+             references(^.tag[]._ref)
+          ][0...2]{
+            _id,
+            title,
+            description,
+            "artist": artist->artistName,
+            genres[]->{genreName},
+            "tags": tags[]->_id,
+            price,
+            picture, 
         }
       }
     }
   }
 }
 `)
+
+// count(tags[]._ref[@ in ^.tag[]._ref]) > 0
+// "tag": tag[]->{_id, title},
 
 export const getHomePageQuery = defineQuery(`
   *[_type == 'homePage'][0]{
@@ -81,11 +83,10 @@ export const getHomePageQuery = defineQuery(`
       ...,
       _type == "selectedAlbumsSection" => {
       ...,
-      "tag": tag[]->{_id, title},
       "related": {
       "albums": *[
         _type == "album" &&
-        count(tags[]._ref[@ in ^.tag[]._ref]) > 0
+        references(^.tag[]._ref)
       ][0...2]{
       _id,
       title,

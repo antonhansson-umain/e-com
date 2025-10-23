@@ -54,6 +54,7 @@ export default async function Page(props: Props) {
       getAlbums(),
     ])
 
+    console.log(albums.length)
   if (!page?._id) {
     return notFound()
   }
