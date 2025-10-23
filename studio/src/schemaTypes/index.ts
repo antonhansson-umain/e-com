@@ -13,6 +13,9 @@ import {tag} from './documents/tag'
 import {heroSection} from './objects/heroSection'
 import {selectedAlbumsSection} from './objects/selectedAlbumsSection'
 import {footer} from './singletons/footer'
+import {header} from './singletons/header'
+import {navLink} from './objects/navLink'
+import {linkGroup} from './objects/linkGroup'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -20,6 +23,7 @@ export const schemaTypes = [
   // Singletons
   settings,
   homePage,
+  header,
   footer,
   // Documents
   page,
@@ -35,4 +39,6 @@ export const schemaTypes = [
   infoSection,
   callToAction,
   link,
+  navLink,
+  linkGroup,
 ]

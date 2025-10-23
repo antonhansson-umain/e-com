@@ -1,7 +1,7 @@
 import {CogIcon, HomeIcon} from '@sanity/icons'
 import type {StructureBuilder, StructureResolver} from 'sanity/structure'
 import pluralize from 'pluralize-esm'
-import {FootprintsIcon} from 'lucide-react'
+import {FootprintsIcon, MenuIcon} from 'lucide-react'
 
 /**
  * Structure builder is useful whenever you want to control how documents are grouped and
@@ -9,7 +9,14 @@ import {FootprintsIcon} from 'lucide-react'
  * Learn more: https://www.sanity.io/docs/structure-builder-introduction
  */
 
-const DISABLED_TYPES = ['settings', 'assist.instruction.context', 'country', 'homePage', 'footer']
+const DISABLED_TYPES = [
+  'settings',
+  'assist.instruction.context',
+  'country',
+  'homePage',
+  'footer',
+  'header',
+]
 
 export const structure: StructureResolver = (S: StructureBuilder) =>
   S.list()
@@ -26,6 +33,11 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
         .title('Home Page')
         .child(S.document().schemaType('homePage').documentId('siteHome'))
         .icon(HomeIcon),
+      // Header
+      S.listItem()
+        .title('Header')
+        .child(S.document().schemaType('header').documentId('elementHeader'))
+        .icon(MenuIcon),
       // Footer
       S.listItem()
         .title('Footer')

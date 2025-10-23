@@ -1,0 +1,23 @@
+'use client'
+
+import {useSideBarContext} from '@/contexts/sidebar-context'
+import CartIcon from '../CartIcon'
+
+export default function CartButton() {
+  const {setIsOpen, setContent} = useSideBarContext()
+
+  const handleCartOpen = () => {
+    setIsOpen(true)
+    setContent('cart')
+  }
+  return (
+    <button
+      onClick={handleCartOpen}
+      className="flex items-center justify-end transition-colors hover:text-red-300"
+    >
+      <span className="hidden sm:inline-flex">{'[ Cart '}</span>
+      <CartIcon className="mx-2 inline" />
+      <span className="hidden sm:inline-flex">{']'}</span>
+    </button>
+  )
+}
