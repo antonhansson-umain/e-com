@@ -44,7 +44,10 @@ export default function NavGroup({
               <NavLink
                 href={navLink.linkPath}
                 className="min-w-full px-2 h-full flex items-center"
-                onClick={handleLinkClick}
+                onClick={() => {
+                  setIsOpen(false)
+                  handleLinkClick()
+                }}
               >
                 <Brackets>{navLink.linkLabel}</Brackets>
               </NavLink>
