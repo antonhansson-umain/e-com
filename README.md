@@ -19,7 +19,7 @@ Fast loads, editable campaign pages, and a persistent cart for a seamless shoppi
 
 | Tool | Purpose |
 |------|----------|
-| **Next.js** | Frontend, ISR, routing |
+| **Next.js** | Frontend, routing |
 | **Sanity** | Headless CMS for content |
 | **Zustand** | Cart state management |
 | **Stripe** | Payments & checkout |
