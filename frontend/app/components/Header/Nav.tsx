@@ -7,6 +7,7 @@ import NavGroup from './NavGroup'
 import NavLink from './NavLink'
 import useClickOutside from '@/hooks/useClickOutside'
 import {cn} from '@/lib/cn'
+import Brackets from './Brackets'
 
 type NavProps = React.HTMLAttributes<HTMLDivElement> & {
   linkGroups?: HeaderLinkGroups | null
@@ -22,19 +23,19 @@ export default function Nav({linkGroups}: NavProps) {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="block sm:hidden text-black w-[1.5rem] h-[1.5rem] top-[5rem] transition-all duration-200 hover:text-red-300"
+        className="block md:hidden text-black w-[1.5rem] h-[1.5rem] top-[5rem] transition-all duration-200 hover:text-red-300"
         aria-label="Toggle menu"
       >
         {isOpen ? <X size={30} /> : <Menu size={30} />}
       </button>
       <nav
-        className={cn('hidden sm:block', {
-          'block max-sm:absolute left-0 w-full bg-white top-full': isOpen,
+        className={cn('hidden md:block', {
+          'block max-md:absolute left-0 w-full bg-white top-full': isOpen,
         })}
       >
         <menu
-          className={cn('flex items-center sm:gap-6 text-xs sm:text-base', {
-            'max-sm:flex-col max-sm:border-t border-black/25 max-sm:*:not-last:border-b *:not-last:border-black/25 *:min-h-9 *:flex *:items-center max-sm:*:w-full  max-sm:*:justify-center max-sm:**:*:justify-center':
+          className={cn('flex items-center md:gap-6 text-xs md:text-base', {
+            'max-md:flex-col max-md:border-t border-black/25 max-md:*:not-last:border-b *:not-last:border-black/25 *:min-h-9 *:flex *:items-center max-md:*:w-full  max-md:*:justify-center max-md:**:*:justify-center':
               isOpen,
           })}
           ref={navRef}
@@ -50,8 +51,8 @@ export default function Nav({linkGroups}: NavProps) {
               )
             if (group._type === 'navLink')
               return (
-                <NavLink key={group._type + index} href={group.linkPath} onClick={handleLinkClick}>
-                  {group.linkLabel}
+                <NavLink href={group.linkPath} onClick={handleLinkClick} key={group._type + index}>
+                  <Brackets key={group._type + index}>{group.linkLabel}</Brackets>
                 </NavLink>
               )
           })}
@@ -60,21 +61,3 @@ export default function Nav({linkGroups}: NavProps) {
     </>
   )
 }
-
-// const mobileMenu = isMenuOpen && (
-//   <nav className="absolute left-0 w-full bg-white sm:hidden top-full">
-//     <ul className="flex flex-col items-center py-4 space-y-4 font-mono">
-//       {links.map((link) => (
-//         <li key={link.label}>
-//           <Link
-//             href={link.href}
-//             className="transition-all duration-200 hover:text-red-300"
-//             onClick={() => setIsMenuOpen(false)}
-//           >
-//             {link.label}
-//           </Link>
-//         </li>
-//       ))}
-//     </ul>
-//   </nav>
-// )
