@@ -1,6 +1,7 @@
 import {GetAlbumByIdResult} from '@/sanity.types'
 import Image from 'next/image'
 import QuantityCounter from '../QuantityCounter'
+import CartQuantityCounter from '../CartQuantityCounter'
 import {X} from 'lucide-react'
 import Link from 'next/link'
 import {useSideBarContext} from '@/contexts/sidebar-context'
@@ -43,7 +44,9 @@ export default function CartItem({
           </span>
         </div>
       </Link>
-      <QuantityCounter albumId={album._id} className={'col-start-2 row-start-4 w-full'} />
+      <div className="col-start-2 row-start-4 w-full">
+      <CartQuantityCounter albumId={album._id}/>
+      </div>
       <button onClick={() => removeFromCart(album._id)}>
         <X />
       </button>

@@ -12,6 +12,9 @@ type ProductDetailsSectionProps = {
 export default function ProductDetailsSection({album}: ProductDetailsSectionProps) {
   const {title, description, artist, genres, price, image} = album
 
+  // const onIncrement 
+  // const onDecrement
+
   return (
     <article className="grid grid-cols-2 items-center gap-4 py-8 bg-gray-100">
       <div>
@@ -63,7 +66,8 @@ export default function ProductDetailsSection({album}: ProductDetailsSectionProp
             {price}
           </h3>
           <div className="flex">
-            {/* <QuantityCounter albumId={album._id} /> */}
+            {/* <QuantityCounter value={1} onIncrement={} onDecrement={}/> */}
+            {/*Add functions for onIncrement={} onDecrement={}*/}
             <AddToCartButton ariaLabel="Add to cart" ctaText="Add to cart" albumId={album._id} variant="secondary"/>
           </div>
         </footer>
