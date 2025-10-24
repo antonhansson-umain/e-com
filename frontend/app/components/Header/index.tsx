@@ -11,8 +11,6 @@ export default async function Header() {
   const {data: header} = await sanityFetch({
     query: headerQuery,
   })
-  console.log(header)
-
   return (
     <header className="fixed z-50 inset-x-0 top-0 bg-white m-4 sm:m-8 h-16 px-4 grid grid-cols-3 items-center gap-4">
       <Nav linkGroups={header?.linkGroups as HeaderLinkGroups | null} />
