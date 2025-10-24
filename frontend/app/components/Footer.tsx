@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Logo from './Logo'
 import {footerQuery} from '@/sanity/lib/queries'
 import {sanityFetch} from '@/sanity/lib/live'
+import {urlForImage} from '@/sanity/lib/utils'
 
 export default async function Footer() {
   const {data: footer} = await sanityFetch({
@@ -11,8 +12,13 @@ export default async function Footer() {
     <footer className="bg-maroon text-white px-4 sm:px-20 py-16 sm:py-16 grid sm:grid-cols-[2fr_5fr] gap-16">
       <div className="flex flex-col gap-2">
         <Link href={'/'} className="w-max">
-          <Logo />
+          <Logo
+            src={
+              urlForImage(footer?.logo.image)?.width(72).height(22).url() ?? '/images/wow_logo.svg'
+            }
+          />
         </Link>
+
         <p className="font-mono">{footer?.tagline}</p>
       </div>
       <div className="grid sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-16">
