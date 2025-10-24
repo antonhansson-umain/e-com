@@ -8,11 +8,13 @@ import Button from '../Button'
 export default function AddToCartButton({
   ariaLabel,
   albumId,
-  variant
+  variant,
+  ctaText
 }: {
   ariaLabel: string
   albumId: Album['_id']
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary'
+  ctaText?: string
 }) {
   const addToCart = useCartStore((state) => state.addToCart)
   return (
@@ -21,7 +23,7 @@ export default function AddToCartButton({
       variant={variant}
       onClick={() => addToCart(albumId)}
     >
-      {ariaLabel
+      {ctaText
        ?? <Plus size={30} />}
     </Button>
   )

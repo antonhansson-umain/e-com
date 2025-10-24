@@ -57,19 +57,17 @@ export default function ProductDetailsSection({album}: ProductDetailsSectionProp
           </li>
         </ul>
 
-        <footer className="flex flex-col items-end">
+        <footer className="flex flex-col items-end  gap-4">
           <h3 className="font-md-header">
             <span className="text-[80%]">$</span>
             {price}
           </h3>
           <div className="flex">
             {/* <QuantityCounter albumId={album._id} /> */}
-            <AddToCartButton ariaLabel="Add to cart" albumId={album._id} variant="secondary"/>
+            <AddToCartButton ariaLabel="Add to cart" ctaText="Add to cart" albumId={album._id} variant="secondary"/>
           </div>
         </footer>
       </section>
     </article>
   )
 }
-
-// ctaLink: `/shop?genres=${album.genres[0]}`,
