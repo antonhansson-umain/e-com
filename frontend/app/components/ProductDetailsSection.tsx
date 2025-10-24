@@ -64,7 +64,7 @@ export default function ProductDetailsSection({album}: ProductDetailsSectionProp
           </h3>
           <div className="flex">
             {/* <QuantityCounter albumId={album._id} /> */}
-            {/* <AddToCartButton/> */}
+            <AddToCartButton ariaLabel="Add to cart" albumId={album._id} variant="secondary"/>
           </div>
         </footer>
       </section>

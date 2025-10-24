@@ -3,22 +3,26 @@
 import {Album} from '@/types/types'
 import {Plus} from 'lucide-react'
 import {useCartStore} from '../../../hooks/useCartStore'
+import Button from '../Button'
 
 export default function AddToCartButton({
   ariaLabel,
   albumId,
+  variant
 }: {
   ariaLabel: string
   albumId: Album['_id']
+  variant?: 'primary' | 'secondary'
 }) {
   const addToCart = useCartStore((state) => state.addToCart)
   return (
-    <button
+    <Button
       aria-label={ariaLabel}
-      className=" hover:text-(--color-cherry) transition cursor-pointer"
+      variant={variant}
       onClick={() => addToCart(albumId)}
     >
-      <Plus size={30} />
-    </button>
+      {ariaLabel
+       ?? <Plus size={30} />}
+    </Button>
   )
 }
