@@ -914,10 +914,13 @@ export type GetAlbumsQueryResult = Array<{
   }
 }>
 // Variable: getAlbumById
-// Query: *[_type == 'album' && _id == $id][0]{    _id,    description,    "genres": genres[]->genreName,    title,    "artist": artist->artistName,    price,    "image": picture.asset->url  }
+// Query: *[_type == 'album' && _id == $id][0]{    _id,    description,    size,    articleNumber,    stockQuantity,    "genres": genres[]->genreName,    title,    "artist": artist->artistName,    price,    "image": picture.asset->url  }
 export type GetAlbumByIdResult = {
   _id: string
   description: BlockContent | null
+  size: number
+  articleNumber: number
+  stockQuantity: number
   genres: Array<string>
   title: string
   artist: string
@@ -949,7 +952,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    )\n  ] | order(\n      select(\n      $sortBy == "price-high" => -price,\n      $sortBy == "price-low" => price,\n      true => _createdAt\n    ) asc\n    )\n  {\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    price,\n    picture, // will be using urlForImage()\n  }\n': GetAlbumsQueryResult
-    '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    "genres": genres[]->genreName,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumByIdResult
+    '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    size,\n    articleNumber,\n    stockQuantity,\n    "genres": genres[]->genreName,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumByIdResult
     '\n*[_type == \'genre\']{\n  "label": genreName,\n  "value": genreName\n}\n': GetGenresQueryResult
     '\n  *[_type == \'country\']{\n    "label": flag + " " + name,\n    "value": isoCode\n  }\n  ': GetCountriesQueryResult
   }

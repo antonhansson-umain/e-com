@@ -9,7 +9,7 @@ type ProductDetailsSectionProps = {
 }
 
 export default function ProductDetailsSection({album}: ProductDetailsSectionProps) {
-  const {title, description, artist, genres, price, image} = album
+  const {title, description, artist, genres, price, image, size, articleNumber, stockQuantity} = album
 
   return (
     <article className="grid grid-cols-2 items-center gap-4 py-8 bg-gray-100">
@@ -43,16 +43,16 @@ export default function ProductDetailsSection({album}: ProductDetailsSectionProp
 
         <ul className="flex flex-col gap-2">
           <li className="flex flex-col">
-            Size
-            <span>{price}€</span>
+            Size:
+            <span>{size}"</span>
           </li>
           <li className="flex flex-col">
-            Article no
-            <span>{price}€</span>
+            Article no:
+            <span>{articleNumber}</span>
           </li>
           <li className="flex flex-col">
-            Delivery time
-            <span>{price}€</span>
+            Currently in stock:
+            <span>{stockQuantity}</span>
           </li>
         </ul>
 

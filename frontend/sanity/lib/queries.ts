@@ -158,6 +158,9 @@ export const getAlbumById = defineQuery(`
    *[_type == 'album' && _id == $id][0]{
     _id,
     description,
+    size,
+    articleNumber,
+    stockQuantity,
     "genres": genres[]->genreName,
     title,
     "artist": artist->artistName,
