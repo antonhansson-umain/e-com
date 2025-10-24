@@ -1,10 +1,10 @@
-import {DocumentTextIcon} from '@sanity/icons'
+import {ListMusic} from 'lucide-react'
 import {defineField, defineType} from 'sanity'
 
 export const album = defineType({
   name: 'album',
   title: 'Album',
-  icon: DocumentTextIcon,
+  icon: ListMusic,
   type: 'document',
   fields: [
     defineField({
@@ -111,6 +111,17 @@ export const album = defineType({
         layout: 'tags',
       },
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'tag'}],
+        },
+      ],
     }),
   ],
   preview: {

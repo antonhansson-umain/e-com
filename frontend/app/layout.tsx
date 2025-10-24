@@ -1,10 +1,11 @@
 import './globals.css'
 
+import localFont from 'next/font/local'
+import Cart from '@/app/components/Cart'
 import {SpeedInsights} from '@vercel/speed-insights/next'
 import type {Metadata} from 'next'
-import {Inter} from 'next/font/google'
 import {draftMode} from 'next/headers'
-import {VisualEditing, toPlainText} from 'next-sanity'
+import {toPlainText} from 'next-sanity'
 import DraftModeToast from '@/app/components/DraftModeToast'
 import Footer from '@/app/components/Footer'
 import Header from '@/app/components/Header'
@@ -13,6 +14,10 @@ import {sanityFetch, SanityLive} from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {resolveOpenGraphImage} from '@/sanity/lib/utils'
 import {handleError} from './client-utils'
+import SideBar from './components/SideBar'
+import SideBarFooter from './components/SideBar/SideBarFooter'
+import SideBarContextProvider from '@/contexts/sidebar-context'
+import SideBarWrapper from './components/SideBar/SideBarWrapper'
 
 /**
  * Generate metadata for the page.
@@ -49,28 +54,48 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
-  display: 'swap',
+const GTPressuraTrialMono = localFont({
+  src: '../fonts/GT-Pressura-Mono-Regular-Trial.woff2',
+})
+
+const GTPressuraTrial = localFont({
+  src: [
+    {
+      path: '../fonts/GT-Pressura-Extended-Bold-Trial.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/GT-Pressura-Extended-Text-Trial.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
 })
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
 
   return (
-    <html lang="en" className={`${inter.variable} bg-white text-black`}>
+    <html
+      lang="en"
+      className={` ${GTPressuraTrialMono.className}  ${GTPressuraTrial.className} bg-background text-black`}
+    >
       <body>
-        <section className="min-h-screen pt-24">
-
-          {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
-          <SanityLive onError={handleError} />
-          <Header />
-          <main className="">{children}</main>
+        <SideBarContextProvider>
+          <section className="min-h-screen relative flex flex-col mx-auto">
+            {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
+            <SanityLive onError={handleError} />
+            <Header />
+            <SideBarWrapper />
+            <main className="flex-grow *:first:pt-24 *:first:sm:pt-32 *:px-4 *:sm:px-8 *:max-w-screen-xl *:mx-auto">
+              {children}
+            </main>
+          </section>
           <Footer />
-        </section>
-        <SpeedInsights />
-        <DraftModeToast />
+          <SpeedInsights />
+          <DraftModeToast />
+        </SideBarContextProvider>
       </body>
     </html>
   )

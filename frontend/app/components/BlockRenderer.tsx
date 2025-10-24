@@ -1,8 +1,8 @@
 import React from 'react'
-
-import Cta from '@/app/components/Cta'
-import Info from '@/app/components/InfoSection'
+import HeroSection from '@/app/components/HeroSection'
 import {dataAttr} from '@/sanity/lib/utils'
+import SelectedAlbumsSection from '@/app/components/SelectedAlbumsSection/index'
+import type {Album} from '@/types/types'
 
 type BlocksType = {
   [key: string]: React.FC<any>
@@ -21,8 +21,8 @@ type BlockProps = {
 }
 
 const Blocks: BlocksType = {
-  callToAction: Cta,
-  infoSection: Info,
+  heroSection: HeroSection,
+  selectedAlbumsSection: SelectedAlbumsSection
 }
 
 /**

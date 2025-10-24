@@ -28,8 +28,60 @@
   --color-gray-900: #1b1d27;
   --color-gray-950: #13141b;
 
-  --font-display: 'Inter', 'sans-serif';
-  --font-sans: 'Inter', 'sans-serif';
+  --color-maroon: #331b20;
+  --color-cherry: #be1c16;
+  --color-cherry-700: #9c1611;
+  --color-background: #f2f3ef;
+
+  --font-mono: 'GT Pressura Mono Trial', monospace;
+  --font-sans: 'GT Pressura Extended Text Trial', serif;
 
   --default-transition-duration: 250ms;
+}
+
+body {
+  background-image: url('/images/texture.webp');
+  background-repeat: repeat;
+  background-size: 256px;
+}
+
+button {
+  cursor: pointer;
+}
+
+@layer components {
+  .font-bg-header {
+    font-size: clamp(2.5rem, 1.8rem + 3.5vw, 4rem);
+    line-height: 90%;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: white;
+  }
+
+  .font-md-header {
+    font-size: 3rem;
+    text-transform: uppercase;
+  }
+
+  .font-sm-header {
+    font-size: 2rem;
+    text-transform: uppercase;
+  }
+
+  .font-album-header {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .font-button {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .font-text {
+    font-family: var(--font-mono);
+    font-size: 1.25rem;
+  }
 }
