@@ -1,6 +1,7 @@
 import {Stripe} from 'stripe'
 import {NextResponse} from 'next/server'
 import {headers} from 'next/headers'
+import {createOrder} from '@/actions/createOrder'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 
@@ -24,10 +25,11 @@ export async function POST(req: Request) {
   }
 
   // Successfully constructed event.
-  console.log('✅ Success:', event.id)
+  console.log('✅ Successfully constructed event:', event.id)
 
   const permittedEvents: string[] = [
     'checkout.session.completed',
+    'checkout.session.expired',
     'payment_intent.succeeded',
     'payment_intent.payment_failed',
   ]
@@ -38,6 +40,25 @@ export async function POST(req: Request) {
     try {
       switch (event.type) {
         case 'checkout.session.completed':
+          data = event.data.object as Stripe.Checkout.Session
+          console.log(`💰 CheckoutSession status: ${data.payment_status}`)
+          if (!data.id) {
+            console.error('No Checkout Session ID returned from Checkout Session')
+            return
+          }
+          const lineItems = await stripe.checkout.sessions.listLineItems(data.id)
+          if (!lineItems) {
+            console.error('No Line Items returned from Checkout Session')
+            return
+          }
+          const customerEmail = data.customer_details?.email
+          if (!customerEmail) {
+            console.error('No customer email returned from Checkout Session')
+            return
+          }
+          createOrder(data.id, customerEmail, lineItems)
+          break
+        case 'checkout.session.expired':
           data = event.data.object as Stripe.Checkout.Session
           console.log(`💰 CheckoutSession status: ${data.payment_status}`)
           break
