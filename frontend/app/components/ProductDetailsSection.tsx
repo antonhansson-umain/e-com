@@ -1,67 +1,73 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import {urlForImage} from '@/sanity/lib/utils'
 import AddToCartButton from './AlbumCard/AddToCartButton'
-import type {Album} from '@/types/types'
 import {PortableText} from '@portabletext/react'
+import {GetAlbumByIdResult} from '@/sanity.types'
+import QuantityCounter from './QuantityCounter'
 
 type ProductDetailsSectionProps = {
-  album: Album
+  album: NonNullable<GetAlbumByIdResult>
 }
 
 export default function ProductDetailsSection({album}: ProductDetailsSectionProps) {
-  const {title, description, artist, genres, price, picture} = album
-
-  console.log("Genres:", genres)
+  const {title, description, artist, genres, price, image} = album
 
   return (
-    <article className="grid grid-cols-2 gap-8 bg-gray-100">
+    <article className="grid grid-cols-2 items-center gap-4 py-8 bg-gray-100">
       <div>
-        <div className="p-8 w-full bg-white place-items-center col-span-2 row-start-1 row-span-1 mb-4">
+        <figure className="p-8 w-full place-items-center">
           <Image
-            src={urlForImage(picture)?.width(448).height(448).url() ?? '/images/placeholder.webp'}
+            src={image ?? '/images/placeholder.webp'}
             alt={`Album art for ${title} by ${artist}`}
-            width={256}
-            height={256}
+            width={450}
+            height={450}
+            className="object-cover"
+            priority
           />
-        </div>
+        </figure>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <section className="flex flex-col gap-4">
         <h1 className="font-md-header">{title}</h1>
         <h2 className="font-sm-header">{artist}</h2>
-  
-        <span className="flex gap-2">
+
+        <nav className="flex gap-2">
           {genres.map((genre) => (
             <Link key={genre} href={`/shop?genres=${genre}`}>
-            <button className="p-2 border rounded-lg font-button text-base">
-              {genre}
-            </button>
+              <button className="p-2 border rounded-lg font-button text-base">{genre}</button>
             </Link>
           ))}
-        </span>
-        <div className="font-text">{description && <PortableText value={description} />}</div>
-        <div className="flex flex-col">
-          Size
-          <span>{price}€</span>
-        </div>
-        <div className="flex flex-col">
-          Article no
-          <span>{price}€</span>
-        </div>
-        <div className="flex flex-col">
-          Delivery time
-          <span>{price}€</span>
-        </div>
+        </nav>
+        <section className="font-text">
+          {description && <PortableText value={description} />}
+        </section>
 
-        <div className="flex flex-col items-end">
-          <h3>{price}€</h3>
+        <ul className="flex flex-col gap-2">
+          <li className="flex flex-col">
+            Size
+            <span>{price}€</span>
+          </li>
+          <li className="flex flex-col">
+            Article no
+            <span>{price}€</span>
+          </li>
+          <li className="flex flex-col">
+            Delivery time
+            <span>{price}€</span>
+          </li>
+        </ul>
+
+        <footer className="flex flex-col items-end">
+          <h3 className="font-md-header">
+            <span className="text-[80%]">$</span>
+            {price}
+          </h3>
           <div className="flex">
-            <p>quantity</p>
-            <button>add to cart</button>
+            {/* <QuantityCounter albumId={album._id} /> */}
+            {/* <AddToCartButton/> */}
           </div>
-        </div>
-      </div>
+        </footer>
+      </section>
     </article>
   )
 }

@@ -25,7 +25,7 @@ export default function SelectedAlbumsSection({block, albums}: SelectedAlbumsSec
       <aside className="grid grid-rows-[1fr_0.5fr] gap-4 lg:gap-0">
         <div>
           <h2 className="font-sm-header">{title}</h2>
-          <p className="font-text">{sectionDescription}</p>
+          <p className="font-text pt-4">{sectionDescription}</p>
         </div>
         <Button variant="primary" href={ctaLink} className="justify-self-start">
           {ctaText}
