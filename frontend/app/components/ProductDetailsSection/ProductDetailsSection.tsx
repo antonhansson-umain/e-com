@@ -1,9 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import AddToCartButton from './AlbumCard/AddToCartButton'
 import {PortableText} from '@portabletext/react'
 import {GetAlbumByIdResult} from '@/sanity.types'
-import QuantityCounter from './QuantityCounter'
+import AddToCartControls from './AddToCartControls'
 
 type ProductDetailsSectionProps = {
   album: NonNullable<GetAlbumByIdResult>
@@ -11,9 +10,6 @@ type ProductDetailsSectionProps = {
 
 export default function ProductDetailsSection({album}: ProductDetailsSectionProps) {
   const {title, description, artist, genres, price, image} = album
-
-  // const onIncrement 
-  // const onDecrement
 
   return (
     <article className="grid grid-cols-2 items-center gap-4 py-8 bg-gray-100">
@@ -65,11 +61,7 @@ export default function ProductDetailsSection({album}: ProductDetailsSectionProp
             <span className="text-[80%]">$</span>
             {price}
           </h3>
-          <div className="flex">
-            {/* <QuantityCounter value={1} onIncrement={} onDecrement={}/> */}
-            {/*Add functions for onIncrement={} onDecrement={}*/}
-            <AddToCartButton ariaLabel="Add to cart" ctaText="Add to cart" albumId={album._id} variant="secondary"/>
-          </div>
+          <AddToCartControls albumId={album._id}/>
         </footer>
       </section>
     </article>

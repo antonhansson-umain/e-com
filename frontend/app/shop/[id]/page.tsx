@@ -1,6 +1,6 @@
 import {getAlbum} from '@/actions/getAlbum'
 import {getAlbums} from '@/actions/getAlbums'
-import ProductDetailsSection from '@/app/components/ProductDetailsSection'
+import ProductDetailsSection from '@/app/components/ProductDetailsSection/ProductDetailsSection'
 import SelectedAlbumsSection from '@/app/components/SelectedAlbumsSection'
 import {notFound} from 'next/navigation'
 
