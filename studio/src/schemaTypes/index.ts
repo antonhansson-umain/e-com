@@ -16,6 +16,8 @@ import {footer} from './singletons/footer'
 import {header} from './singletons/header'
 import {navLink} from './objects/navLink'
 import {linkGroup} from './objects/linkGroup'
+import {order} from './documents/order'
+import {orderItem} from './objects/orderItem'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -32,6 +34,7 @@ export const schemaTypes = [
   artist,
   album,
   tag,
+  order,
   // Objects
   heroSection,
   selectedAlbumsSection,
@@ -41,4 +44,5 @@ export const schemaTypes = [
   link,
   navLink,
   linkGroup,
+  orderItem,
 ]

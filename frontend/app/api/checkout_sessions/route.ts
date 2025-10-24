@@ -1,6 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server'
 import {headers} from 'next/headers'
-
 import {stripe} from '../../../lib/stripe'
 import {Cart} from '@/hooks/useCartStore'
 import {getAlbum} from '@/actions/getAlbum'
@@ -33,6 +32,9 @@ export async function POST(request: NextRequest) {
         product_data: {
           name: album.title,
           images: [album.image || '/images/placeholder.webp'],
+          metadata: {
+            productId: album._id,
+          },
         },
         unit_amount: album.price * 100,
       },
