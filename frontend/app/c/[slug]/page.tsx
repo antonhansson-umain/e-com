@@ -5,9 +5,7 @@ import PageBuilderPage from '@/app/components/PageBuilder'
 import {sanityFetch} from '@/sanity/lib/live'
 import {getPageQuery, pagesSlugs, getAlbumsQuery} from '@/sanity/lib/queries'
 import {GetPageQueryResult} from '@/sanity.types'
-import {PageOnboarding} from '@/app/components/Onboarding'
 import {notFound} from 'next/navigation'
-import SelectedAlbumsSection from '../components/SelectedAlbumsSection'
 import {getAlbums} from '@/actions/getAlbums'
 
 type Props = {
@@ -28,10 +26,6 @@ export async function generateStaticParams() {
   return data
 }
 
-/**
- * Generate metadata for the page.
- * Learn more: https://nextjs.org/docs/app/api-reference/functions/generate-metadata#generatemetadata-function
- */
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
   const {data: page} = await sanityFetch({
@@ -49,10 +43,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function Page(props: Props) {
   const params = await props.params
 
-    const [{data: page}, albums] = await Promise.all([
-      sanityFetch({query: getPageQuery, params}),
-      getAlbums(),
-    ])
+  const {data: page} = await sanityFetch({query: getPageQuery, params})
 
   if (!page?._id) {
     return notFound()
@@ -63,7 +54,7 @@ export default async function Page(props: Props) {
       <Head>
         <title>{page.heading}</title>
       </Head>
-      <PageBuilderPage page={page as GetPageQueryResult}/>
+      <PageBuilderPage page={page as GetPageQueryResult} />
     </div>
   )
 }
