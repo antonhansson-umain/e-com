@@ -22,11 +22,11 @@ export async function generateStaticParams() {
 export default async function Page(props: Props) {
   const params = await props.params
 
-  const [{data: homePage}, albums] = await Promise.all([
-    sanityFetch({query: getHomePageQuery, params}),
-    getAlbums(),
-  ])
-
+  const { data: homePage } = await sanityFetch({
+    query: getHomePageQuery, 
+    params,
+  })
+  
   if (!homePage) return notFound()
 
   return (
@@ -43,7 +43,7 @@ export default async function Page(props: Props) {
         <p className="font-text text-white my-6">{homePage.subtitle}</p>
         <Button href={homePage.ctaHref}>{homePage.cta}</Button>
       </section>
-      <PageBuilderPage page={homePage} albums={albums} />
+      <PageBuilderPage page={homePage} />
     </>
   )
 }

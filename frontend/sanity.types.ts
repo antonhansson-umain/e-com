@@ -16,13 +16,11 @@
 export type LinkGroup = {
   _type: 'linkGroup'
   linkGroupTitle: string
-  links?: Array<{
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    _key: string
-    [internalGroqTypeReferenceTo]?: 'navLink'
-  }>
+  links?: Array<
+    {
+      _key: string
+    } & NavLink
+  >
 }
 
 export type NavLink = {
@@ -113,19 +111,26 @@ export type BlockContent = Array<{
 
 export type SelectedAlbumsSection = {
   _type: 'selectedAlbumsSection'
-  sectionTitle: string
+  title: string
   sectionDescription: string
+  tag?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'tag'
+  }>
   ctaText: string
   ctaLink: string
 }
 
 export type HeroSection = {
   _type: 'heroSection'
-  title?: string
-  description?: string
-  ctaText?: string
-  ctaLink?: string
-  backgroundImage?: {
+  title: string
+  description: string
+  ctaText: string
+  ctaLink: string
+  backgroundImage: {
     asset?: {
       _ref: string
       _type: 'reference'
@@ -253,17 +258,11 @@ export type Footer = {
   _updatedAt: string
   _rev: string
   tagline?: string
-  linkGroups?: Array<{
-    linkGroupTitle: string
-    links?: Array<{
-      linkLabel: string
-      linkPath: string
-      _type: 'link'
+  linkGroups?: Array<
+    {
       _key: string
-    }>
-    _type: 'linkGroup'
-    _key: string
-  }>
+    } & LinkGroup
+  >
 }
 
 export type Header = {
@@ -272,13 +271,14 @@ export type Header = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  linkGroups?: Array<{
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    _key: string
-    [internalGroqTypeReferenceTo]?: 'linkGroup'
-  }>
+  linkGroups?: Array<
+    | ({
+        _key: string
+      } & LinkGroup)
+    | ({
+        _key: string
+      } & NavLink)
+  >
 }
 
 export type HomePage = {
@@ -739,16 +739,17 @@ export type FooterQueryResult = {
 // Variable: headerQuery
 // Query: *[_type == "header"][0]{    linkGroups  }
 export type HeaderQueryResult = {
-  linkGroups: Array<{
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    _key: string
-    [internalGroqTypeReferenceTo]?: 'linkGroup'
-  }> | null
+  linkGroups: Array<
+    | ({
+        _key: string
+      } & LinkGroup)
+    | ({
+        _key: string
+      } & NavLink)
+  > | null
 } | null
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "heroSection" => {        ...,        "backgroundImage": {          "url": backgroundImage.asset->url,          "metadata": backgroundImage.asset->metadata        }      },      _type == "selectedAlbumsSection" => {        ...,      },    },  }
+// Query: *[_type == "page" && slug.current == $slug][0]{  _id,  _type,  name,  slug,  heading,  subheading,  "pageBuilder": pageBuilder[]{      ...,      _type == "heroSection" => {        ...,        "backgroundImage": {          "url": backgroundImage.asset->url,          "metadata": backgroundImage.asset->metadata        }      },      _type == "selectedAlbumsSection" => {        ...,        "related": {          "albums": *[            _type == "album" &&             references(^.tag[]._ref)          ][0...2]{            _id,            title,            description,            "artist": artist->artistName,            genres[]->{genreName},            "tags": tags[]->_id,            price,            picture,         }      }    }  }}
 export type GetPageQueryResult = {
   _id: string
   _type: 'page'
@@ -760,10 +761,10 @@ export type GetPageQueryResult = {
     | {
         _key: string
         _type: 'heroSection'
-        title?: string
-        description?: string
-        ctaText?: string
-        ctaLink?: string
+        title: string
+        description: string
+        ctaText: string
+        ctaLink: string
         backgroundImage: {
           url: string | null
           metadata: SanityImageMetadata | null
@@ -772,15 +773,48 @@ export type GetPageQueryResult = {
     | {
         _key: string
         _type: 'selectedAlbumsSection'
-        sectionTitle: string
+        title: string
         sectionDescription: string
+        tag?: Array<{
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          _key: string
+          [internalGroqTypeReferenceTo]?: 'tag'
+        }>
         ctaText: string
         ctaLink: string
+        related: {
+          albums: Array<{
+            _id: string
+            title: string
+            description: BlockContent | null
+            artist: string
+            genres: Array<{
+              genreName: string
+            }>
+            tags: Array<string> | null
+            price: number
+            picture: {
+              asset?: {
+                _ref: string
+                _type: 'reference'
+                _weak?: boolean
+                [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+              }
+              media?: unknown
+              hotspot?: SanityImageHotspot
+              crop?: SanityImageCrop
+              alt?: string
+              _type: 'image'
+            }
+          }>
+        }
       }
   > | null
 } | null
 // Variable: getHomePageQuery
-// Query: *[_type == 'homePage'][0]{    _id, // apparently required    _type, // apparently required    title,    subtitle,    cta,    ctaHref,    image,    "pageBuilder": pageBuilder[]{      ...,      _type == "selectedAlbumsSection" => {        ...,      },    },  }
+// Query: *[_type == 'homePage'][0]{    _id, // apparently required    _type, // apparently required    title,    subtitle,    cta,    ctaHref,    image,    "pageBuilder": pageBuilder[]{      ...,      _type == "selectedAlbumsSection" => {      ...,      "related": {      "albums": *[        _type == "album" &&        references(^.tag[]._ref)      ][0...2]{      _id,      title,      description,      "artist": artist->artistName,      genres[]->{genreName},      "tags": tags[]->_id,      price,      picture,         }      }    }  }}
 export type GetHomePageQueryResult = {
   _id: string
   _type: 'homePage'
@@ -803,10 +837,43 @@ export type GetHomePageQueryResult = {
   pageBuilder: Array<{
     _key: string
     _type: 'selectedAlbumsSection'
-    sectionTitle: string
+    title: string
     sectionDescription: string
+    tag?: Array<{
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      _key: string
+      [internalGroqTypeReferenceTo]?: 'tag'
+    }>
     ctaText: string
     ctaLink: string
+    related: {
+      albums: Array<{
+        _id: string
+        title: string
+        description: BlockContent | null
+        artist: string
+        genres: Array<{
+          genreName: string
+        }>
+        tags: Array<string> | null
+        price: number
+        picture: {
+          asset?: {
+            _ref: string
+            _type: 'reference'
+            _weak?: boolean
+            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+          }
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt?: string
+          _type: 'image'
+        }
+      }>
+    }
   }> | null
 } | null
 // Variable: sitemapData
@@ -822,7 +889,7 @@ export type PagesSlugsResult = Array<{
   slug: string
 }>
 // Variable: getAlbumsQuery
-// Query: *[    _type == "album" &&    select(      !defined($genres) => true,      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,      true    ) &&    select(      !defined($countries) => true,      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,      true    )  ] | order(      select(      $sortBy == "price-high" => -price,      $sortBy == "price-low" => price,      true => _createdAt    ) asc    )   {    _id,    title,    description,    "artist": artist->artistName,    genres[]->{genreName},    price,    picture, // will be using urlForImage()  }
+// Query: *[    _type == "album" &&    select(      !defined($genres) => true,      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,      true    ) &&    select(      !defined($countries) => true,      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,      true    )  ] | order(      select(      $sortBy == "price-high" => -price,      $sortBy == "price-low" => price,      true => _createdAt    ) asc    )  {    _id,    title,    description,    "artist": artist->artistName,    genres[]->{genreName},    price,    picture, // will be using urlForImage()  }
 export type GetAlbumsQueryResult = Array<{
   _id: string
   title: string
@@ -877,11 +944,11 @@ declare module '@sanity/client' {
     '*[_type == "settings"][0]': SettingsQueryResult
     '\n  *[_type == "footer"][0]{\n    tagline,\n    linkGroups[]{\n      linkGroupTitle,\n      links[]{\n        linkLabel,\n        linkPath\n      }\n  }}\n': FooterQueryResult
     '\n  *[_type == "header"][0]{\n    linkGroups\n  }\n': HeaderQueryResult
-    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetPageQueryResult
-    '\n  *[_type == \'homePage\'][0]{\n    _id, // apparently required\n    _type, // apparently required\n    title,\n    subtitle,\n    cta,\n    ctaHref,\n    image,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "selectedAlbumsSection" => {\n        ...,\n      },\n    },\n  }\n': GetHomePageQueryResult
+    '\n*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _type,\n  name,\n  slug,\n  heading,\n  subheading,\n  "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "heroSection" => {\n        ...,\n        "backgroundImage": {\n          "url": backgroundImage.asset->url,\n          "metadata": backgroundImage.asset->metadata\n        }\n      },\n      _type == "selectedAlbumsSection" => {\n        ...,\n        "related": {\n          "albums": *[\n            _type == "album" &&\n             references(^.tag[]._ref)\n          ][0...2]{\n            _id,\n            title,\n            description,\n            "artist": artist->artistName,\n            genres[]->{genreName},\n            "tags": tags[]->_id,\n            price,\n            picture, \n        }\n      }\n    }\n  }\n}\n': GetPageQueryResult
+    '\n  *[_type == \'homePage\'][0]{\n    _id, // apparently required\n    _type, // apparently required\n    title,\n    subtitle,\n    cta,\n    ctaHref,\n    image,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "selectedAlbumsSection" => {\n      ...,\n      "related": {\n      "albums": *[\n        _type == "album" &&\n        references(^.tag[]._ref)\n      ][0...2]{\n      _id,\n      title,\n      description,\n      "artist": artist->artistName,\n      genres[]->{genreName},\n      "tags": tags[]->_id,\n      price,\n      picture, \n        }\n      }\n    }\n  }\n}\n': GetHomePageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
-    '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    )\n  ] | order(\n      select(\n      $sortBy == "price-high" => -price,\n      $sortBy == "price-low" => price,\n      true => _createdAt\n    ) asc\n    ) \n  {\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    price,\n    picture, // will be using urlForImage()\n  }\n': GetAlbumsQueryResult
+    '\n  *[\n    _type == "album" &&\n    select(\n      !defined($genres) => true,\n      defined($genres) => count([@ in $genres]) > 0 && count((genres[]->genreName)[@ in $genres]) > 0,\n      true\n    ) &&\n    select(\n      !defined($countries) => true,\n      defined($countries) => count([@ in $countries]) > 0 && artist->Country->isoCode in $countries,\n      true\n    )\n  ] | order(\n      select(\n      $sortBy == "price-high" => -price,\n      $sortBy == "price-low" => price,\n      true => _createdAt\n    ) asc\n    )\n  {\n    _id,\n    title,\n    description,\n    "artist": artist->artistName,\n    genres[]->{genreName},\n    price,\n    picture, // will be using urlForImage()\n  }\n': GetAlbumsQueryResult
     '\n   *[_type == \'album\' && _id == $id][0]{\n    _id,\n    description,\n    "genres": genres[]->genreName,\n    title,\n    "artist": artist->artistName,\n    price,\n    "image": picture.asset->url\n  }\n  ': GetAlbumByIdResult
     '\n*[_type == \'genre\']{\n  "label": genreName,\n  "value": genreName\n}\n': GetGenresQueryResult
     '\n  *[_type == \'country\']{\n    "label": flag + " " + name,\n    "value": isoCode\n  }\n  ': GetCountriesQueryResult

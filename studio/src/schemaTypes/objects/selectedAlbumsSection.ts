@@ -9,8 +9,8 @@ export const selectedAlbumsSection = defineType({
 
   fields: [
     defineField({
-      name: 'sectionTitle',
-      title: 'Section Title',
+      name: 'title',
+      title: 'Title',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
@@ -19,6 +19,13 @@ export const selectedAlbumsSection = defineType({
       title: 'Section Description',
       type: 'string',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'tag',
+      title: 'Filter by Tag',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'tag' }] }],
+      description: 'Display albums with this tag'
     }),
     defineField({
       name: 'ctaText',

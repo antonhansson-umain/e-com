@@ -1,3 +1,4 @@
+import { getAlbums } from '@/actions/getAlbums'
 import AlbumCard from '../AlbumCard'
 import Button from '../Button'
 import type {SelectedAlbumsSectionType, Album} from '@/types/types'
@@ -6,21 +7,24 @@ interface SelectedAlbumsSectionProps {
   block:
     | SelectedAlbumsSectionType
     | {
-        sectionTitle: string
         sectionDescription: string
         ctaText: string
         ctaLink: string
+        title: string
+        related?: {albums: Album[]}
       }
   albums: Album[]
 }
 
 export default function SelectedAlbumsSection({block, albums}: SelectedAlbumsSectionProps) {
-  const {sectionTitle, sectionDescription, ctaText, ctaLink} = block
+  const {title, sectionDescription, ctaText, ctaLink, related} = block
+  albums = related?.albums ?? albums
+  
   return (
     <section className="grid grid-cols-1 lg:grid-cols-3 lg:max-w-none py-8 gap-[1rem] md:gap-[2rem]">
       <aside className="grid grid-rows-[1fr_0.5fr] gap-4 lg:gap-0">
         <div>
-          <h2 className="font-sm-header">{sectionTitle}</h2>
+          <h2 className="font-sm-header">{title}</h2>
           <p className="font-text">{sectionDescription}</p>
         </div>
         <Button variant="primary" href={ctaLink} className="justify-self-start">

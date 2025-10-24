@@ -63,7 +63,7 @@ export default async function Page(props: Props) {
       <Head>
         <title>{page.heading}</title>
       </Head>
-      <PageBuilderPage page={page as GetPageQueryResult} albums={albums} />
+      <PageBuilderPage page={page as GetPageQueryResult}/>
     </div>
   )
 }

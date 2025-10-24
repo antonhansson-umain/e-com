@@ -18,7 +18,6 @@ type BlockProps = {
   block: BlockType
   pageId: string
   pageType: string
-  albums: Album[]
 }
 
 const Blocks: BlocksType = {
@@ -29,7 +28,7 @@ const Blocks: BlocksType = {
 /**
  * Used by the <PageBuilder>, this component renders a the component that matches the block type.
  */
-export default function BlockRenderer({block, index, pageId, pageType, albums}: BlockProps) {
+export default function BlockRenderer({block, index, pageId, pageType}: BlockProps) {
   // Block does exist
   if (typeof Blocks[block._type] !== 'undefined') {
     return (
@@ -45,7 +44,6 @@ export default function BlockRenderer({block, index, pageId, pageType, albums}: 
           key: block._key,
           block: block,
           index: index,
-          albums: albums
         })}
       </div>
     )

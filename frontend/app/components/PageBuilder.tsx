@@ -11,7 +11,7 @@ import {studioUrl} from '@/sanity/lib/api'
 
 type PageBuilderPageProps = {
   page: GetPageQueryResult | GetHomePageQueryResult
-  albums: Album[]
+
 }
 
 type PageBuilderSection = {
@@ -32,7 +32,6 @@ type PageData = {
 function renderSections(
   pageBuilderSections: PageBuilderSection[],
   page: {_id: string; _type: string},
-  albums: Album[],
 ) {
   if (!page) {
     return null
@@ -52,7 +51,6 @@ function renderSections(
           block={block}
           pageId={page._id}
           pageType={page._type}
-          albums={albums}
         />
       ))}
     </div>
@@ -83,7 +81,7 @@ function renderEmptyState(page?: {_id: string; _type: string}) {
   )
 }
 
-export default function PageBuilder({page, albums}: PageBuilderPageProps) {
+export default function PageBuilder({page}: PageBuilderPageProps) {
   const pageBuilderSections = useOptimistic<
     PageBuilderSection[] | undefined,
     SanityDocument<PageData>
@@ -113,6 +111,6 @@ export default function PageBuilder({page, albums}: PageBuilderPageProps) {
   }
 
   return pageBuilderSections && pageBuilderSections.length > 0
-    ? renderSections(pageBuilderSections, page, albums)
+    ? renderSections(pageBuilderSections, page)
     : renderEmptyState(page)
 }

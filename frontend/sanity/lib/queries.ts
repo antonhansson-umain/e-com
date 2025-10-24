@@ -36,14 +36,14 @@ const linkFields = /* groq */ `
 `
 
 export const getPageQuery = defineQuery(`
-  *[_type == 'page' && slug.current == $slug][0]{
-    _id,
-    _type,
-    name,
-    slug,
-    heading,
-    subheading,
-    "pageBuilder": pageBuilder[]{
+*[_type == "page" && slug.current == $slug][0]{
+  _id,
+  _type,
+  name,
+  slug,
+  heading,
+  subheading,
+  "pageBuilder": pageBuilder[]{
       ...,
       _type == "heroSection" => {
         ...,
@@ -54,10 +54,28 @@ export const getPageQuery = defineQuery(`
       },
       _type == "selectedAlbumsSection" => {
         ...,
-      },
-    },
+        "related": {
+          "albums": *[
+            _type == "album" &&
+             references(^.tag[]._ref)
+          ][0...2]{
+            _id,
+            title,
+            description,
+            "artist": artist->artistName,
+            genres[]->{genreName},
+            "tags": tags[]->_id,
+            price,
+            picture, 
+        }
+      }
+    }
   }
+}
 `)
+
+// count(tags[]._ref[@ in ^.tag[]._ref]) > 0
+// "tag": tag[]->{_id, title},
 
 export const getHomePageQuery = defineQuery(`
   *[_type == 'homePage'][0]{
@@ -71,10 +89,25 @@ export const getHomePageQuery = defineQuery(`
     "pageBuilder": pageBuilder[]{
       ...,
       _type == "selectedAlbumsSection" => {
-        ...,
-      },
-    },
+      ...,
+      "related": {
+      "albums": *[
+        _type == "album" &&
+        references(^.tag[]._ref)
+      ][0...2]{
+      _id,
+      title,
+      description,
+      "artist": artist->artistName,
+      genres[]->{genreName},
+      "tags": tags[]->_id,
+      price,
+      picture, 
+        }
+      }
+    }
   }
+}
 `)
 
 export const sitemapData = defineQuery(`
@@ -109,7 +142,7 @@ export const getAlbumsQuery = defineQuery(`
       $sortBy == "price-low" => price,
       true => _createdAt
     ) asc
-    ) 
+    )
   {
     _id,
     title,
@@ -146,3 +179,5 @@ export const getCountriesQuery = defineQuery(`
     "value": isoCode
   }
   `)
+
+  
