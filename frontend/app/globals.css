@@ -60,17 +60,18 @@ button {
 
   .font-md-header {
     font-size: 3rem;
+    line-height: 90%;
     text-transform: uppercase;
   }
 
   .font-sm-header {
     font-size: 2rem;
-    text-transform: uppercase;
+    line-height: 90%;
   }
 
   .font-album-header {
     font-size: 1.25rem;
-    line-height: 1.5rem;
+    line-height: 90%;
     text-transform: uppercase;
   }
 
