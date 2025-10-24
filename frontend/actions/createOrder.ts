@@ -27,6 +27,7 @@ export async function createOrder(
   )
   const order = {
     _type: 'order',
+    _id: `order-${sessionId}`,
     products,
     customerEmail,
     status: 'paid',
