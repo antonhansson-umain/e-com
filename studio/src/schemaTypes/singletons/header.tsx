@@ -19,6 +19,13 @@ export const header = defineType({
         },
       ],
     }),
+    defineField({
+      type: 'reference',
+      name: 'logo',
+      title: 'Logo',
+      to: [{type: 'asset'}],
+      validation: (rule) => rule.required(),
+    }),
   ],
   preview: {
     prepare() {
