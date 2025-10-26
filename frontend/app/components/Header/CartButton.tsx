@@ -13,9 +13,9 @@ export default function CartButton() {
   return (
     <button
       onClick={handleCartOpen}
-      className="flex items-center justify-end transition-colors hover:text-red-300 w-max justify-self-end"
+      className="flex items-center justify-end transition-colors hover:text-cherry w-max justify-self-end font-text text-base"
     >
-      <span className="hidden sm:inline-flex">{'[ Cart '}</span>
+      <span className="hidden sm:inline-flex">{'[Cart '}</span>
       <CartIcon className="mx-2 inline" />
       <span className="hidden sm:inline-flex">{']'}</span>
     </button>

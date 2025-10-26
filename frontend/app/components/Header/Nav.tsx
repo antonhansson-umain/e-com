@@ -22,7 +22,7 @@ export default function Nav({linkGroups}: NavProps) {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="block sm:hidden text-black w-[1.5rem] h-[1.5rem] top-[5rem] transition-all duration-200 hover:text-red-300"
+        className="block sm:hidden text-black w-[1.5rem] h-[1.5rem] top-[5rem] transition-all duration-200 hover:text-cherry"
         aria-label="Toggle menu"
       >
         {isOpen ? <X size={30} /> : <Menu size={30} />}
@@ -34,7 +34,7 @@ export default function Nav({linkGroups}: NavProps) {
       >
         <menu
           className={cn('flex items-center sm:gap-6 text-xs sm:text-base', {
-            'max-sm:flex-col max-sm:border-t border-black/25 max-sm:*:not-last:border-b *:not-last:border-black/25 *:min-h-9 *:flex *:items-center max-sm:*:w-full  max-sm:*:justify-center max-sm:**:*:justify-center':
+            'max-sm:flex-col max-sm:border-t border-black/25 max-sm:*:not-last:border-b *:not-last:border-black/25 *:min-h-9 *:flex *:items-center max-sm:*:w-full  max-sm:*:justify-center max-sm:**:*:justify-center text-base':
               isOpen,
           })}
           ref={navRef}
@@ -51,7 +51,7 @@ export default function Nav({linkGroups}: NavProps) {
             if (group._type === 'navLink')
               return (
                 <NavLink key={group._type + index} href={group.linkPath} onClick={handleLinkClick}>
-                  {group.linkLabel}
+                 [{group.linkLabel}]
                 </NavLink>
               )
           })}
