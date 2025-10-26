@@ -9,11 +9,11 @@ type ProductDetailsSectionProps = {
 }
 
 export default function ProductDetailsSection({album}: ProductDetailsSectionProps) {
-  const {title, description, artist, genres, price, image, size, articleNumber, stockQuantity} = album
+  const {title, description, artist, genres, price, image, size, articleNumber, stockQuantity} =
+    album
 
   return (
     <article className="grid grid-cols-1 md:grid-cols-2 w-full max-w-none items-center gap-4 pb-8 md:py-8">
-      
       <div>
         <figure className="p-8 w-full place-items-center">
           <Image
@@ -62,10 +62,13 @@ export default function ProductDetailsSection({album}: ProductDetailsSectionProp
             <span className="text-[80%]">$</span>
             {price}
           </h3>
-          <AddToCartControls albumId={album._id}/>
+          {stockQuantity > 0 ? (
+            <AddToCartControls albumId={album._id} />
+          ) : (
+            <span className="py-3 px-8 border rounded-lg font-button text-base">Out of stock</span>
+          )}
         </footer>
       </section>
-
     </article>
   )
 }
