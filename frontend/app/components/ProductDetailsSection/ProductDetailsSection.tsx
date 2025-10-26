@@ -12,7 +12,8 @@ export default function ProductDetailsSection({album}: ProductDetailsSectionProp
   const {title, description, artist, genres, price, image, size, articleNumber, stockQuantity} = album
 
   return (
-    <article className="grid grid-cols-2 items-center gap-4 py-8 bg-gray-100">
+    <article className="grid grid-cols-1 md:grid-cols-2 w-full max-w-none items-center gap-4 pb-8 md:py-8">
+      
       <div>
         <figure className="p-8 w-full place-items-center">
           <Image
@@ -41,7 +42,7 @@ export default function ProductDetailsSection({album}: ProductDetailsSectionProp
           {description && <PortableText value={description} />}
         </section>
 
-        <ul className="flex flex-col gap-2">
+        <ul className="hidden md:flex flex-col gap-2 gap-2">
           <li className="flex flex-col">
             Size:
             <span>{size}"</span>
@@ -56,7 +57,7 @@ export default function ProductDetailsSection({album}: ProductDetailsSectionProp
           </li>
         </ul>
 
-        <footer className="flex flex-col items-end  gap-4">
+        <footer className="flex flex-col items-end gap-4">
           <h3 className="font-md-header">
             <span className="text-[80%]">$</span>
             {price}
@@ -64,6 +65,7 @@ export default function ProductDetailsSection({album}: ProductDetailsSectionProp
           <AddToCartControls albumId={album._id}/>
         </footer>
       </section>
+
     </article>
   )
 }

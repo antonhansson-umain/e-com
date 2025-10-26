@@ -9,7 +9,7 @@ export default function AddToCartControls({albumId}: {albumId: string}) {
   const handleDecrement = () => setQuantity((prev) => Math.max(1, prev - 1))
 
   return (
-    <div className="flex justify-between items-center gap-4">
+    <div className="flex flex-col md:flex-row justify-between items-end gap-4">
       <QuantityCounter value={quantity} onIncrement={handleIncrement} onDecrement={handleDecrement} />
       <AddToCartButton ariaLabel="Add to cart" albumId={albumId} variant="secondary" ctaText="Add to cart" quantity={quantity} />
     </div>
