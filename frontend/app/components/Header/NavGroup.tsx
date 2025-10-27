@@ -7,6 +7,7 @@ import {useRef} from 'react'
 import {NavGroup as NavGroupType} from '@/types/types'
 import useClickOutside from '@/hooks/useClickOutside'
 import {cn} from '@/lib/cn'
+import Brackets from './Brackets'
 
 export default function NavGroup({
   group,
@@ -19,13 +20,15 @@ export default function NavGroup({
   const {isOpen, setIsOpen} = useClickOutside(ref)
 
   return (
-    <li className="relative min-h-9 items-center flex flex-col sm:flex-row text-base" ref={ref}>
+    <li className="relative min-h-9 items-center flex flex-col md:flex-row" ref={ref}>
       <button
         className="flex items-center gap-0.2 hover:text-cherry transition-colors w-full min-h-9"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span>[{group.linkGroupTitle}</span>
-        {!isOpen ? <ChevronDown size={20} /> : <ChevronUp size={20} />}]
+        <Brackets>
+          <span>{group.linkGroupTitle}</span>
+          {!isOpen ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+        </Brackets>
       </button>
       {isOpen && (
         <ul
@@ -41,9 +44,12 @@ export default function NavGroup({
               <NavLink
                 href={navLink.linkPath}
                 className="min-w-full px-2 h-full flex items-center"
-                onClick={handleLinkClick}
+                onClick={() => {
+                  setIsOpen(false)
+                  handleLinkClick()
+                }}
               >
-                {navLink.linkLabel}
+                <Brackets>{navLink.linkLabel}</Brackets>
               </NavLink>
             </li>
           ))}

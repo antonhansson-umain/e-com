@@ -20,6 +20,13 @@ export const footer = defineType({
       title: 'Link Groups',
       of: [{type: 'linkGroup'}],
     }),
+    defineField({
+      type: 'reference',
+      to: {type: 'asset'},
+      name: 'logo',
+      title: 'Logo',
+      validation: (rule) => rule.required(),
+    }),
   ],
   preview: {
     prepare() {

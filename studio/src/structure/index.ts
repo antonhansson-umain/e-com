@@ -9,7 +9,7 @@ import {Album, Compass, Database, FootprintsIcon, MenuIcon} from 'lucide-react'
  * Learn more: https://www.sanity.io/docs/structure-builder-introduction
  */
 
-const DISABLED_TYPES = ['settings', 'assist.instruction.context', 'homePage']
+const DISABLED_TYPES = ['settings', 'assist.instruction.context', 'homePage', 'order']
 
 const PRODUCT_DOCUMENT_IDS = ['album']
 const NAVIGATION_DOCUMENT_IDS = ['header', 'footer']
@@ -54,6 +54,8 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
           return listItem.title(pluralize(listItem.getTitle() as string))
         }),
       S.divider(),
+      // Orders
+      S.documentTypeListItem('order').title('Orders'),
       // Data
       S.listItem()
         .title('Data')

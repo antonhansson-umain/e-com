@@ -1,11 +1,11 @@
 import {defineQuery} from 'next-sanity'
-import test from 'node:test'
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
 
 export const footerQuery = defineQuery(`
   *[_type == "footer"][0]{
     tagline,
+    logo->{image},
     linkGroups[]{
       linkGroupTitle,
       links[]{
@@ -17,7 +17,8 @@ export const footerQuery = defineQuery(`
 
 export const headerQuery = defineQuery(`
   *[_type == "header"][0]{
-    linkGroups
+    linkGroups,
+    logo->{image},
   }
 `)
 
@@ -182,5 +183,3 @@ export const getCountriesQuery = defineQuery(`
     "value": isoCode
   }
   `)
-
-  
