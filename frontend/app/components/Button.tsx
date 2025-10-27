@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement | HTMLAnchorElement> & {
   size?: 'sm' | 'md'
-  variant?: 'primary' | 'secondary' | 'tertiary'
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary'
   href?: string
 }
 
@@ -29,6 +29,8 @@ export default function Button({
       'bg-neutral-800 hover:bg-black': variant === 'secondary',
       'bg-transparent border-2 border-black/25 text-black hover:border-black':
         variant === 'tertiary',
+      'bg-transparent text-black p-0 p-0 h-auto min-w-0 hover:text-cherry':
+        variant === 'quaternary',
     },
     className,
   )

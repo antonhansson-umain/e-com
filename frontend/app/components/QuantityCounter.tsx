@@ -3,36 +3,24 @@
 import {Minus, Plus} from 'lucide-react'
 import Button from './Button'
 import {cn} from '@/lib/cn'
-import {useCartStore} from '@/hooks/useCartStore'
 
 export default function QuantityCounter({
-  albumId,
+  value,
+  onIncrement,
+  onDecrement,
   className,
 }: {
-  albumId: string
+  value: number
+  onIncrement: () => void
+  onDecrement: () => void
   className?: string
 }) {
-  const incrementItemInCart = useCartStore((state) => state.incrementItemInCart)
-  const decrementItemInCart = useCartStore((state) => state.decrementItemInCart)
-  const removeFromCart = useCartStore((state) => state.removeFromCart)
-  const getItemQty = useCartStore((state) => state.getItemQty)
-
-  const increment = () => {
-    incrementItemInCart(albumId)
-  }
-  const decrement = () => {
-    if (getItemQty(albumId) <= 1) {
-      removeFromCart(albumId)
-      return
-    }
-    decrementItemInCart(albumId)
-  }
 
   return (
     <div className={cn(`flex items-center text-xl`, className)}>
-      <QuantityCounterButton icon={<Plus />} onClick={increment} />
-      <span className="text-center w-14">{getItemQty(albumId)}</span>
-      <QuantityCounterButton icon={<Minus />} onClick={decrement} className={'justify-self-end'} />
+      <QuantityCounterButton icon={<Minus />} onClick={onDecrement} className={'justify-self-end'} />
+      <span className="text-center w-14">{value}</span>
+      <QuantityCounterButton icon={<Plus />} onClick={onIncrement} />
     </div>
   )
 }

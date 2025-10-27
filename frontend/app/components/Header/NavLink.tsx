@@ -12,7 +12,7 @@ export default function NavLink({className, href, children, ...props}: NavLinkPr
     <Link
       href={href}
       {...props}
-      className={cn('hover:text-red-300 transition-colors text-nowrap', className)}
+      className={cn('hover:text-cherry transition-colors text-nowrap', className)}
     >
       {children}
     </Link>
