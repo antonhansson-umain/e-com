@@ -1,26 +1,44 @@
-export default function Footer() {
+import Link from 'next/link'
+import Logo from './Logo'
+import {footerQuery} from '@/sanity/lib/queries'
+import {sanityFetch} from '@/sanity/lib/live'
+import {urlForImage} from '@/sanity/lib/utils'
+
+export default async function Footer() {
+  const {data: footer} = await sanityFetch({
+    query: footerQuery,
+  })
   return (
-    <footer className="bg-gray-50 relative">
-      <div className="absolute inset-0 bg-[url(/images/tile-grid-black.png)] bg-size-[17px] opacity-20 bg-position-[0_1]" />
-      <div className="container relative">
-        <div className="flex flex-col items-center py-28 lg:flex-row">
-          <h3 className="mb-10 text-center text-4xl font-mono leading-tight tracking-tighter lg:mb-0 lg:w-1/2 lg:pr-4 lg:text-left lg:text-2xl">
-            Built with Sanity + Next.js.
-          </h3>
-          <div className="flex flex-col gap-3 items-center justify-center lg:w-1/2 lg:flex-row lg:pl-4">
-            <a
-              href="https://github.com/sanity-io/sanity-template-nextjs-clean"
-              className="rounded-full flex gap-2 font-mono whitespace-nowrap items-center bg-black hover:bg-blue focus:bg-blue py-3 px-6 text-white transition-colors duration-200"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub
-            </a>
-            <a href="https://nextjs.org/docs" className="mx-3 hover:underline font-mono">
-              Read Next.js Documentation
-            </a>
-          </div>
-        </div>
+    <footer className="bg-maroon text-white px-4 sm:px-20 py-16 sm:py-16 grid sm:grid-cols-[2fr_5fr] gap-16">
+      <div className="flex flex-col gap-2">
+        <Link href={'/'} className="w-max">
+          <Logo
+            src={
+              urlForImage(footer?.logo.image)?.width(72).height(22).url() ?? '/images/wow_logo.svg'
+            }
+          />
+        </Link>
+
+        <p className="font-mono">{footer?.tagline}</p>
+      </div>
+      <div className="grid sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-16">
+        {footer &&
+          footer.linkGroups &&
+          footer.linkGroups.map((group, index) => (
+            <div key={group.linkGroupTitle + index}>
+              <h3 className="uppercase mb-4">{group.linkGroupTitle}</h3>
+              <ul className="space-y-2">
+                {group.links &&
+                  group.links.map((link) => (
+                    <li key={link.linkLabel}>
+                      <Link href={link.linkPath} className="hover:underline font-mono">
+                        {link.linkLabel}
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          ))}
       </div>
     </footer>
   )

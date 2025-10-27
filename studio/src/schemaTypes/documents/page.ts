@@ -8,7 +8,7 @@ import {DocumentIcon} from '@sanity/icons'
 
 export const page = defineType({
   name: 'page',
-  title: 'Page',
+  title: 'Campaign Page',
   type: 'document',
   icon: DocumentIcon,
   fields: [
@@ -18,7 +18,6 @@ export const page = defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
-
     defineField({
       name: 'slug',
       title: 'Slug',
@@ -30,21 +29,11 @@ export const page = defineType({
       },
     }),
     defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'subheading',
-      title: 'Subheading',
-      type: 'string',
-    }),
-    defineField({
       name: 'pageBuilder',
       title: 'Page builder',
       type: 'array',
-      of: [{type: 'callToAction'}, {type: 'infoSection'}],
+      of: [{type: 'heroSection'}, {type: 'selectedAlbumsSection'}],
+      
       options: {
         insertMenu: {
           // Configure the "Add Item" menu to display a thumbnail preview of the content type. https://www.sanity.io/docs/array-type#efb1fe03459d
@@ -59,4 +48,16 @@ export const page = defineType({
       },
     }),
   ],
+  preview: {
+    select: {
+      name: 'name',
+      slug: 'slug',
+    },
+    prepare(selection) {
+      return {
+        title: selection.name,
+        subtitle: `/${selection?.slug.current ?? ''}`,
+      }
+    },
+  },
 })

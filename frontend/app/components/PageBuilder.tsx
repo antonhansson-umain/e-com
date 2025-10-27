@@ -3,14 +3,15 @@
 import {SanityDocument} from 'next-sanity'
 import {useOptimistic} from 'next-sanity/hooks'
 import Link from 'next/link'
-
 import BlockRenderer from '@/app/components/BlockRenderer'
-import {GetPageQueryResult} from '@/sanity.types'
+import {GetPageQueryResult, GetHomePageQueryResult} from '@/sanity.types'
+import {Album} from '@/types/types'
 import {dataAttr} from '@/sanity/lib/utils'
 import {studioUrl} from '@/sanity/lib/api'
 
 type PageBuilderPageProps = {
-  page: GetPageQueryResult
+  page: GetPageQueryResult | GetHomePageQueryResult
+
 }
 
 type PageBuilderSection = {
@@ -28,7 +29,10 @@ type PageData = {
  * The PageBuilder component is used to render the blocks from the `pageBuilder` field in the Page type in your Sanity Studio.
  */
 
-function renderSections(pageBuilderSections: PageBuilderSection[], page: GetPageQueryResult) {
+function renderSections(
+  pageBuilderSections: PageBuilderSection[],
+  page: {_id: string; _type: string},
+) {
   if (!page) {
     return null
   }
@@ -53,7 +57,7 @@ function renderSections(pageBuilderSections: PageBuilderSection[], page: GetPage
   )
 }
 
-function renderEmptyState(page: GetPageQueryResult) {
+function renderEmptyState(page?: {_id: string; _type: string}) {
   if (!page) {
     return null
   }
@@ -103,7 +107,7 @@ export default function PageBuilder({page}: PageBuilderPageProps) {
   })
 
   if (!page) {
-    return renderEmptyState(page)
+    return renderEmptyState()
   }
 
   return pageBuilderSections && pageBuilderSections.length > 0
