@@ -45,7 +45,7 @@ export default function ProductDetailsSection({album}: ProductDetailsSectionProp
         <ul className="hidden md:flex flex-col gap-2 gap-2">
           <li className="flex flex-col">
             Size:
-            <span>{size}"</span>
+            <span>{size}&quot;</span>
           </li>
           <li className="flex flex-col">
             Article no:
