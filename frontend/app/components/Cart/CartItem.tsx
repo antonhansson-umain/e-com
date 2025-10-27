@@ -15,8 +15,6 @@ export default function CartItem({
   const {setIsOpen} = useSideBarContext()
   const removeFromCart = useCartStore((state) => state.removeFromCart)
 
-  console.log(album.image)
-
   return (
     <li className="grid grid-cols-[1fr_2fr_auto] grid-rows-[auto_auto_auto_auto] gap-x-2 p-2 hover:bg-white/50 transition-colors group">
       <Link
