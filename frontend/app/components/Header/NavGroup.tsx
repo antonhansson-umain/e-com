@@ -20,7 +20,7 @@ export default function NavGroup({
   const {isOpen, setIsOpen} = useClickOutside(ref)
 
   return (
-    <li className="relative min-h-9 items-center flex flex-col md:flex-row" ref={ref}>
+    <li className="relative min-h-9 items-center flex flex-col flex-col sm:flex-row text-base" ref={ref}>
       <button
         className="flex items-center gap-0.2 hover:text-cherry transition-colors w-full min-h-9"
         onClick={() => setIsOpen(!isOpen)}
