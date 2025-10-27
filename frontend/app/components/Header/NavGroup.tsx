@@ -20,9 +20,9 @@ export default function NavGroup({
   const {isOpen, setIsOpen} = useClickOutside(ref)
 
   return (
-    <li className="relative min-h-9 items-center flex flex-col md:flex-row" ref={ref}>
+    <li className="relative min-h-9 items-center flex flex-col flex-col sm:flex-row text-base" ref={ref}>
       <button
-        className="flex items-center gap-2 hover:text-red-300 transition-colors w-full min-h-9"
+        className="flex items-center gap-0.2 hover:text-cherry transition-colors w-full min-h-9"
         onClick={() => setIsOpen(!isOpen)}
       >
         <Brackets>
@@ -33,13 +33,13 @@ export default function NavGroup({
       {isOpen && (
         <ul
           className={cn(
-            'sm:absolute top-full left-0 bg-white min-w-full flex flex-col items-center sm:borderz-10',
+            'sm:absolute top-full left-0 bg-white min-w-full flex flex-col items-center z-10 pt-3',
           )}
         >
           {group.links?.map((navLink: NavLinkType, index) => (
             <li
               key={navLink.linkPath + index}
-              className="w-full flex h-9 items-center sm:border sm:not-first:border-t-0 first:border-t not-last:border-b border-black/25 "
+              className="w-full flex h-9 items-center sm:not-first:border-t-0 first:border-t not-last:border-b border-black/25"
             >
               <NavLink
                 href={navLink.linkPath}

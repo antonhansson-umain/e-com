@@ -1,5 +1,6 @@
 import {getAlbum} from '@/actions/getAlbum'
 import {getAlbums} from '@/actions/getAlbums'
+import ProductDetailsSection from '@/app/components/ProductDetailsSection'
 import SelectedAlbumsSection from '@/app/components/SelectedAlbumsSection'
 import {notFound} from 'next/navigation'
 
@@ -16,7 +17,7 @@ export default async function page({params}: {params: Promise<{id: string}>}) {
   }
   return (
     <div>
-      <h1>{album?.title}</h1>
+      <ProductDetailsSection album={album} />
       <SelectedAlbumsSection block={block} albums={relatedAlbums.slice(0, 2)} />
     </div>
   )

@@ -37,6 +37,7 @@ export default function AlbumCard({album}: AlbumCardProps) {
           <AddToCartButton
             albumId={album._id}
             ariaLabel={`Add ${album.title} by ${album.artist} to cart`}
+            variant="quaternary"
           />
         </div>
       </article>

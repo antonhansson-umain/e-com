@@ -1,0 +1,74 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import {PortableText} from '@portabletext/react'
+import {GetAlbumByIdResult} from '@/sanity.types'
+import AddToCartControls from './AddToCartControls'
+
+type ProductDetailsSectionProps = {
+  album: NonNullable<GetAlbumByIdResult>
+}
+
+export default function ProductDetailsSection({album}: ProductDetailsSectionProps) {
+  const {title, description, artist, genres, price, image, size, articleNumber, stockQuantity} =
+    album
+
+  return (
+    <article className="grid grid-cols-1 md:grid-cols-2 w-full max-w-none items-center gap-4 pb-8 md:py-8">
+      <div>
+        <figure className="p-8 w-full place-items-center">
+          <Image
+            src={image ?? '/images/placeholder.webp'}
+            alt={`Album art for ${title} by ${artist}`}
+            width={450}
+            height={450}
+            className="object-cover"
+            priority
+          />
+        </figure>
+      </div>
+
+      <section className="flex flex-col gap-4">
+        <h1 className="font-md-header">{title}</h1>
+        <h2 className="font-sm-header">{artist}</h2>
+
+        <nav className="flex gap-2">
+          {genres.map((genre) => (
+            <Link key={genre} href={`/shop?genres=${genre}`}>
+              <button className="p-2 border rounded-lg font-button text-base">{genre}</button>
+            </Link>
+          ))}
+        </nav>
+        <section className="font-text">
+          {description && <PortableText value={description} />}
+        </section>
+
+        <ul className="hidden md:flex flex-col gap-2 gap-2">
+          <li className="flex flex-col">
+            Size:
+            <span>{size}&quot;</span>
+          </li>
+          <li className="flex flex-col">
+            Article no:
+            <span>{articleNumber}</span>
+          </li>
+          <li className="flex flex-col">
+            Currently in stock:
+            <span>{stockQuantity}</span>
+          </li>
+        </ul>
+
+        <footer className="flex flex-col items-end gap-4">
+          <h3 className="font-md-header">
+            <span className="text-[80%]">$</span>
+            {price}
+          </h3>
+          {stockQuantity > 0 ? (
+            <AddToCartControls albumId={album._id} />
+          ) : (
+            <span className="py-3 px-8 border rounded-lg font-button text-base">Out of stock</span>
+          )}
+        </footer>
+      </section>
+    </article>
+  )
+}
